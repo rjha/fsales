@@ -2,7 +2,7 @@
 
     include ('fs-app.inc');
     include(APP_CLASS_LOADER);
-    include(APP_WEB_DIR . '/inc/session.inc');
+    include(APP_WEB_DIR . '/app/inc/session.inc');
     include(WEBGLOO_LIB_ROOT . '/com/indigloo/error.inc');
 
     //destroy session

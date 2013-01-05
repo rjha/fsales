@@ -41,7 +41,8 @@ search code folders for mik
 search code folders for sc-app
    
 
-
++ create database fsdb1
++ load schema.sql into fsdb1
 
 + restart NGINX
 

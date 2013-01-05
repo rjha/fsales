@@ -1,6 +1,6 @@
 <?php
-    include ('sc-app.inc');
-    include (APP_WEB_DIR.'/inc/header.inc');
+    include ('fs-app.inc');
+    include (APP_WEB_DIR.'/app/inc/header.inc');
     include (APP_WEB_DIR.'/app/inc/role/user.inc');
 
     use com\indigloo\Util;
@@ -62,7 +62,7 @@
             <div class="row">
                 <div class="span8 offset1">
                     <h2>Show page information</h2>
-                    <?php 
+                     
                 </div>
 
             </div>
@@ -74,4 +74,3 @@
 
     </body>
 </html>
-

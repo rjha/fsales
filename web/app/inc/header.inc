@@ -16,10 +16,10 @@
     switch($session_backend) {
         
         case "mysql" :
-            include(APP_WEB_DIR . '/inc/mysql-session.inc');
+            include(APP_WEB_DIR . '/app/inc/mysql-session.inc');
         break ;
         default:
-            include(APP_WEB_DIR . '/inc/session.inc');
+            include(APP_WEB_DIR . '/app/inc/session.inc');
     }
 
     include(WEBGLOO_LIB_ROOT . '/com/indigloo/error.inc');

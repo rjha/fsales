@@ -1,7 +1,7 @@
 <?php
 
     include 'fs-app.inc';
-    include(APP_WEB_DIR . '/inc/header.inc');
+    include(APP_WEB_DIR . '/app/inc/header.inc');
     include (APP_WEB_DIR.'/app/inc/error.inc');
 
     //special error handler for this page

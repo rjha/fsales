@@ -1,7 +1,7 @@
 <?php 
 
 	include ('fs-app.inc');
-    include (APP_WEB_DIR.'/inc/header.inc');
+    include (APP_WEB_DIR.'/app/inc/header.inc');
 
     use com\indigloo\Util;
     use com\indigloo\Url as Url;

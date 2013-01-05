@@ -1,6 +1,6 @@
 <?php
 
-    use \com\indigloo\app\auth\Login as Login;
+    use \com\indigloo\fs\auth\Login as Login;
     $loginId = Login::tryLoginIdInSession();
     
     if(!empty($loginId)) {

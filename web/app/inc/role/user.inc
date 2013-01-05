@@ -1,5 +1,5 @@
 <?php
-    use \com\indigloo\app\auth\Login as Login ;
+    use \com\indigloo\fs\auth\Login as Login ;
     use \com\indigloo\Url as Url ;
  
     if(!Login::hasSession()) {

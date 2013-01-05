@@ -1,4 +1,12 @@
 
+DROP TABLE IF EXISTS  sc_php_session ;
+CREATE TABLE  sc_php_session  (
+   session_id  varchar(40) NOT NULL DEFAULT '',
+   data  text,
+   updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY ( session_id )
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 
 DROP TABLE IF EXISTS  fs_login ;

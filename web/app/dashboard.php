@@ -1,6 +1,6 @@
 <?php
-    include ('sc-app.inc');
-    include (APP_WEB_DIR.'/inc/header.inc');
+    include ('fs-app.inc');
+    include (APP_WEB_DIR.'/app/inc/header.inc');
     include (APP_WEB_DIR.'/app/inc/role/user.inc');
 
 
