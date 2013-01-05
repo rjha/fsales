@@ -1,0 +1,54 @@
+
+
+
++ point www.favsales.com to your server IP
++ create a new Nginx vhost 
++ copy nginx vhost file to /etc/nginx/sites-enabled/ folder
+ - check the vhost file
++ create a symlink from /var/www/vhosts/www.favsales.com/htdocs => code web/ folder
+    $ sudo mkdir www.favsales.com
+    $ sudo ln -nfs ~/code/github/fsales/web /var/www/vhosts/www.favsales.com/htdocs
+
+
++ fs-app.inc file : make sure of locations
++ fs_configi].ini
+ - check values
+ - remove unwanted stuff
+ @todo change facebook appId and appSecret
+
++ copy fs-app.inc and fs_config.ini to /var/www/apps folder 
+
+$ sudo cp ~/code/github/fsales/conf/fs-app.inc /var/www/apps/.
+$ sudo cp ~/code/github/fsales/conf/fs_config.ini /var/www/apps/.
+
+
++ create web/compiled folder : change ownership of this folder to www-data
+$ mkdir compiled
+$ sudo chown -R www-data:www-data compiled/
+
++ copy gitignore file into git repo ROOT
+ 
+.gitignore
+web/compiled
+
++ make sure app uses :- correct fs-app.inc everywhere
++ Do not build new css/js upfront - try to use what is already on rackspace CDN
++ DB name is fsdb1
+
+search /var/www/apps for mik
+ @todo - sendgrid stuff is still 3mik.com
+search code folders for mik
+search code folders for sc-app
+   
+
+
+
++ restart NGINX
+
+
+
+
+
+
+
+
