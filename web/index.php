@@ -45,6 +45,7 @@
             <?php include(APP_WEB_DIR . '/app/inc/top-unit.inc'); ?>
             <div class="row">
                 <div class="span8 offset1">
+                     
                     <h2> Home page </h2>
                     <p>
                         Home page content

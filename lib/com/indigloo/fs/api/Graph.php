@@ -19,6 +19,7 @@ namespace com\indigloo\fs\api {
                 $message = sprintf("Graph URL [%s] returned TRUE|FALSE|NULL",$graphUrl) ;
                 Logger::getInstance()->error($message);
                 $flag = false ;
+                return $flag ;
             }
 
             if(property_exists($fbObject, "error")) { 
@@ -26,6 +27,7 @@ namespace com\indigloo\fs\api {
                 Logger::getInstance()->error($message);
                 Logger::getInstance()->error($fbObject->error);
                 $flag = false ;
+                return $flag ;
             }
 
             if(!empty($attributes)) {

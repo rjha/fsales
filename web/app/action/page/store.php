@@ -11,11 +11,18 @@
 
         $gWeb = \com\indigloo\core\Web::getInstance();
         $pages = $gWeb->find("fs.user.pages",true);
-        $loginId = Login::getLoginIdInSession();
+
+        if(!empty($pages)) {
+            $loginId = Login::getLoginIdInSession();
+            // store pages in DB
+            $accountDao = new \com\indigloo\fs\dao\Account();
+            $accountDao->addPages($loginId,$pages);
+            $fwd = "/app/dashboard.php" ;
+            header("location: ".$fwd);
+            exit(1);
+        }
         
-        // store pages in DB
-        $pageDao = new \com\indigloo\fs\dao\Page();
-        $pageDao->create($loginId,$pages);
+        //@todo - error message for dashboard
         
     }catch(\Exception $ex) {
         
@@ -25,7 +32,7 @@
         $message = "Error: something went wrong!" ;
         $gWeb->store("fs.router.message",$message);
         $fwd = "/app/router.php?q=". base64_encode("/app/show-page.php");
-        header('location: '.$fwd);
+        header("location: ".$fwd);
         exit(1);
     }
     

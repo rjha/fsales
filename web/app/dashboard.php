@@ -9,6 +9,7 @@
     use com\indigloo\Constants as Constants;
     use com\indigloo\Configuration as Config;
     
+    use \com\indigloo\ui\form\Message as FormMessage;
     use \com\indigloo\fs\auth\Login as Login ;
 
     $gWeb = \com\indigloo\core\Web::getInstance();
@@ -40,7 +41,10 @@
             <?php include(APP_WEB_DIR . '/app/inc/top-unit.inc'); ?>
             <div class="row">
                 <div class="span8 offset1">
-                    <h2> User Dashboard</h2>
+                    <div class="page-header">
+                        <h2> Dashboard </h2>
+                    </div>
+                    
                 </div>
 
             </div>

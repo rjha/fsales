@@ -7,7 +7,7 @@ namespace com\indigloo\fs\html {
     class Page {
 
         static function getTable($pages) {
-            
+            if(empty($pages)) { return ""; }
             $html = NULL ;
             $template = '/app/fragments/page/table.tmpl' ;
             $view = new \stdClass;

@@ -12,7 +12,7 @@
             <div class="nav-collapse">
                 <ul class="nav">
                     <li> <a href="/"><i class="icon-home"></i>&nbsp;Home</a></li>
-                    <li> <a href="/app/browser/login.php">Dashboard</a> </li>
+                    <li> <a href="/app/dashboard.php">My Account</a> </li>
                     <li> <a href="/app/browser/logout.php">Logout</a> </li>
                 </ul>
                 

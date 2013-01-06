@@ -14,6 +14,8 @@
 + fs_configi].ini
  - check values
  - remove unwanted stuff
+ @todo session lifetime/backend - 86400 - for 1 DAY
+ 7 Days - 604800 seconds
  @todo change facebook appId and appSecret
 
 + copy fs-app.inc and fs_config.ini to /var/www/apps folder 

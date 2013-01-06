@@ -221,3 +221,11 @@ Rate limits
 ------------
 
 check for rate limit errors
+
+sessions
+----------
+Do not roll sessions
+force user to login after 7 days?
+
++ Show crawling errors on dashboard
++ show crawling errors on Admin panel
