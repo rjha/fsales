@@ -16,6 +16,17 @@ namespace com\indigloo\fs\dao {
             $access_token,
             $expires) {
 
+            // input check
+            if(empty($facebookId)) {
+                $message = "Bad input : No facebook id for user!" ;
+                trigger_error($message,E_USER_ERROR);
+            }
+
+            if(empty($access_token)) {
+                $message = "Bad input : access token is missing!" ;
+                trigger_error($message,E_USER_ERROR);
+            }
+
             $data = array();
             $loginId = NULL ;
 

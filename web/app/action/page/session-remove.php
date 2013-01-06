@@ -8,7 +8,6 @@
     use com\indigloo\Constants as Constants;
     use com\indigloo\Configuration as Config;
     
-    use \com\indigloo\ui\form\Message as FormMessage ;
     use \com\indigloo\fs\auth\Login as Login ;
     use \com\indigloo\fs\api\Graph as GraphAPI ;
 
@@ -58,19 +57,18 @@
             <div class="row">
                 <div class="span8 offset1">
                     <div class="page-header">
-                        <h2>Your pages</h2>
+                        <h2>Show page information</h2>
                     </div>
-                    <p class="comment-text">
-                        The application can manage the pages listed below.
-                        Please click Confirm to continue.
+                    <p class="muted">
+                    The application can manage the pages listed below.
+                    Please click Confirm to continue.
                     </p>
-                    <?php FormMessage::render() ?>
 
                     <?php echo $pageHtml ; ?>
                     <div class="section">
-                        <a class="btn btn-primary" href="/app/action/page/store.php">Confirm</a>
+                        <a class="btn btn-primary" href="/app/store-page.php">Confirm</a>
                         &nbsp;
-                        <a class="btn" href="/app/action/page/remove-session.php">Cancel</a>
+                        <a class="btn" href="/app/remove-session-page.php">Cancel</a>
                     </div>
                 </div>
 

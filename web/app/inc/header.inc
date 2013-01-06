@@ -10,21 +10,15 @@
     use com\indigloo\core\Web  ;
     use com\indigloo\Configuration as Config  ;
 
-    $session_backend = Config::getInstance()->get_value("session.backend");
-    $session_backend = empty($session_backend) ? "default" :  strtolower($session_backend);
-
-    switch($session_backend) {
-        
-        case "mysql" :
-            include(APP_WEB_DIR . '/app/inc/mysql-session.inc');
-        break ;
-        default:
-            include(APP_WEB_DIR . '/app/inc/session.inc');
-    }
-
-    include(WEBGLOO_LIB_ROOT . '/com/indigloo/error.inc');
+    include(APP_WEB_DIR . '/app/inc/mysql-session.inc');
+    include(APP_WEB_DIR . '/app/inc/global-error.inc');
 
     $gWeb = Web::getInstance();
     $gWeb->start();
+
+    //define constants
+    define("G_APP_NAME", "Favsales");
+    define("G_APP_DOMAIN", "www.favsales.com");
+    define("G_APP_TAGLINE", "A long line about application");
     
 ?>

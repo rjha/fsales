@@ -31,7 +31,7 @@
 <html>
 
     <head>
-        <title> Home page</title>
+        <title> <?php echo G_APP_TAGLINE ?></title>
         <?php include(APP_WEB_DIR . '/app/inc/meta.inc'); ?>
         <?php echo \com\indigloo\fs\util\Asset::version("/css/bundle.css"); ?>
 
@@ -47,7 +47,7 @@
                 <div class="span8 offset1">
                     <h2> Home page </h2>
                     <p>
-                        some text
+                        Home page content
                     </p>
                     <div class="p20">
                         <a href="<?php echo $fbDialogUrl; ?>" class="btn-adbox">Sign up</a>

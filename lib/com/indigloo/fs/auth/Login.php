@@ -36,7 +36,8 @@ namespace com\indigloo\fs\auth {
                 return $login ;
 
             } else {
-                throw new UIException("user session does not exists!");
+                $message = "User session does not exists!" ;
+                throw new UIException(array($message));
             }
 
         }
@@ -69,7 +70,8 @@ namespace com\indigloo\fs\auth {
             if (isset($_SESSION) && isset($_SESSION[self::TOKEN]) && isset($_SESSION[self::LOGIN_ID]) ) {
                 $loginId = $_SESSION[self::LOGIN_ID] ;
             } else{
-                throw new UIException("No login found in session!");
+                $message = "User session does not exists!" ;
+                throw new UIException(array($message));
             }
 
             return $loginId ;

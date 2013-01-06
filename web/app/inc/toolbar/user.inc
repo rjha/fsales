@@ -7,11 +7,11 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </a> <!-- 3bars for smaller screens -->
-            <a class="brand" href="/app">Sales App<span class="beta">BETA</span> </a>
+            <a class="brand" href="/">Sales App<span class="beta">BETA</span> </a>
 
             <div class="nav-collapse">
                 <ul class="nav">
-                    <li> <a href="/app"><i class="icon-home"></i>&nbsp;Home</a></li>
+                    <li> <a href="/"><i class="icon-home"></i>&nbsp;Home</a></li>
                     <li> <a href="/app/browser/login.php">Dashboard</a> </li>
                     <li> <a href="/app/browser/logout.php">Logout</a> </li>
                 </ul>

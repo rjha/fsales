@@ -2,7 +2,7 @@
 
     include 'fs-app.inc';
     include(APP_WEB_DIR . '/app/inc/header.inc');
-    include (APP_WEB_DIR.'/app/inc/error.inc');
+    include (APP_WEB_DIR.'/app/inc/fb-error.inc');
 
     //special error handler for this page
     set_error_handler('app_browser_errors');
@@ -12,8 +12,8 @@
     use \com\indigloo\Configuration as Config;
     use \com\indigloo\Logger as Logger;
     
-    use \com\indigloo\app\auth\Login as Login;
-   	use \com\indigloo\app\mysql as mysql ;
+    use \com\indigloo\fs\auth\Login as Login;
+   	use \com\indigloo\fs\mysql as mysql ;
 
     function raiseUIError() {
         $uimessage = "something went wrong with the signup process. Please try again." ;
@@ -116,10 +116,10 @@
 	    $firstName = empty($firstName) ? "Anonymous" : $firstName ;
 	    $name = empty($name) ? $firstName : $name ;
 
-        $message = sprintf("canvas app login :: fb_id %d ,email %s ",$facebookId,$email);
+        $message = sprintf("favsales app login :: fb_id %d ,email %s ",$facebookId,$email);
         Logger::getInstance()->info($message);
 
-        $facebookDao = new \com\indigloo\app\dao\Facebook();
+        $facebookDao = new \com\indigloo\fs\dao\Facebook();
         $data = $facebookDao->getOrCreate($facebookId,
             $name,
             $firstName,

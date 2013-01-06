@@ -12,6 +12,7 @@ namespace com\indigloo\fs\mysql {
             // a valid token should have 24 more hours to go!
             $mysqli = MySQL\Connection::getInstance()->getHandle();
             settype($loginId, "integer");
+
             $sql = "select access_token from fs_login where id = %d and expire_on > (now() + interval 1 DAY )" ;
             $sql = sprintf($sql,$loginId);
 
@@ -24,6 +25,7 @@ namespace com\indigloo\fs\mysql {
             
             $mysqli = MySQL\Connection::getInstance()->getHandle();
             settype($loginId, "integer");
+            
             $sql = "select access_token from fs_login where id = %d " ;
             $sql = sprintf($sql,$loginId);
             

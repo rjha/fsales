@@ -9,7 +9,7 @@
     use com\indigloo\Constants as Constants;
     use com\indigloo\Configuration as Config;
     
-    use \com\indigloo\app\auth\Login as Login ;
+    use \com\indigloo\fs\auth\Login as Login ;
 
     $gWeb = \com\indigloo\core\Web::getInstance();
     $qparams = Url::getRequestQueryParams();

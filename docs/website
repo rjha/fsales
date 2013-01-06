@@ -1,0 +1,33 @@
+
+
++ Home page
+------------
+ 
+required - A signup button to get people started on workflow
+required - sign In link - for existing users
+
+
+User pages
+------------
++ Dashboard
+ - will list pages that we are managing
+ - comments page -  click on a page name on Dashboard
+ - And you can see comments on that page
+ - Any filtering of comments needed? 
++ Invoices - whatever invoices have been sent
+
+Menu
+------
+Global
+
++ sign in
++ Home
+
+User
+
++ Dashboard
++ comments
++ Invoices
+
+
+
