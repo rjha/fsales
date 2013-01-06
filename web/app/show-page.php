@@ -29,14 +29,11 @@
         exit ;
     } 
 
-    // @todo : check when no page found
-    // Do not render buttons when no page found
-
     $pages = GraphAPI::getPages($access_token);
     // @todo - move constants to a separate file
     // fs is fabsales.com namespace.
     $gWeb->store("fs.user.pages",$pages);
-    $pageHtml = \com\indigloo\fs\html\Page::getTable($pages);
+    $pageTableHtml = \com\indigloo\fs\html\Page::getTable($pages);
 
     $template = empty($pages) ? "/app/no-page.php" : "/app/page-table.php";
     $template = APP_WEB_DIR.$template ;

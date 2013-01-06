@@ -1,15 +1,17 @@
 <table class="table table-striped">
   <thead>
     <tr>
-      <th>Page ID</th>
-      <th>Name</th>
+      <th>select</th>
+      <th>page</th>
       
     </tr>
   </thead>
   <tbody>
     ~foreach($view->pages as $page){ ~
     <tr>
-      <td>~~$page["id"]~</a></td>
+      <td>
+        <input type="checkbox" name="p[]" value="~~$page['id']~" />
+      </td>
       <td>~~$page["name"]~</a></td>
       
     </tr>

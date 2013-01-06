@@ -13,15 +13,17 @@
 
         //copy from graph API explorer
         // make sure you have manage_pages/publish_stream/email permissions
-        $access_token = "AAACEdEose0cBABuRPE3dKdhsLCnZAP63tKp5jumiWHBwg6FZArjsDNltQ8D7VgJvWZB0dxEsnN9MQxEMOG4Ahs8Qgti9j25iLvLlB5HYSfoEoVm9dw9" ;
+        $access_token = "AAACEdEose0cBANkx3Nk5vco1KJDNu6nQMbn5UOIxl0yEFdOu83qIGzHiuLmTC2D5rT5ZALABwvG7q2w2LgeABnP012sXPihETzpe0djiHeORNfZBby" ;
         $facebookId = "100000110234029" ;
 
         $name = "Rajeev Jha" ;
         $firstName = "Rajeev" ;
         $lastName = "Jha" ;
         $email ="jha.rajeev@gmail.com" ;
-        //1 HR token
-        $expires = 3600 ;
+        // although we get 1 HR token from graph API explorer
+        // we need to ensure that expiry > 1 DAY
+        // otherwise our code goes nuts!
+        $expires = 2*24*3600 ;
         
         $facebookDao = new \com\indigloo\fs\dao\Facebook();
         $data = $facebookDao->getOrCreate($facebookId,

@@ -10,19 +10,39 @@
     try{
 
         $gWeb = \com\indigloo\core\Web::getInstance();
-        $pages = $gWeb->find("fs.user.pages",true);
-
-        if(!empty($pages)) {
-            $loginId = Login::getLoginIdInSession();
-            // store pages in DB
-            $accountDao = new \com\indigloo\fs\dao\Account();
-            $accountDao->addPages($loginId,$pages);
-            $fwd = "/app/dashboard.php" ;
-            header("location: ".$fwd);
-            exit(1);
+        $checkboxes = array();
+        if(array_key_exists("p",$_POST)) {
+            $checkboxes = $_POST["p"];
         }
         
-        //@todo - error message for dashboard
+        if(empty($checkboxes)) {
+            $message = "You need to select a page!" ;
+            $gWeb->store(Constants::FORM_ERRORS,array($message));
+            $fwd = "/app/show-page.php" ;
+            header("location: ".$fwd);
+            exit(1);
+
+        }
+
+        $pages = $gWeb->find("fs.user.pages",true);
+        
+        if(!empty($pages)) {
+            $loginId = Login::getLoginIdInSession();
+            $bucket = array();
+            foreach($pages as $page) {
+                if(in_array($page["id"],$checkboxes)) {
+                    array_push($bucket,$page);
+                }
+            }
+
+            // store selected pages in DB
+            $accountDao = new \com\indigloo\fs\dao\Account();
+            $accountDao->addPages($loginId,$bucket);
+        }
+
+        $fwd = "/app/dashboard.php" ;
+        header("location: ".$fwd);
+        exit(1);
         
     }catch(\Exception $ex) {
         

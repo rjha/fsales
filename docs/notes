@@ -182,7 +182,6 @@ select username, fromid, text, time from comment
 where object_id =  468185346552237
 
 object_id  = 468185346552237 (object_id is photo_id  => see permalink above)
-object_id = you can also get from /post_id above
 
 
 {
@@ -195,6 +194,67 @@ object_id = you can also get from /post_id above
     }
   ]
 }
+
+
+object_id = you can also get from /post_id above
+/332362053467901_468185363218902
+
+{
+  "id": "332362053467901_468185363218902", 
+  "from": {
+    "category": "Website", 
+    "name": "3mik", 
+    "id": "332362053467901"
+  }, 
+  "message": "Shoes by Swati Modo", 
+  "picture": "http://photos-b.ak.fbcdn.net/hphotos-ak-prn1/27281_468185346552237_1323652079_s.jpg", 
+  "link": "http://www.facebook.com/photo.php?fbid=468185346552237&set=a.468185329885572.94780.332362053467901&type=1&relevant_count=1", 
+  "name": "Shoes by Swati Modo", 
+  "icon": "http://static.ak.fbcdn.net/rsrc.php/v2/yz/r/StEh3RhPvjk.gif", 
+  "actions": [
+    {
+      "name": "Comment", 
+      "link": "http://www.facebook.com/332362053467901/posts/468185363218902"
+    }, 
+    {
+      "name": "Like", 
+      "link": "http://www.facebook.com/332362053467901/posts/468185363218902"
+    }
+  ], 
+  "privacy": {
+    "description": "Public", 
+    "value": "EVERYONE", 
+    "friends": "", 
+    "networks": "", 
+    "allow": "", 
+    "deny": ""
+  }, 
+  "type": "photo", 
+  "status_type": "added_photos", 
+  "object_id": "468185346552237", 
+  "application": {
+    "name": "Soldsie", 
+    "namespace": "soldsie", 
+    "id": "110295729053397"
+  }, 
+  "created_time": "2013-01-01T19:54:12+0000", 
+  "updated_time": "2013-01-01T20:01:57+0000", 
+  "comments": {
+    "data": [
+      {
+        "id": "332362053467901_468185363218902_1148244", 
+        "from": {
+          "name": "Rajeev N. Jha", 
+          "id": "100001842355230"
+        }, 
+        "message": "love this. size 7, red sold!  rjha.x1234@gmail.com", 
+        "created_time": "2013-01-01T20:01:57+0000"
+      }
+    ], 
+    "count": 1
+  }
+}
+
 
 comments + app_id
 ---------------------

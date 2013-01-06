@@ -21,17 +21,21 @@
                         <h2>Your pages</h2>
                     </div>
                     <p class="comment-text">
-                        The application can manage the pages listed below.
-                        Please click Confirm to continue.
+                        We found the pages listed below.
+                        Please select the pages you want to monitor.
                     </p>
                     <?php \com\indigloo\ui\form\Message::render() ?>
-
-                    <?php echo $pageHtml ; ?>
-                    <div class="section">
-                        <a class="btn btn-primary" href="/app/action/page/store.php">Confirm</a>
-                        &nbsp;
-                        <a class="btn" href="/app/action/page/remove-session.php">Cancel</a>
-                    </div>
+                     
+                    <form name="web-form1" action="/app/action/page/store.php" method="POST">
+                        
+                        <?php echo $pageTableHtml ; ?>
+                        <div class="section">
+                            <button class="btn btn-primary" type="submit" name="select" value="Select">Select</button>
+                            &nbsp;
+                            <a class="btn" href="/app/action/page/remove-session.php">Cancel</a>
+                        </div>
+                    </form>
+                     
                 </div>
 
             </div>

@@ -21,8 +21,8 @@
                         <h2>Your pages</h2>
                     </div>
                     <p class="comment-text">
-                        The application could not find any pages. This also happens
-                        when your Facebook session expires. Clicking on "Sign in" should
+                        We did not find any pages. This also happens
+                        if your Facebook session has expired. Clicking on "Sign in" should
                         fix this issue.
                     </p>
                     <?php \com\indigloo\ui\form\Message::render() ?>
