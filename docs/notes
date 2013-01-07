@@ -194,7 +194,9 @@ object_id  = 468185346552237 (object_id is photo_id  => see permalink above)
 }
 
 
-object_id = you can also get from /post_id above
+stream has post_id
+comment.object_id can also be fetched via this post_id
+run the graph API /POST_ID
 /332362053467901_468185363218902
 
 {
@@ -267,18 +269,17 @@ we have long lived user tokens - with 60 Days validity
 we need to check if we can actually work with page tokens
 page tokens may never expire!
 
-+ JOB - Before fetching data - see if access token has expired
-
-
+# JOB - Before fetching data - see if access token has expired
 # Access token expiry should move when querying the next day
 
+#refreshing access token
 "Again, calling this multiple times during the same day will result only in the first call extending the expiration time." - so atleast first call on a day should work.
 
 
 Rate limits
 ------------
-
-check for rate limit errors
+# per access token?
+# check for rate limit errors
 
 sessions
 ----------
@@ -287,3 +288,51 @@ force user to login after 7 days?
 
 + Show crawling errors on dashboard
 + show crawling errors on Admin panel
+
+
+Issues
+--------
+FQL on stream table - you cannot filter using 
+updated_time > a_timestamp
+
+The facebook stream view seems geared towards sorting on created_time
+(The way facebook timeline actually works - You do not expect a lot of comments on old posts)
+
+/PAGE_ID/feed?since=ts1&until=ts2
+since and until parameters on graph API also work using created_time and not updated_time
+
+Fixes
+-------
+
+#1 Using limit + offset you can page into stream (sorted  on updated_time)
+for a particular source_id
+
+#2 Then compare the timestamp of each post till you get a timestamp <= a_timestamp
+in practice - The way a facebook wall works is that we should expect a lot of comments
+on only 1-2 posts.
+
+type=247 should work (type= photos created)
+
+select post_id, created_time ,updated_time, type  from stream where source_id = 128056117357365
+order by updated_time desc limit 3 offset 6
+ 
+
+#3 get object_id for photo
+# comments Table - use same trick to fetch all comments that have arrived after 
+a certain time.
+
+3miktest page - Bolero jacket post_id is 128056117357365_129345617228415
+photo object_id is : 129345593895084
+
+Now you can do a timestamp comparison on comments table
+
+select fromid, text, username, time from comment 
+where object_id = 129345593895084
+and time >= 1357572798
+order by time limit 25
+
+This works because comment time is created_time.
+
+
+
+
