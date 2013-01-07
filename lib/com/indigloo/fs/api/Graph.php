@@ -75,6 +75,42 @@ namespace com\indigloo\fs\api {
             return $pages ;
         }
 
+        static function getStreamPhotos($sourceId,$ts,$token) {
+
+            $photos = array();
+
+            $fql = " select post_id, updated_time ".
+                    " from stream where source_id = %s ".
+                    " and type = 247 and updated_time > %s ".
+                    " order by updated_time ASC LIMIT 10 " ;
+
+            $fql = sprintf($fql,$sourceId,$ts);
+            //fire FQL
+            $graphAPI = "https://graph.facebook.com/fql" ;
+            $params = array("q" => urlencode($fql), "access_token" => $token);
+            $graphUrl = Url::createUrl($graphAPI,$params);
+            
+            $response = @file_get_contents($graphUrl);
+            $fbObject = json_decode($response);
+            
+            $attributes = array("data");
+            if(!self::isValidResponse($graphUrl,$fbObject,$attributes)) {
+                return $photos ;
+            }
+
+            $posts = $fbObject->data ;
+             
+            foreach($posts as $post) {
+                $photo = array();
+                $photo["post_id"] = $post->post_id ;
+                $photo["updated_time"] = $post->updated_time;
+                $photos[] = $photo ;
+            }
+
+            return $photos ;
+
+        }
+
     }
 }
 

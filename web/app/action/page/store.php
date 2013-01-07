@@ -36,8 +36,8 @@
             }
 
             // store selected pages in DB
-            $accountDao = new \com\indigloo\fs\dao\Account();
-            $accountDao->addPages($loginId,$bucket);
+            $streamDao = new \com\indigloo\fs\dao\Stream();
+            $streamDao->addSources($loginId,$bucket);
         }
 
         $fwd = "/app/dashboard.php" ;

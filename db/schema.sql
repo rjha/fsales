@@ -33,7 +33,7 @@ CREATE TABLE  fs_facebook_user  (
    name  varchar(64) NOT NULL,
    first_name  varchar(32) ,
    last_name  varchar(32) ,
-   email  varchar(64) ,
+   email  varchar(64),
    ip_address varchar(46),
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -50,10 +50,25 @@ CREATE TABLE  fs_source  (
    type int default 1,
    token text,
    name varchar(64) not null,
-   last_update_ts varchar(16), 
+   last_stream_ts varchar(16), 
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (id),
   UNIQUE KEY  uniq_id  (source_id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
+
+DROP TABLE IF EXISTS  fs_stream ;
+CREATE TABLE  fs_stream  (
+   id  int NOT NULL AUTO_INCREMENT,
+   source_id  varchar(64) NOT NULL ,
+   post_id  varchar(64) NOT NULL ,
+   c_bit int default 0 ,
+   p_bit int default 0,
+   stream_ts varchar(16), 
+   post_ts varchar(16), 
+   comment_ts varchar(16), 
+   created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+   updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (id)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
