@@ -71,26 +71,7 @@ CREATE TABLE  fs_stream  (
   PRIMARY KEY (id),
   UNIQUE KEY uniq_post(post_id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
-
-
-DROP TABLE IF EXISTS  fs_stream_tracker ;
-CREATE TABLE  fs_stream_tracker  (
-   id  int NOT NULL AUTO_INCREMENT,
-   last_post_id varchar(64),
-   created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-   updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  PRIMARY KEY (id)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
-
-
--- 
--- seed fs_stream_tracker
--- 
-insert into fs_stream_tracker (last_post_id,created_on) values (1,now() - interval 1 DAY) ;
-update fs_stream_tracker set updated_on =  (now() - interval 1 DAY) ;
-
-
-
+ 
 
 DROP TABLE IF EXISTS  fs_post ;
 CREATE TABLE  fs_post  (
@@ -119,6 +100,7 @@ CREATE TABLE  fs_comment  (
   user_name varchar(64) not null,
   message varchar(256),
   dup_count int default 0,
+  created_ts varchar(16) not null,
   created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (id) ,

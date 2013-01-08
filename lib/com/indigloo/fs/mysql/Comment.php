@@ -29,9 +29,9 @@ namespace com\indigloo\fs\mysql {
                 // all ts : maxlen 16
 
                 $sql1 = " insert into fs_comment(source_id,post_id, comment_id,from_id, " .
-                        " user_name, message, created_on, updated_on ) ".
+                        " user_name, message, created_ts, created_on, updated_on ) ".
                         " values(:source_id, :post_id, :comment_id, :from_id, ".
-                        " :user_name, :message, now(), now()) " .
+                        " :user_name, :message, :created_ts, now(), now()) " .
                         " on duplicate key update dup_count = dup_count + 1 " ;
 
                  $max_ts = (int) $ts1 ;
@@ -47,6 +47,8 @@ namespace com\indigloo\fs\mysql {
                     $stmt1->bindParam(":from_id", $fbComment["from_id"]);
                     $stmt1->bindParam(":user_name", $fbComment["user_name"]);
                     $stmt1->bindParam(":message", $fbComment["message"]);
+                    $stmt1->bindParam(":created_ts", $fbComment["created_time"]);
+
 
                     $stmt1->execute();
 

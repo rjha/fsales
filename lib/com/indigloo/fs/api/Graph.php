@@ -227,7 +227,7 @@ namespace com\indigloo\fs\api {
                 $comment["comment_id"] = $fbComment->id ;
                 $comment["user_name"] = $fbComment->from->name ;
                 $comment["from_id"] = $fbComment->from->id ;
-                $comment["message"] = $fbComment->text ;
+                $comment["message"] = $fbComment->message ;
                 $comment["created_time"] = $fbComment->created_time ;
 
                 $comments[] = $comment ;

@@ -13,7 +13,7 @@
 
         //copy from graph API explorer
         // make sure you have manage_pages/publish_stream/email permissions
-        $access_token = "AAACEdEose0cBAJk7ZCBNNlZBG63yLV3JdgAUDhvxrKeJPITZCBzOdAHoZCdXtuOx50InXM0eXnImscs3C6YgQ5HLx4jU8E9oR4UOZBHjUDyO0IEMmvfHZB" ;
+        $access_token = "AAACEdEose0cBAEM7R2UZBDCARxRZB8Th7edX6mKcCQPAwSvhw0ArGTRnCCVwo5jTNUo0O5i02KwPuRZAQD1BrDpRijOuhg0cXGU3polRYu2WByqZBLNe" ;
         $facebookId = "100000110234029" ;
 
         $name = "Rajeev Jha" ;
