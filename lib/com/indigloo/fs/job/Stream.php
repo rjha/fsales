@@ -29,6 +29,8 @@ namespace com\indigloo\fs\job {
                 // get latest photos in stream using graph API
 
                 $photos = GraphAPI::getStreamPhotos($sourceId,$ts,$token);
+                //@debug
+                print_r($photos);
                 $streamDao->addPhotos($sourceId,$ts,$photos);
                 
             }

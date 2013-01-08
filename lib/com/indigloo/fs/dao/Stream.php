@@ -20,6 +20,12 @@ namespace com\indigloo\fs\dao {
         function addPhotos($sourceId,$ts,$photos) {
         	mysql\Stream::addPhotos($sourceId,$ts,$photos);
         }
+
+        function getPosts($limit) {
+            mysql\Stream::getPosts($limit);
+        }
+
+
     }
 }
 

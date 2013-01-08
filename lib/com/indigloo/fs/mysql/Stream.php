@@ -12,6 +12,23 @@ namespace com\indigloo\fs\mysql {
 
     class Stream {
         
+        static function getPosts($limit) {
+
+            //input check
+            settype($limit, "integer");
+
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            //get posts having updated_on > stream_tracker.updated_on
+            $sql = " select id, post_id, last_stream_ts, next_stream_ts, updated_on " .
+                    " from  fs_stream where updated_on > (select updated_on from fs_stream_tracker) ".
+                    " order by updated_on asc LIMIT %d" ;
+
+            $sql = sprintf($sql,$limit);
+            $rows = MySQL\Helper::fetchRows($mysqli, $sql);
+            return $rows;
+
+        }
+
         static function getSources() {
 
             $mysqli = MySQL\Connection::getInstance()->getHandle();
@@ -22,9 +39,14 @@ namespace com\indigloo\fs\mysql {
 
         static function addPhotos($sourceId,$ts,$photos) {
 
-            // add new photo_id in stream + updated_time for further
-            // monitoring
-            // after success :- update last_stream_ts for this source.
+            
+            // new photo in stream for this source
+            // Add with post.last_stream_ts = crawling_time
+            // post.next_stream_ts = max_ts in this crawl
+            // for an existing stream.post
+            // update next_stream_ts
+            // After adding all the photos in this stream
+            // update source.last_stream_ts
              
             $dbh = NULL ;
              
@@ -35,22 +57,25 @@ namespace com\indigloo\fs\mysql {
                 //Tx start
                 $dbh->beginTransaction();
                 
-                $max_ts = (int) $ts ;
+                
 
                 // @todo input check
                 // source_id : maxlen 64
                 // post_id : maxlen 64
                 // all ts : maxlen 16
 
-                $sql1 = " insert into fs_stream(source_id,post_id,c_bit,p_bit,stream_ts,post_ts, comment_ts)" ;
-                $sql1 .= " values(:source_id, :post_id, :zero, :zero, :stream_ts, :post_ts, :stream_ts )" ;
+                $sql1 = " insert into fs_stream(source_id,post_id,d_bit,last_stream_ts, ".
+                        " next_stream_ts, created_on, updated_on )".
+                        " values(:source_id, :post_id, 0, :source_ts, :post_ts, now(), now())".
+                        " ON DUPLICATE KEY update next_stream_ts = :post_ts, updated_on = now() " ;
+                
+                $max_ts = (int) $ts ;
                 
                 foreach($photos as $photo) {
                     $stmt1 = $dbh->prepare($sql1);
-                    $stmt1->bindParam(":zero", $zero);
                     $stmt1->bindParam(":source_id", $sourceId);
                     $stmt1->bindParam(":post_id", $photo["post_id"]);
-                    $stmt1->bindParam(":stream_ts", $ts);
+                    $stmt1->bindParam(":source_ts", $ts);
                     $stmt1->bindParam(":post_ts", $photo["updated_time"]);
                     $stmt1->execute();
                     

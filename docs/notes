@@ -313,8 +313,11 @@ on only 1-2 posts.
 
 type=247 should work (type= photos created)
 
-select post_id, created_time ,updated_time, type  from stream where source_id = 128056117357365
-order by updated_time desc limit 3 offset 6
+select post_id, created_time ,updated_time, type  from stream 
+where source_id = 128056117357365
+and type = 247
+order by updated_time desc 
+limit 3 offset 6
  
 
 #3 get object_id for photo
