@@ -97,13 +97,10 @@ namespace com\indigloo\fs\mysql {
                 $stmt1 = NULL ;
 
                 // update stream_ts for source
-                $sql2 = " update fs_source set last_stream_ts = :stream_ts where source_id = :source_id ";
-                $stmt2 = $dbh->prepare($sql2);
-                $stmt2->bindParam(":stream_ts", $max_ts);
-                $stmt2->bindParam(":source_id", $sourceId);
-                $stmt2->execute();
-                $stmt2 = NULL ;
-                        
+                $sql2 = " update fs_source set last_stream_ts = '%s' where source_id = '%s' ";
+                $sql2 = sprintf($sql2,$max_ts,$sourceId);
+                $dbh->exec($sql2);
+                
                 //Tx end
                 $dbh->commit();
                 $dbh = null;

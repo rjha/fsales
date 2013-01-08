@@ -8,8 +8,8 @@ namespace com\indigloo\fs\dao {
 
     class Comment {
 
-        function add($sourceId,$postId,$fbComments) {
-            mysql\Comment::add($sourceId,$postId,$fbComments);
+        function add($sourceId,$postId,$ts1,$fbComments) {
+            mysql\Comment::add($sourceId,$postId,$ts1,$fbComments);
         }
     }
 }

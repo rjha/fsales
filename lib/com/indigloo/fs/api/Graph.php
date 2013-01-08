@@ -75,7 +75,7 @@ namespace com\indigloo\fs\api {
             return $pages ;
         }
 
-        static function getStreamPhotos($sourceId,$ts,$token) {
+        static function getStreamViaFQL($sourceId,$ts,$token) {
 
             $photos = array();
 
@@ -161,7 +161,7 @@ namespace com\indigloo\fs\api {
            
         }
 
-        static function getComments($objectId,$ts1,$limit,$token) {
+        static function getCommentsViaFQL($objectId,$ts1,$limit,$token) {
             $comments = array();
 
             $fql = " select fromid, text, username, time from comment ".
@@ -192,6 +192,44 @@ namespace com\indigloo\fs\api {
                 $comment["from_id"] = $fbComment->fromid ;
                 $comment["message"] = $fbComment->text ;
                 $comment["created_time"] = $fbComment->time ;
+                $comments[] = $comment ;
+            } 
+
+            return $comments ;
+           
+        }
+
+        static function getComments($postId,$ts1,$limit,$token) {
+            $comments = array();
+
+            $graphAPI = "https://graph.facebook.com/%s/comments" ;
+            $graphAPI = sprintf($graphAPI,$postId);
+
+            $params = array("date_format" => "U",
+                            "limit" => $limit,
+                            "since" => $ts1,
+                            "access_token" => $token);
+            $graphUrl = Url::createUrl($graphAPI,$params);
+            
+            $response = @file_get_contents($graphUrl);
+            $fbObject = json_decode($response);
+            
+            $attributes = array("data");
+            if(!self::isValidResponse($graphUrl,$fbObject,$attributes)) {
+                return $comments ;
+            }
+
+            $fbComments = $fbObject->data ;
+            
+            foreach($fbComments as $fbComment) {
+                $comment = array();
+                
+                $comment["comment_id"] = $fbComment->id ;
+                $comment["user_name"] = $fbComment->from->name ;
+                $comment["from_id"] = $fbComment->from->id ;
+                $comment["message"] = $fbComment->text ;
+                $comment["created_time"] = $fbComment->created_time ;
+
                 $comments[] = $comment ;
             } 
 

@@ -37,7 +37,6 @@ namespace com\indigloo\fs\job {
 
         	// is d_bit = 0 ? 
         	if($d_bit == 0) {
-        		
         		$postDao = new Dao\Post();
         		// @todo : error handling for invalid token
         		$fbPost = GraphAPI::getPost($postId,$token);
@@ -51,20 +50,17 @@ namespace com\indigloo\fs\job {
         
         static function pull_comments($sourceId,$postId,$token) {
 
-        	// use FQL to fetch comments on object_id and ts1
-        	$postDao = new Dao\Post();
         	$streamDao = new Dao\Stream();
         	$commentDao = new Dao\Comment();
 
-        	$objectId = $postDao->getObjectId($postId);
         	$ts1 = $streamDao->getLastTS($postId);
         	
         	// pull N comments using FQL sorted by created_time
-        	$limit = 10 ;
-        	$fbComments = GraphAPI::getComments($objectId,$ts1,$limit,$token);
+        	$limit = 20 ;
+        	$fbComments = GraphAPI::getComments($postId,$ts1,$limit,$token);
         	// store source_id + post_id + comment
         	// update fs_stream.last_stream_ts = comment.time
-        	$commentDao->add($sourceId,$postId,$fbComments);
+        	$commentDao->add($sourceId,$postId,$ts1,$fbComments);
 
         }
     }

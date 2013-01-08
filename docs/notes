@@ -353,7 +353,7 @@ graph API can be used with since and until
 however I am not sure of sorting order? (most likely created_time sorting order)
 
 API call
-/128056117357365_129345047228472/comments?since=1357579361&until=1357632064&date_format=U
+/128056117357365_129345047228472/comments?since=1357579361&date_format=U
 date_format=U is needed to fetch unix timestamp.
 
 

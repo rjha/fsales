@@ -10,7 +10,7 @@ namespace com\indigloo\fs\mysql {
 
     class Comment {
 
-        static function add($sourceId,$postId,$fbComments) {
+        static function add($sourceId,$postId,$ts1,$fbComments) {
                 
             $dbh = NULL ;
              
@@ -18,7 +18,9 @@ namespace com\indigloo\fs\mysql {
 
                 $dbh =  PDOWrapper::getHandle();
 
-              
+                //Tx start
+                $dbh->beginTransaction();
+                
                 // @todo input check
                 // source_id : maxlen 64
                 // post_id : maxlen 64
@@ -26,20 +28,21 @@ namespace com\indigloo\fs\mysql {
                 // user_name : maxlen 64
                 // all ts : maxlen 16
 
-                $sql1 = " insert into fs_comment(source_id,post_id,from_id, user_name,message, ".
-                        " created_on, updated_on )".
-                        " values(:source_id, :post_id, :from_id, :user_name, :message, now(), now())" ;
+                $sql1 = " insert into fs_comment(source_id,post_id, comment_id,from_id, " .
+                        " user_name, message, created_on, updated_on ) ".
+                        " values(:source_id, :post_id, :comment_id, :from_id, ".
+                        " :user_name, :message, now(), now()) " .
+                        " on duplicate key update dup_count = dup_count + 1 " ;
 
-                $sql2 = " update fs_stream set last_stream_ts = :comment_ts where post_id = :post_id" ;
-
+                 $max_ts = (int) $ts1 ;
+               
                 foreach($fbComments as $fbComment) {
-                    //Tx start
-                    $dbh->beginTransaction();
-                
             
                     $stmt1 = $dbh->prepare($sql1);
+
                     $stmt1->bindParam(":source_id", $sourceId);
                     $stmt1->bindParam(":post_id", $postId);
+                    $stmt1->bindParam(":comment_id", $fbComment["comment_id"]);
 
                     $stmt1->bindParam(":from_id", $fbComment["from_id"]);
                     $stmt1->bindParam(":user_name", $fbComment["user_name"]);
@@ -47,18 +50,20 @@ namespace com\indigloo\fs\mysql {
 
                     $stmt1->execute();
 
-                    $stmt2 = $dbh->prepare($sql2);
-
-                    $stmt2->bindParam(":post_id", $postId);
-                    $stmt2->bindParam(":comment_ts", $fbComment["created_time"]);
-
-                    $stmt1 = NULL ;
-                    $stmt2 = NULL ;
-                    //Tx end
-                    $dbh->commit();
-
+                    $comment_ts = (int) $fbComment["created_time"];
+                    $max_ts = ($comment_ts > $max_ts) ? $comment_ts : $max_ts ;
                 }
                 
+                $stmt1 = NULL ;
+
+                $sql2 = " update fs_stream set last_stream_ts = '%s' ".
+                        " where post_id = '%s' and source_id = '%s' " ;
+                        
+                $sql2 = sprintf($sql2,$max_ts,$postId,$sourceId);
+                $dbh->exec($sql2);
+
+                //Tx end
+                $dbh->commit();
                 $dbh = null;
                 
             }catch (\PDOException $e) {

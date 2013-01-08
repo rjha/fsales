@@ -115,11 +115,14 @@ CREATE TABLE  fs_comment  (
   source_id  varchar(64) NOT NULL ,
   post_id  varchar(64) NOT NULL ,
   from_id varchar(64) not null,
+  comment_id varchar(64) not null,
   user_name varchar(64) not null,
   message varchar(256),
+  dup_count int default 0,
   created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  PRIMARY KEY (id)
+  PRIMARY KEY (id) ,
+  UNIQUE KEY uniq_comment(comment_id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 

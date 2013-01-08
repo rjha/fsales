@@ -60,13 +60,10 @@ namespace com\indigloo\fs\mysql {
                 
                 //flip fs_stream.post.d_bit to 1 
 
-                $sql2 = " update fs_stream set d_bit = 1 where post_id = :post_id " ;
-                $stmt2 = $dbh->prepare($sql2);
-                $stmt2->bindParam(":post_id", $postId);
-                $stmt2->execute();
-                $stmt2 = NULL ;
-                
-                
+                $sql2 = " update fs_stream set d_bit = 1 where post_id = '%s' " ;
+                $sql2 = sprintf($sql2,$postId);
+                $dbh->exec($sql2);
+                  
                 //Tx end
                 $dbh->commit();
                 $dbh = null;
