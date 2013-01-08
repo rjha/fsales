@@ -7,6 +7,19 @@ namespace com\indigloo\fs\mysql {
 
     class Login {
 
+        static function getValidTokenOnSource($sourceId) {
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            settype($sourceId, "integer");
+
+            $sql = " select access_token from fs_login where id = ".
+                " (select login_id from fs_source where source_id = '%s' ) ".
+                " and expire_on > (now() + interval 1 DAY ) " ;
+            $sql = sprintf($sql,$sourceId);
+
+            $row = MySQL\Helper::fetchRow($mysqli, $sql);
+            return $row;
+        }
+
         static function getValidToken($loginId) {
             // @todo - read from config file
             // a valid token should have 24 more hours to go!

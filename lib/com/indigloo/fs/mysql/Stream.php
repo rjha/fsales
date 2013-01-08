@@ -12,15 +12,26 @@ namespace com\indigloo\fs\mysql {
 
     class Stream {
         
+        static function getLastTS($postId) {
+            //@todo input check for post_id string
+            
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            // @todo : how do we limit the # of posts here?
+            $sql = " select   last_stream_ts  from  fs_stream where post_id = '%s' " ;
+            $sql = sprintf($sql,$postId);
+            $row = MySQL\Helper::fetchRow($mysqli, $sql);
+            return $row;
+        }
+        
         static function getPosts($limit) {
 
             //input check
             settype($limit, "integer");
 
             $mysqli = MySQL\Connection::getInstance()->getHandle();
-            //get posts having updated_on > stream_tracker.updated_on
+            // @todo : how do we limit the # of posts here?
             $sql = " select id, post_id, last_stream_ts, next_stream_ts, updated_on " .
-                    " from  fs_stream where updated_on > (select updated_on from fs_stream_tracker) ".
+                    " from  fs_stream  ".
                     " order by updated_on asc LIMIT %d" ;
 
             $sql = sprintf($sql,$limit);

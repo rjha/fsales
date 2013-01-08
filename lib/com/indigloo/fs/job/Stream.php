@@ -28,10 +28,8 @@ namespace com\indigloo\fs\job {
                 // show on user dashboard and admin dashboard
                 // get latest photos in stream using graph API
 
-                $photos = GraphAPI::getStreamPhotos($sourceId,$ts,$token);
-                //@debug
-                print_r($photos);
-                $streamDao->addPhotos($sourceId,$ts,$photos);
+                $fbPhotos = GraphAPI::getStreamPhotos($sourceId,$ts,$token);
+                $streamDao->addPhotos($sourceId,$ts,$fbPhotos);
                 
             }
         }

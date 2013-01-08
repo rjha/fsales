@@ -10,21 +10,26 @@ namespace com\indigloo\fs\dao {
 
         function addSources($loginId,$pages) {
             mysql\Stream::addSources($loginId,$pages);
-        }
+         }
 
         function getSources() {
-        	$rows = mysql\Stream::getSources();
-        	return $rows ;
+           $rows = mysql\Stream::getSources();
+           return $rows ;
         }
 
         function addPhotos($sourceId,$ts,$photos) {
-        	mysql\Stream::addPhotos($sourceId,$ts,$photos);
+           mysql\Stream::addPhotos($sourceId,$ts,$photos);
         }
 
         function getPosts($limit) {
             mysql\Stream::getPosts($limit);
         }
 
+        function getLastTS($postId) {
+            $row = mysql\Stream::getLastTS($postId);
+            $ts = empty($row) ? NULL : $row["last_stream_ts"];
+            return $ts ;
+        }
 
     }
 }
