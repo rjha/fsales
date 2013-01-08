@@ -26,7 +26,7 @@ namespace com\indigloo\fs\mysql {
                 // user_name : maxlen 64
                 // all ts : maxlen 16
 
-                $sql1 = " insert into fs_comment(source_id,post_id,from_id, user_name,message ".
+                $sql1 = " insert into fs_comment(source_id,post_id,from_id, user_name,message, ".
                         " created_on, updated_on )".
                         " values(:source_id, :post_id, :from_id, :user_name, :message, now(), now())" ;
 

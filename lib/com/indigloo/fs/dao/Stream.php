@@ -22,7 +22,8 @@ namespace com\indigloo\fs\dao {
         }
 
         function getPosts($limit) {
-            mysql\Stream::getPosts($limit);
+            $rows = mysql\Stream::getPosts($limit);
+            return $rows ;
         }
 
         function getLastTS($postId) {

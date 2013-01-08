@@ -30,8 +30,7 @@ namespace com\indigloo\fs\mysql {
 
             $mysqli = MySQL\Connection::getInstance()->getHandle();
             // @todo : how do we limit the # of posts here?
-            $sql = " select id, post_id, last_stream_ts, next_stream_ts, updated_on " .
-                    " from  fs_stream  ".
+            $sql = " select * from fs_stream " .
                     " order by updated_on asc LIMIT %d" ;
 
             $sql = sprintf($sql,$limit);

@@ -12,10 +12,14 @@ namespace com\indigloo\fs\mysql {
 
 
         static function getObjectId($postId) {
+            
             $mysqli = MySQL\Connection::getInstance()->getHandle();
+            
             //input check
             $postId = $mysqli->real_escape_string($postId);
+
             $sql = " select object_id from fs_post where post_id = '%s' ";
+            $sql = sprintf($sql,$postId);
 
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             return $row;
@@ -38,7 +42,7 @@ namespace com\indigloo\fs\mysql {
                 // post_id : maxlen 64
                 // all ts : maxlen 16
 
-                $sql1 = " insert into fs_post(source_id,post_id, picture,link, object_id,message ".
+                $sql1 = " insert into fs_post(source_id,post_id, picture,link, object_id,message, ".
                         " created_on, updated_on )".
                         " values(:source_id, :post_id, :picture, :link, :object_id, :message, now(), now())" ;
 
@@ -53,7 +57,16 @@ namespace com\indigloo\fs\mysql {
                 
                 $stmt1->execute();
                 $stmt1 = NULL ;
-        
+                
+                //flip fs_stream.post.d_bit to 1 
+
+                $sql2 = " update fs_stream set d_bit = 1 where post_id = :post_id " ;
+                $stmt2 = $dbh->prepare($sql2);
+                $stmt2->bindParam(":post_id", $postId);
+                $stmt2->execute();
+                $stmt2 = NULL ;
+                
+                
                 //Tx end
                 $dbh->commit();
                 $dbh = null;

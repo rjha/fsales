@@ -16,8 +16,8 @@ namespace com\indigloo\fs\job {
 
         	$streamDao = new Dao\Stream();
         	$limit = 10 ;
-
     		$posts = $streamDao->getPosts($limit);
+
     		foreach($posts as $post) {
     			self::process($post);
     		}
@@ -25,7 +25,7 @@ namespace com\indigloo\fs\job {
         }
 
         static function process($post) {
-        	
+
         	$postId = $post["post_id"];
         	$sourceId = $post["source_id"];
         	$d_bit = (int) $post["d_bit"];
@@ -52,8 +52,8 @@ namespace com\indigloo\fs\job {
         static function pull_comments($sourceId,$postId,$token) {
 
         	// use FQL to fetch comments on object_id and ts1
-        	$postDao = new Dao\post();
-        	$streamDao = new Dao\Post();
+        	$postDao = new Dao\Post();
+        	$streamDao = new Dao\Stream();
         	$commentDao = new Dao\Comment();
 
         	$objectId = $postDao->getObjectId($postId);
@@ -61,7 +61,7 @@ namespace com\indigloo\fs\job {
         	
         	// pull N comments using FQL sorted by created_time
         	$limit = 10 ;
-        	$fbComments = GraphAPI::getComments($postId,$ts1,$limit,$token);
+        	$fbComments = GraphAPI::getComments($objectId,$ts1,$limit,$token);
         	// store source_id + post_id + comment
         	// update fs_stream.last_stream_ts = comment.time
         	$commentDao->add($sourceId,$postId,$fbComments);

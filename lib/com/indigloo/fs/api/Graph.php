@@ -132,30 +132,45 @@ namespace com\indigloo\fs\api {
 
         }
 
-        static function getPagePost($sourceId,$ts,$token) {
+        static function getPost($postId,$token) {
+            
+            $post = array();
 
-            $photos = array();
+            CoreUtil::isEmpty("Access token", $token);
+            $params = array("access_token" => $token, "fields" => "picture,link,object_id,message");
+            
+            // use https when passing access tokens
+            $graphAPI = "https://graph.facebook.com/%s" ;
+            $graphAPI = sprintf($graphAPI,$postId);
 
-            // @todo check type = 247 for photos 
-            // there were photots but type was null(!!!)
-            // --------------------------------------------------------
-            // capturing stream.updated_time > a_timestamp posts
-            // ---------------------------------------------------------
-            // for FQL queries on stream, conditions like 
-            // updated_time > a_timestamp does not work. Only the created_time
-            // timestamp comparison works. This is weird but in line with how 
-            // Facebook wall/timeline works. The sorting on updated_time works though!
-            // ---------------------------------------------------------
-            // we use LIMIT and offset trick to scroll till the required timestamp
-            // on updated_time column.
-            // @todo implement pagination
-            // 
+            $graphUrl = Url::createUrl($graphAPI,$params);
+            $response = @file_get_contents($graphUrl);
+            $fbObject = json_decode($response);
+           
+             
+            if(!self::isValidResponse($graphUrl,$fbObject)) {
+                return $post ;
+            }
+            
+            $post["picture"] = $fbObject->picture ;
+            $post["link"] = $fbObject->link ;
+            $post["object_id"] = $fbObject->object_id ;
+            $post["message"] = $fbObject->message ;
 
-            $fql = " select post_id, updated_time from stream where source_id = %s ".
-                    " and type = 247 order by updated_time DESC LIMIT 25 OFFSET 0 " ;
+            return $post ;
+           
+        }
 
-            $fql = sprintf($fql,$sourceId,$ts);
+        static function getComments($objectId,$ts1,$limit,$token) {
+            $comments = array();
 
+            $fql = " select fromid, text, username, time from comment ".
+                " where object_id = %s ".
+                " and time >= %s ".
+                " order by time limit %s " ;
+
+            $fql = sprintf($fql,$objectId,$ts1,$limit);
+            
             //fire FQL
             $graphAPI = "https://graph.facebook.com/fql" ;
             $params = array("q" => urlencode($fql), "access_token" => $token);
@@ -166,27 +181,22 @@ namespace com\indigloo\fs\api {
             
             $attributes = array("data");
             if(!self::isValidResponse($graphUrl,$fbObject,$attributes)) {
-                return $photos ;
+                return $comments ;
             }
 
-            $posts = $fbObject->data ;
-            $last_stream_ts = (int) $ts ;
+            $fbComments = $fbObject->data ;
             
-            foreach($posts as $post) {
-                $photo_ts =  (int) $post->updated_time; 
-                if($photo_ts <= $last_stream_ts) {
-                    break ;
-                }
+            foreach($fbComments as $fbComment) {
+                $comment = array();
+                $comment["user_name"] = $fbComment->username ;
+                $comment["from_id"] = $fbComment->fromid ;
+                $comment["message"] = $fbComment->text ;
+                $comment["created_time"] = $fbComment->time ;
+                $comments[] = $comment ;
+            } 
 
-                $photo = array();
-                $photo["post_id"] = $post->post_id ;
-                $photo["updated_time"] = $post->updated_time;
-
-                $photos[] = $photo ;
-            }
-
-            return $photos ;
-
+            return $comments ;
+           
         }
 
 
