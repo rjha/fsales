@@ -26,6 +26,11 @@ namespace com\indigloo\fs\dao {
             return $token ;
         }
 
+        function getSources($loginId) {
+            $rows = mysql\Login::getSources($loginId);
+            return $rows ;
+        }
+
     }
 }
 

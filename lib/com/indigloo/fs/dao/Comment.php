@@ -11,6 +11,11 @@ namespace com\indigloo\fs\dao {
         function add($sourceId,$postId,$ts1,$fbComments) {
             mysql\Comment::add($sourceId,$postId,$ts1,$fbComments);
         }
+
+        function getAll($sourceId) {
+        	$rows = mysql\Comment::getAll($sourceId) ;
+        	return $rows ;
+        }
     }
 }
 

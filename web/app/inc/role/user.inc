@@ -15,6 +15,6 @@
         $fwd = '/app/browser/login.php?q='. $qUrl;
         header('location: '.$fwd);
         exit ;
-  }
+    }
 
 ?>

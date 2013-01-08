@@ -12,6 +12,8 @@
     use \com\indigloo\fs\auth\Login as Login ;
     use \com\indigloo\fs\api\Graph as GraphAPI ;
 
+    use \com\indigloo\fs\html\Application as AppHtml ;
+
     $gWeb = \com\indigloo\core\Web::getInstance();
     $qparams = Url::getRequestQueryParams();
     
@@ -22,10 +24,10 @@
     if(empty($access_token)) {
         $error = "Your session has expired. Please login again!";
         $errors = array($error);
-        $gWeb->store(Constants::FORM_ERRORS,$errors);
-        $qUrl = Url::tryBase64QueryParam("q", "/app/show-page.php");
-        $fwd = '/app/browser/login.php?q='. $qUrl;
-        header('location: '.$fwd);
+        $gWeb->store(Constants::FORM_MESSAGES,$errors);
+       
+        $fwd = "/app/browser/login.php" ;
+        header("location: ".$fwd);
         exit ;
     } 
 
@@ -33,7 +35,7 @@
     // @todo - move constants to a separate file
     // fs is fabsales.com namespace.
     $gWeb->store("fs.user.pages",$pages);
-    $pageTableHtml = \com\indigloo\fs\html\Page::getTable($pages);
+    $pageTableHtml = AppHtml::getPageTable($pages);
 
     $template = empty($pages) ? "/app/no-page.php" : "/app/page-table.php";
     $template = APP_WEB_DIR.$template ;

@@ -10,6 +10,20 @@ namespace com\indigloo\fs\mysql {
 
     class Comment {
 
+        static function getAll($sourceId) {
+            //@todo input check
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            $sql = " select p.picture, p.link, p.message, ".
+                " c.message as comment, c.from_id, c.user_name, c.created_ts ".
+                " from fs_post p, fs_comment c ".
+                " where c.source_id = '%s' ".
+                " and c.post_id = p.post_id order by created_ts desc " ;
+            
+            $sql = sprintf($sql,$sourceId);
+            $rows = MySQL\Helper::fetchRows($mysqli, $sql);
+            return $rows;
+        }
+
         static function add($sourceId,$postId,$ts1,$fbComments) {
                 
             $dbh = NULL ;

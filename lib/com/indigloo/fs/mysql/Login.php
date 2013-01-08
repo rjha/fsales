@@ -71,6 +71,17 @@ namespace com\indigloo\fs\mysql {
 
         }
 
+        static function getSources($loginId) {
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            settype($loginId, "integer");
+            
+            $sql = "select * from fs_source where login_id = %d " ;
+            $sql = sprintf($sql,$loginId);
+            
+            $rows = MySQL\Helper::fetchRows($mysqli, $sql);
+            return $rows;
+        }
+
     }
 }
 

@@ -47,7 +47,9 @@ search code folders for sc-app
 + load schema.sql into fsdb1
 
 + restart NGINX
-
++ logrotate - add an entry for fs-app.log
++ facebook appId and app_secret
++ 
 
 
 
