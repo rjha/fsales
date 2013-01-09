@@ -1,4 +1,6 @@
 
+9 Jan 2013
+-------------
 
 
 + point www.favsales.com to your server IP
@@ -10,45 +12,41 @@
     $ sudo ln -nfs ~/code/github/fsales/web /var/www/vhosts/www.favsales.com/htdocs
 
 
-+ fs-app.inc file : make sure of locations
-+ fs_configi].ini
- - check values
- - remove unwanted stuff
- @todo session lifetime/backend - 86400 - for 1 DAY
- 7 Days - 604800 seconds
- @todo change facebook appId and appSecret
-
 + copy fs-app.inc and fs_config.ini to /var/www/apps folder 
 
 $ sudo cp ~/code/github/fsales/conf/fs-app.inc /var/www/apps/.
 $ sudo cp ~/code/github/fsales/conf/fs_config.ini /var/www/apps/.
 
++ fs-app.inc file : make sure of locations
++ fs_configi].ini
+ - check values
+ - remove unwanted stuff
+
+ + session lifetime/backend - 
+ 	86400 - for 1 DAY
+ 	7 Days - 604800 seconds
+
++ change facebook appId and appSecret
 
 + create web/compiled folder : change ownership of this folder to www-data
 $ mkdir compiled
 $ sudo chown -R www-data:www-data compiled/
 
 + copy gitignore file into git repo ROOT
- 
-.gitignore
-web/compiled
+ .gitignore
 
-+ make sure app uses :- correct fs-app.inc everywhere
-+ Do not build new css/js upfront - try to use what is already on rackspace CDN
-+ DB name is fsdb1
 
-search /var/www/apps for mik
- @todo - sendgrid stuff is still 3mik.com
-search code folders for mik
-search code folders for sc-app
-   
-
++ @todo - remove 3mik addresses for sendgrid stuff in config  
 + create database fsdb1
 + load schema.sql into fsdb1
 
+
 + restart NGINX
+ - NGINX 502 : Because PHP script may have been failing
+ - DB needs user access on 10.178.225.240 IP as well
+ - make sure mysql user password is correct
+ 
 + logrotate - add an entry for fs-app.log
-+ facebook appId and app_secret
 + Install cron script to pull comments (every 7 mins)
 
 
