@@ -8,8 +8,8 @@ namespace com\indigloo\fs\dao {
 
     class Source {
 
-        function getOnLogin($loginId) {
-            $rows = mysql\Source::getOnLogin($loginId);
+        function getAll($loginId) {
+            $rows = mysql\Source::getAll($loginId);
             return $rows ;
         }
 
@@ -18,6 +18,16 @@ namespace com\indigloo\fs\dao {
             return $row ;
         }
 
+        function getDefault($loginId) {
+            $row = mysql\Source::getDefault($loginId);
+            $sourceId = NULL:
+            $sourceId = empty($row) ? NULL : $row["source_id"];
+            return $sourceId ;
+        }
+
+        function makeDefault($loginId,$sourceId) {
+            mysql\Source::makeDefault($loginId,$sourceId) ;
+        }
 
     }
 }

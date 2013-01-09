@@ -12,10 +12,26 @@ namespace com\indigloo\fs\dao {
             mysql\Comment::add($sourceId,$postId,$ts1,$fbComments);
         }
 
-        function getAll($sourceId) {
-        	$rows = mysql\Comment::getAll($sourceId) ;
-        	return $rows ;
+        function getPaged($sourceId,$paginator) {
+            $limit = $paginator->getPageSize();
+            
+            if($paginator->isHome()){
+                return $this->getLatest($sourceId,$limit);
+            } else {
+                $params = $paginator->getDBParams();
+                $start = $params["start"];
+                $direction = $params["direction"];
+                $rows = mysql\Comment::getPaged($sourceId,$start,$direction,$limit);
+                return $rows ;
+            }
+
         }
+
+        function getLatest($sourceId,$limit) {
+            $rows = mysql\Comment::getLatest($sourceId,$limit);
+            return $rows ;
+        }
+
     }
 }
 

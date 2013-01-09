@@ -28,7 +28,7 @@
 <html>
 
     <head>
-        <title> Sign In page</title>
+        <title> Sign In</title>
         <?php include(APP_WEB_DIR . '/app/inc/meta.inc'); ?>
         <?php echo \com\indigloo\fs\util\Asset::version("/css/bundle.css"); ?>
 
@@ -43,8 +43,13 @@
         	<div class="row">
         		<div class="span8 offset1">
                     <?php FormMessage::render() ?>
-        			<h3> Sign in</h3>
+                    <div class="page-header">
+        			   <h3> Sign in</h3>
+                    </div>
                     <div class="p10"> <?php FormMessage::render(); ?> </div>
+                     <p class="lead">
+                        Sign in using your facebook account now!
+                    </p>
         			<a href="<?php echo $fbDialogUrl; ?>" class="btn btn-large btn-success"> Sign in</a>
         		</div>
         	</div>

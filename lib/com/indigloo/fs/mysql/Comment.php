@@ -10,17 +10,58 @@ namespace com\indigloo\fs\mysql {
 
     class Comment {
 
-        static function getAll($sourceId) {
-            //@todo input check
+        static function getLatest($sourceId,$limit) {
+
             $mysqli = MySQL\Connection::getInstance()->getHandle();
+            $sourceId = $mysqli->real_escape_string($sourceId);
+            settype($limit, "integer");
+
             $sql = " select p.picture, p.link, p.message, ".
                 " c.message as comment, c.from_id, c.user_name, c.created_ts ".
                 " from fs_post p, fs_comment c ".
                 " where c.source_id = '%s' ".
-                " and c.post_id = p.post_id order by created_ts desc " ;
+                " and c.post_id = p.post_id order by created_ts desc limit %d " ;
             
-            $sql = sprintf($sql,$sourceId);
+            $sql = sprintf($sql,$sourceId,$limit);
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
+            return $rows;
+        }
+
+        static function getPaged($sourceId,$start,$direction,$limit) {
+
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            //sanitize input
+            settype($limit, "integer");
+            settype($start,"integer");
+
+            $sourceId = $mysqli->real_escape_string($sourceId);
+            $direction = $mysqli->real_escape_string($direction);
+
+             $sql = 
+                " select p.picture, p.link, p.message, ".
+                " c.message as comment, c.from_id, c.user_name, c.created_ts ".
+                " from fs_post p, fs_comment c ".
+                " where c.source_id = '%s' ".
+                " and c.post_id = p.post_id  " ;
+
+            $sql = sprintf($sql,$sourceId);
+            $q = new MySQL\Query($mysqli);
+            $q->setPrefixAnd();
+            $sql .= $q->getPagination($start,$direction,"c.created_ts",$limit);
+
+            //@debug 
+            // echo $sql; exit ;
+
+            $rows = MySQL\Helper::fetchRows($mysqli, $sql);
+
+
+            //reverse rows for 'before' direction
+            if($direction == 'before') {
+                $results = array_reverse($rows) ;
+                return $results ;
+            }
+
             return $rows;
         }
 

@@ -44,6 +44,7 @@ namespace com\indigloo\fs\html {
             $view->picture = $row["picture"] ;
             $view->link = $row["link"];
             $view->message = $row["message"];
+            $view->time = $row["created_ts"];
 
             $view->userName = $row["user_name"];
             $view->comment = $row["comment"];
@@ -52,7 +53,16 @@ namespace com\indigloo\fs\html {
             $html = Template::render($template,$view);
             return $html ;
         }
-
+        /*
+        select p.picture, p.link, p.message, 
+        c.message as comment, c.from_id, c.user_name, c.created_ts 
+        from fs_post p, fs_comment c 
+        where c.source_id = '%s' 
+        and c.post_id = p.post_id 
+        and c.created_ts < 1357632064 
+        order by c.created_ts DESC LIMIT 3
+        */
+    
     }
 }
 

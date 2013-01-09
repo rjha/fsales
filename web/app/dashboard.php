@@ -18,28 +18,39 @@
     $qparams = Url::getRequestQueryParams();
     $loginId = Login::getLoginIdInSession();
 
-    // get access token
-    // get comments for a source_id
     $sourceDao = new \com\indigloo\fs\dao\Source();
-    $sources = $sourceDao->getOnLogin($loginId);
-    $default_source_id = NULL ;
-
-    if(!empty($sources)) {
-        $default_source_id = $sources[0]["source_id"];
-    }
-
-    // sources html - no sources message
-    // or render a choice of sources
-    
+    $sources = $sourceDao->getAll($loginId);
+    $default_source_id = $sourceDao->getDefault($loginId) ;
+ 
     $sourceId = (isset($qparams["source_id"])) ? $qparams["source_id"] : $default_source_id;
      
     $sourceHtml = "" ;
     $commentHtml = "" ;
 
+    //pagination variables
+    $startId = NULL;
+    $endId = NULL;
+    $gNumRecords = 0 ;
+    $pageBaseURI ="/app/dashboard.php" ;
+
     if(!empty($sourceId)) {
         $sourceRow = $sourceDao->getOnId($sourceId);
+
+        //pagination
+        $pageSize = 10 ;
+        $paginator = new \com\indigloo\ui\Pagination($qparams,$pageSize);
+        $paginator->setBaseConvert(false);
+
         $commentDao = new \com\indigloo\fs\dao\Comment();
-        $commentRows = $commentDao->getAll($sourceId);
+        $commentRows = $commentDao->getPaged($sourceId,$paginator);
+
+        //fix pagination variables
+        $gNumRecords = sizeof($commentRows) ;
+        if ($gNumRecords > 0) {
+            $startId = $commentRows[0]["created_ts"];
+            $endId = $commentRows[$gNumRecords - 1]["created_ts"];
+        }
+
         $sourceHtml = AppHtml::getSource($sourceRow,$sources);
         foreach($commentRows as $commentRow) {
             $commentHtml .= AppHtml::getComment($commentRow);
@@ -84,11 +95,11 @@
             </div>
 
             
-        </div>        
-
+        </div>
         
+        <?php $paginator->render($pageBaseURI,$startId,$endId,$gNumRecords);  ?>
+         
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"> </script>
-
         <script type="text/javascript">
             
             $(document).ready(function(){

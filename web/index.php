@@ -46,12 +46,15 @@
             <div class="row">
                 <div class="span8 offset1">
                      
-                    <h2> Home page </h2>
-                    <p>
-                        Home page content
+                    <div style="padding-top:100px;">
+                        &nbsp;
+                    </div>
+                    
+                    <p class="lead">
+                        To get started, sign up using your facebook account now!
                     </p>
                     <div class="p20">
-                        <a href="<?php echo $fbDialogUrl; ?>" class="btn-adbox">Sign up</a>
+                        <a href="<?php echo $fbDialogUrl; ?>" class="btn btn-large btn-success">Sign up</a>
                     </div>
                 </div>
 

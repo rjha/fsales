@@ -49,7 +49,9 @@ search code folders for sc-app
 + restart NGINX
 + logrotate - add an entry for fs-app.log
 + facebook appId and app_secret
-+ 
++ Install cron script to pull comments (every 7 mins)
+
+
 
 
 
