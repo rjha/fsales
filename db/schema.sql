@@ -50,7 +50,7 @@ CREATE TABLE  fs_source  (
    type int default 1,
    token text,
    name varchar(64) not null,
-   last_stream_ts varchar(16), 
+   last_stream_ts int, 
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (id),
@@ -63,8 +63,8 @@ CREATE TABLE  fs_stream  (
    id  int NOT NULL AUTO_INCREMENT,
    source_id  varchar(64) NOT NULL ,
    post_id  varchar(64) NOT NULL ,
-   last_stream_ts varchar(16), 
-   next_stream_ts varchar(16),
+   last_stream_ts int, 
+   next_stream_ts int,
    d_bit int default 0 ,
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -100,7 +100,7 @@ CREATE TABLE  fs_comment  (
   user_name varchar(64) not null,
   message varchar(256),
   dup_count int default 0,
-  created_ts varchar(16) not null,
+  created_ts int not null,
   created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (id) ,
@@ -110,4 +110,4 @@ CREATE TABLE  fs_comment  (
 
 
 
-  
+update fs_source set last_stream_ts = unix_timestamp(now() - interval 3 day);

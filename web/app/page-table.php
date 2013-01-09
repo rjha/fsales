@@ -3,7 +3,7 @@
 <html>
 
     <head>
-        <title> User pages</title>
+        <title> User Facebook pages</title>
         <?php include(APP_WEB_DIR . '/app/inc/meta.inc'); ?>
         <?php echo \com\indigloo\fs\util\Asset::version("/css/bundle.css"); ?>
 
@@ -18,11 +18,11 @@
             <div class="row">
                 <div class="span8 offset1">
                     <div class="page-header">
-                        <h2>Your pages</h2>
+                        <h3>Select pages</h3>
                     </div>
                     <p class="comment-text">
-                        We found the pages listed below.
-                        Please select the pages you want to monitor.
+                        We found the following facebook pages.
+                        &nbsp;Please select the ones you want to monitor.
                     </p>
                     <?php \com\indigloo\ui\form\Message::render() ?>
                      
@@ -30,7 +30,7 @@
                         
                         <?php echo $pageTableHtml ; ?>
                         <div class="section">
-                            <button class="btn btn-primary" type="submit" name="select" value="Select">Select</button>
+                            <button class="btn btn-success" type="submit" name="select" value="Select">Select</button>
                             &nbsp;
                             <a class="btn" href="/app/action/page/remove-session.php">Cancel</a>
                         </div>

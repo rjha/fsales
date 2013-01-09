@@ -16,7 +16,7 @@
 
     $gWeb = \com\indigloo\core\Web::getInstance();
     $qparams = Url::getRequestQueryParams();
-    $loginId = Login::tryLoginIdInSession();
+    $loginId = Login::getLoginIdInSession();
 
     // get access token
     // get comments for a source_id
@@ -32,7 +32,7 @@
     // or render a choice of sources
     
     $sourceId = (isset($qparams["source_id"])) ? $qparams["source_id"] : $default_source_id;
-
+     
     $sourceHtml = "" ;
     $commentHtml = "" ;
 
@@ -57,7 +57,7 @@
 <html>
 
     <head>
-        <title> User Dashboard page</title>
+        <title> User Dashboard</title>
         <?php include(APP_WEB_DIR . '/app/inc/meta.inc'); ?>
         <?php echo \com\indigloo\fs\util\Asset::version("/css/bundle.css"); ?>
 
@@ -72,9 +72,10 @@
             <div class="row">
                 <div class="span8 offset1">
                     <div class="page-header">
-                        <h2> Dashboard </h2>
+                        <h3> Dashboard </h3>
+                        <?php echo $sourceHtml; ?>
                     </div>
-                    <?php echo $sourceHtml; ?>
+                   
                     <?php echo $commentHtml; ?>
                     
                     
@@ -84,6 +85,36 @@
 
             
         </div>        
+
+        
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"> </script>
+
+        <script type="text/javascript">
+            
+            $(document).ready(function(){
+                $("a.open-panel").click(function(event) {
+
+                    var divId = '#' + $(this).attr("rel");
+                    //hide any open panels
+                    $('.panel').hide();
+                    //hide page message
+                    $("#page-message").html('');
+                    $("#page-message").hide();
+                    // show target panel
+                    $(divId).show("slow");
+                });
+
+                $("a.close-panel").click(function(event) {
+                    var divId = '#' + $(this).attr("rel");
+                    $(divId).hide("slow");
+                    //hide page message as well
+                    $("#page-message").html('');
+                    $("#page-message").hide();
+                });
+              
+            });
+        </script>
+
 
         <?php include(APP_WEB_DIR . '/app/inc/footer.inc'); ?>
 

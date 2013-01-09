@@ -1,0 +1,40 @@
+
+<div class="wrapper">
+	<span class="faded-text b">~~$view->selectedRow['name']~</span>
+	<a class="open-panel" rel="all-sources" href="#">change</a>
+	&nbsp;|&nbsp;
+	<a class="open-panel" rel="default-source" href="#">make default</a>
+	                                         
+</div>
+
+<div id="page-message" class="hide-me"> </div>
+
+<div id="all-sources" class="panel panel-form">
+	<ul>
+		~foreach($view->allRows as $row){~
+		<li> <a href="/app/dashboard.php?source_id=~~$row['source_id']~">~~$row['name']~</a></li>
+		~}~
+	</ul>
+
+<div class="pt10">
+	<a class="btn btn-small close-panel" rel="all-sources">Cancel</a>
+</div>
+
+</div>
+
+
+<div id="default-source" class="panel panel-form">
+       
+     <form  id="form1"  name="form1" action="/app/action/page/make-default.php"  method="POST">
+        <p class="faded-text">
+            Are you sure you want to make this page as default for Dashboard? 
+        </p>
+        <button type="submit" class="btn btn-small btn-success" name="yes" value="Yes">
+            <span>Yes</span>
+        </button>
+        &nbsp;
+        <a class="btn btn-small close-panel" rel="default-source">Cancel</a>
+        <input type="hidden" name="source_id" value="~~$view->selectedRow['source_id']~"/>
+    </form> <!-- form:1 -->
+</div>
+

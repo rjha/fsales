@@ -16,12 +16,23 @@ namespace com\indigloo\fs\html {
             return $html ;
         }
 
-        static function getSource($selected, $all) {
+        static function getSource($selectedRow, $allRows) {
+            $html = NULL ;
+            $template = "/app/fragments/source.tmpl" ;
+            $view = new \stdClass;
+            $view->allRows = $allRows ;
+            $view->selectedRow = $selectedRow;
 
+            $html = Template::render($template,$view);
+            return $html ;
         }
 
         static function getNoSource() {
-
+            $html = NULL ;
+            $template = "/app/fragments/no-source.tmpl" ;
+            $view = new \stdClass;
+            $html = Template::render($template,$view);
+            return $html ;
         }
 
         static function getComment($row) {

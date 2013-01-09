@@ -43,9 +43,9 @@
         	<div class="row">
         		<div class="span8 offset1">
                     <?php FormMessage::render() ?>
-        			<h2> Browser Sign in page </h2>
+        			<h3> Sign in</h3>
                     <div class="p10"> <?php FormMessage::render(); ?> </div>
-        			<a href="<?php echo $fbDialogUrl; ?>" class="btn-adbox"> Sign in</a>
+        			<a href="<?php echo $fbDialogUrl; ?>" class="btn btn-large btn-success"> Sign in</a>
         		</div>
         	</div>
         </div>

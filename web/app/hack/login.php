@@ -11,39 +11,50 @@
 
     try{
 
-        //copy from graph API explorer
-        // make sure you have manage_pages/publish_stream/email permissions
-        $access_token = "AAACEdEose0cBAMKFlZAqii3AnMrV7XlYlC4MGly487tSu2xJsrpZAEDz0b6tyea7vxiNYlMm1UF0E8vFhHlNxicAz5vDZAthqljYAOTGXnBGheBAGAI" ;
-        $facebookId = "100000110234029" ;
+        $access_token = NULL ;
+        if(array_key_exists("token", $_POST)) {
+            $access_token = $_POST["token"] ;
+        }
 
-        $name = "Rajeev Jha" ;
-        $firstName = "Rajeev" ;
-        $lastName = "Jha" ;
-        $email ="jha.rajeev@gmail.com" ;
-        // although we get 1 HR token from graph API explorer
-        // we need to ensure that expiry > 1 DAY
-        // otherwise our code goes nuts!
-        $expires = 2*24*3600 ;
-        
-        $facebookDao = new \com\indigloo\fs\dao\Facebook();
-        $data = $facebookDao->getOrCreate($facebookId,
-            $name,
-            $firstName,
-            $lastName,
-            $email,
-            $access_token,
-            $expires);
+        if(!empty($access_token)) {
+            //copy from graph API explorer
+            // make sure you have manage_pages/publish_stream/email permissions
+            
+            $facebookId = "100000110234029" ;
 
-        $loginId = $data["loginId"];
-        $signup = $data["signup"];
-        
-        // success - update login record
-        // start a session
-        $remoteIp = \com\indigloo\Url::getRemoteIp();
-        mysql\Login::updateTokenIp(session_id(),$loginId,$access_token,$expires,$remoteIp);
-        $code = Login::startOAuth2Session($loginId,$name);
+            $name = "Rajeev Jha" ;
+            $firstName = "Rajeev" ;
+            $lastName = "Jha" ;
+            $email ="jha.rajeev@gmail.com" ;
+            // although we get 1 HR token from graph API explorer
+            // we need to ensure that expiry > 1 DAY
+            // otherwise our code goes nuts!
+            $expires = 2*24*3600 ;
+            
+            $facebookDao = new \com\indigloo\fs\dao\Facebook();
+            $data = $facebookDao->getOrCreate($facebookId,
+                $name,
+                $firstName,
+                $lastName,
+                $email,
+                $access_token,
+                $expires);
 
-        $message = "login success";
+            $loginId = $data["loginId"];
+            $signup = $data["signup"];
+            
+            // success - update login record
+            // start a session
+            $remoteIp = \com\indigloo\Url::getRemoteIp();
+            mysql\Login::updateTokenIp(session_id(),$loginId,$access_token,$expires,$remoteIp);
+            $code = Login::startOAuth2Session($loginId,$name);
+
+            $message = sprintf("login success with token : %s ", $access_token);
+
+        } else {
+            $message = "No token : enter a token please!" ;
+        }
+
         
     }catch(\Exception $ex) {
         
@@ -77,6 +88,11 @@
                         <h2>Login Hack</h2>
                     </div>
                     <p class="comment-text"> <?php echo $message; ?> </p>
+                    <form action="/app/hack/login.php" method="POST">
+                        Token : <input type="text" name ="token" value="" style="width:600px;"/>
+                        <button class="btn" type="submit" name="submit" value="submit"> Submit</button>
+                    </form>
+                    
                 </div>
             </div>
         </div>

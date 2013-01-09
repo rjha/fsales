@@ -3,7 +3,7 @@
 <html>
 
     <head>
-        <title> User pages</title>
+        <title> User Facebook pages</title>
         <?php include(APP_WEB_DIR . '/app/inc/meta.inc'); ?>
         <?php echo \com\indigloo\fs\util\Asset::version("/css/bundle.css"); ?>
 
@@ -18,18 +18,21 @@
             <div class="row">
                 <div class="span8 offset1">
                     <div class="page-header">
-                        <h2>Your pages</h2>
+                        <h3>No pages found</h3>
                     </div>
-                    <p class="comment-text">
-                        We did not find any pages. This also happens
-                        if your Facebook session has expired. Clicking on "Sign in" should
-                        fix this issue.
-                    </p>
+
                     <?php \com\indigloo\ui\form\Message::render() ?>
+
+                    <p class="lead">
+                        We did not find any facebook pages for your account. This also happens
+                        if your facebook session has expired. Clicking on <b>Sign in</b> should
+                        fix the session issue.
+                    </p>
+                    
 
                     <?php echo $pageHtml ; ?>
                     <div class="section">
-                        <a class="btn btn-primary" href="/app/browser/login.php">Sign in</a>
+                        <a class="btn btn-success btn-large" href="/app/browser/login.php">Sign in</a>
                         
                     </div>
                 </div>
