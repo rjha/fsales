@@ -20,8 +20,7 @@ namespace com\indigloo\fs\dao {
 
         function getDefault($loginId) {
             $row = mysql\Source::getDefault($loginId);
-            $sourceId = NULL:
-            $sourceId = empty($row) ? NULL : $row["source_id"];
+            $sourceId = (empty($row) ) ? NULL : $row["source_id"];
             return $sourceId ;
         }
 

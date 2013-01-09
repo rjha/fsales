@@ -35,6 +35,14 @@ namespace com\indigloo\fs\html {
             return $html ;
         }
 
+        static function getNoComment() {
+            $html = NULL ;
+            $template = "/app/fragments/no-comment.tmpl" ;
+            $view = new \stdClass;
+            $html = Template::render($template,$view);
+            return $html ;
+        }
+
         static function getComment($row) {
             if(empty($row)) { return ""; }
             $html = NULL ;

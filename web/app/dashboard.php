@@ -21,26 +21,30 @@
     $sourceDao = new \com\indigloo\fs\dao\Source();
     $sources = $sourceDao->getAll($loginId);
     $default_source_id = $sourceDao->getDefault($loginId) ;
- 
     $sourceId = (isset($qparams["source_id"])) ? $qparams["source_id"] : $default_source_id;
      
+    //nothing in query and default not set.
+    if(!empty($sources) && empty($sourceId)) {
+        $sourceId = $sources[0]["source_id"];
+    }
+
     $sourceHtml = "" ;
     $commentHtml = "" ;
 
     //pagination variables
+   
+    $pageSize = 10 ;
+    $paginator = new \com\indigloo\ui\Pagination($qparams,$pageSize);
+    $paginator->setBaseConvert(false);
+
     $startId = NULL;
     $endId = NULL;
     $gNumRecords = 0 ;
     $pageBaseURI ="/app/dashboard.php" ;
-
+    
+     
     if(!empty($sourceId)) {
         $sourceRow = $sourceDao->getOnId($sourceId);
-
-        //pagination
-        $pageSize = 10 ;
-        $paginator = new \com\indigloo\ui\Pagination($qparams,$pageSize);
-        $paginator->setBaseConvert(false);
-
         $commentDao = new \com\indigloo\fs\dao\Comment();
         $commentRows = $commentDao->getPaged($sourceId,$paginator);
 
@@ -55,6 +59,11 @@
         foreach($commentRows as $commentRow) {
             $commentHtml .= AppHtml::getComment($commentRow);
         }
+
+        if(empty($commentRows)) {
+            $commentHtml =  AppHtml::getNoComment();
+        }
+
 
     }else {
         // no source message 
@@ -86,7 +95,8 @@
                         <h3> Dashboard </h3>
                         <?php echo $sourceHtml; ?>
                     </div>
-                   
+                    
+                    <?php FormMessage::render() ?>
                     <?php echo $commentHtml; ?>
                     
                     

@@ -41,7 +41,7 @@
 
         $message = "Error: could not assign default page." ;
         $gWeb->store(Constants::FORM_ERRORS, array($message)) ;
-        $fwd = "/app/router.php?q=". base64_encode("/app/dashboard.php");
+        $fwd = "/app/dashboard.php";
         header("location: ".$fwd);
         exit(1);
     }

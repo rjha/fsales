@@ -51,6 +51,7 @@ CREATE TABLE  fs_source  (
    token text,
    name varchar(64) not null,
    last_stream_ts int, 
+   is_default int default 0,
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (id),

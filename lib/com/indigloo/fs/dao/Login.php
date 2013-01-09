@@ -22,7 +22,7 @@ namespace com\indigloo\fs\dao {
         
         function getValidTokenOnSource($sourceId) {
             $row = mysql\Login::getValidTokenOnSource($sourceId);
-            $token = empty($row) ? NULL : $row["access_token"];
+            $token = (empty($row)) ? NULL : $row["access_token"];
             return $token ;
         }
 
