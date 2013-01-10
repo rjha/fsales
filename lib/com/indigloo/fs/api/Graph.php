@@ -61,7 +61,6 @@ namespace com\indigloo\fs\api {
             	return $pages ;
             }
            	
-        
             $accounts = $fbObject->data ;
             foreach($accounts as $account) {
             	$page = array();

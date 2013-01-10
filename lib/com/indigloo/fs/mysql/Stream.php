@@ -126,14 +126,18 @@ namespace com\indigloo\fs\mysql {
              try {
 
                 $dbh =  PDOWrapper::getHandle();
-                //Tx start
+                //Tx1:start
                 $dbh->beginTransaction();
 
                 $sql1 = " delete from fs_source where login_id  = :login_id " ;
                 $stmt1 = $dbh->prepare($sql1);
                 $stmt1->bindParam(":login_id", $loginId);
                 $stmt1->execute();
-                $stmt1 = NULL ;
+                
+                 //Tx1:end
+                $dbh->commit();
+                //Tx2:start
+                $dbh->beginTransaction();
 
                 foreach($pages as $page) {
                     //@todo check : source_id : maxlength :64
@@ -149,11 +153,12 @@ namespace com\indigloo\fs\mysql {
                     $stmt2->execute();
                 }
 
-                $stmt2 = NULL ;
-                
-                //Tx end
+                 
+                //Tx2:end
                 $dbh->commit();
                 $dbh = null;
+                $stmt1 = NULL ;
+                $stmt2 = NULL ;
                 
             }catch (\PDOException $e) {
                 $dbh->rollBack();

@@ -37,8 +37,6 @@
         throw new UIException(array($message)) ;
     }
 
-
-
 ?>
 
 <!DOCTYPE html>
@@ -60,6 +58,11 @@
         
         <div class="container mh600">
             <?php include(APP_WEB_DIR . '/app/inc/top-unit.inc'); ?>
+            
+            <div class="row">
+                <div class="span8 offset1"> <?php FormMessage::render() ?> </div>
+            </div>
+
             <div class="row">
                 <div class="span8 offset1">
 
@@ -68,10 +71,8 @@
                     </div>
 
                     <?php echo $commentHtml; ?>
-                    <?php FormMessage::render() ?>
-
                     <div class="form-wrapper">
-                       
+                        
                         <div id="form-message"> </div>
                         <form  id="form1"  name="form1" action="/app/action/invoice/new.php"  method="POST">
                           
@@ -95,7 +96,6 @@
                                         
                                         <span>Price *</span>
                                         <input type="text"  name="price" maxlength="64" value="<?php echo $sticky->get('price'); ?>" style="width:90px;" />
-
                                         
                                     </td>
                                 </tr>
@@ -120,7 +120,7 @@
 
                             </table> 
                             
-                            <input type="hidden" name="comment_id" value="<?php echo $commentRow['comment_id']; ?>" />
+                            <input type="hidden" name="comment_id" value="<?php echo $commentRow['comment_id']; ?>" /> 
                             <input type="hidden" name="qUrl" value="<?php echo $qUrl; ?>" />
                             <input type="hidden" name="fUrl" value="<?php echo $fUrl; ?>" />
 

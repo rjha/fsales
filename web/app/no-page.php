@@ -29,8 +29,6 @@
                         fix the session issue.
                     </p>
                     
-
-                    <?php echo $pageHtml ; ?>
                     <div class="section">
                         <a class="btn btn-success btn-large" href="/app/browser/login.php">Sign in</a>
                         
