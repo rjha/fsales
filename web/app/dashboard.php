@@ -79,7 +79,7 @@
     <head>
         <title> User Dashboard</title>
         <?php include(APP_WEB_DIR . '/app/inc/meta.inc'); ?>
-        <?php echo \com\indigloo\fs\util\Asset::version("/css/bundle.css"); ?>
+        <?php echo \com\indigloo\fs\util\Asset::version("/css/fs-bundle.css"); ?>
 
 
     </head>
@@ -109,7 +109,7 @@
         
         <?php $paginator->render($pageBaseURI,$startId,$endId,$gNumRecords);  ?>
          
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"> </script>
+        <?php echo \com\indigloo\fs\util\Asset::version("/js/fs-bundle.js"); ?>
         <script type="text/javascript">
             
             $(document).ready(function(){

@@ -14,66 +14,17 @@ namespace com\indigloo\fs\util{
      */
     class Asset {
 
-        private static function getTimeStampName($path) {
-            
-            $fname = $path ;
-            $parts = \pathinfo($path);
-            //supplied path is relative to APP_WEB_DIR
-            $fullpath = APP_WEB_DIR.$path ;
-            $ts = 1 ;
-            $slash = "/" ;
-            $dot = "." ;
-
-            if(\file_exists($fullpath)) {
-                $ts = \filemtime($fullpath);
-                $ts = "t".$ts ;
-                \settype($ts,"string");
-                // 10 digit unix timestamp cover from
-                // 09 sept. 2001 - 20 Nov. 2286
-                // $perl -MPOSIX -le 'print ctime(1000000000)' 
-
-                $length = \strlen($ts);
-                if($length != 11 ) {
-                    $message = "Asset versioning timestamp is out of range" ;
-                    throw new \Exception($message);
-                }
-
-                $fname = $parts["dirname"].$slash.$parts["filename"].$dot.$ts.$dot.$parts["extension"];
-            }
-
-            return $fname ;
-        }
-
-        private static function getCdnName($path) {
-            $version = Config::getInstance()->get_value("asset.cdn.version");
-            if(empty($version)) {
-                $message = "config is missing key asset.cdn.version" ;
-                throw new \Exception($message);
-            }
-
-            $parts = \pathinfo($path);
-            // no directory hierarchy for cdn files
-            // @todo cdn assets are served from cdn1.3mik.com
-            // @todo if 3mik.com is nuked then we will have an impact here
-            $fname = \sprintf("http://cdn1.3mik.com/%s-v%s.%s",$parts["filename"],$version,$parts["extension"]);
+        private static function getMinified($path) {
+            $parts = pathinfo($path);
+            //dir/file.min.extension 
+            $template = "%s/%s.min.%s" ;
+            $fname = sprintf($template,$parts["dirname"],$parts["filename"],$parts["extension"]);
             return $fname ;
         }
 
         static function version($path) {
             $link = '' ;
-            $fname = $path ;
-
-            // let the error bubble up
-            // it is better to die than serve wrong file!
-            $scheme = Config::getInstance()->get_value("asset.version.scheme","timestamp");
-
-            if(\strcasecmp($scheme, "timestamp") == 0 ) {
-                $fname = self::getTimeStampName($path);
-            }
-
-            if(\strcasecmp($scheme, "cdn") == 0 ) {
-                $fname = self::getCdnName($path);
-            }
+            $fname = self::getMinified($path) ;
             
             $parts = \pathinfo($path);
             if(\strcasecmp($parts["extension"],"css") == 0 ) {
@@ -86,7 +37,7 @@ namespace com\indigloo\fs\util{
                 $link = \str_replace("{fname}",$fname,$tmpl);
             }
 
-            //return css or js link
+            
             return $link ;
         }
 

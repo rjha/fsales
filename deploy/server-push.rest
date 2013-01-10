@@ -1,7 +1,9 @@
 
+
+
+
 9 Jan 2013
 -------------
-
 
 + point www.favsales.com to your server IP
 + create a new Nginx vhost 
@@ -18,7 +20,7 @@ $ sudo cp ~/code/github/fsales/conf/fs-app.inc /var/www/apps/.
 $ sudo cp ~/code/github/fsales/conf/fs_config.ini /var/www/apps/.
 
 + fs-app.inc file : make sure of locations
-+ fs_configi].ini
++ fs_configi.ini
  - check values
  - remove unwanted stuff
 
@@ -45,9 +47,9 @@ $ sudo chown -R www-data:www-data compiled/
  - NGINX 502 : Because PHP script may have been failing
  - DB needs user access on 10.178.225.240 IP as well
  - make sure mysql user password is correct
- 
+
 + logrotate - add an entry for fs-app.log
-+ Install cron script to pull comments (every 7 mins)
++ Install cron script to pull comments (every 11 mins)
 
 
 

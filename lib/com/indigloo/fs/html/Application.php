@@ -46,14 +46,17 @@ namespace com\indigloo\fs\html {
         static function getComment($row) {
             if(empty($row)) { return ""; }
             $html = NULL ;
+
             $template = "/app/fragments/comment.tmpl" ;
             $view = new \stdClass;
             
+            $view->commentId = $row["comment_id"];
             $view->picture = $row["picture"] ;
             $view->link = $row["link"];
             $view->message = $row["message"];
-            $view->time = $row["created_ts"];
 
+            //unix timestamp to actual date
+            $view->time = date("d-M g:i A",$row["created_ts"]);
             $view->userName = $row["user_name"];
             $view->comment = $row["comment"];
             $view->profile = sprintf("http://www.facebook.com/profile.php?id=%s",$row["from_id"]) ;
