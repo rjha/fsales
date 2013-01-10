@@ -92,10 +92,10 @@
                                     <td>  
                                         <!-- @inpage @hardcoded -->
                                         <span>Quantity *</span>
-                                        <input type="text"  name="quantity" maxlength="64" value="<?php echo $sticky->get('quantity',1); ?>" style="width:30px;" />
+                                        <input type="text"  name="quantity" maxlength="4" value="<?php echo $sticky->get('quantity',1); ?>" style="width:30px;" />
                                         
                                         <span>Price *</span>
-                                        <input type="text"  name="price" maxlength="64" value="<?php echo $sticky->get('price'); ?>" style="width:90px;" />
+                                        <input type="text"  name="price" maxlength="10" value="<?php echo $sticky->get('price'); ?>" style="width:90px;" />
                                         
                                     </td>
                                 </tr>

@@ -990,9 +990,7 @@ img.aligncenter{display:block;margin-left:auto;margin-right:auto}
 .tools li{float:left;position:relative;padding:5px 10px 5px 20px}
 .tools a{color:#333}
 .tools a:hover{text-decoration:underline}
-.section{min-height:20px;padding:15px 20px 15px 20px;margin-bottom:10px;margin-top:10px;border-top:1px solid rgba(0,0,0,0.03);overflow:hidden}
-.section1{min-height:20px;padding:15px 20px 15px 20px;margin-bottom:10px;margin-top:10px;overflow:hidden}
-.section3{min-height:20px;padding:15px 20px 1px 20px;margin-bottom:10px;margin-top:1px;overflow:hidden}
+.section{min-height:40px;padding:20px 0 20px 0;border-bottom:1px solid #f1f1f1;overflow:hidden}
 .stack{width:210px;float:left;padding:4px;margin:4px;cursor:pointer}
 .feeds{font-size:12px;padding:0 0 0 10px;font-family:arial}
 .feeds a{color:#333}

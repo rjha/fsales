@@ -8,7 +8,6 @@ namespace com\indigloo\fs\mysql {
     use \com\indigloo\mysql\PDOWrapper;
     use \com\indigloo\exception\DBException as DBException;
 
-
     class Invoice {
 
         static function getOnId($invoiceId) {
@@ -18,7 +17,7 @@ namespace com\indigloo\fs\mysql {
              
             $sql = " select * from fs_invoice where id = %d ";
             $sql = sprintf($sql,$invoiceId);
-            
+
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             return $row;
         }
@@ -32,7 +31,7 @@ namespace com\indigloo\fs\mysql {
                                 $seller_info) {
 
             $dbh = NULL ;
-             
+            
             try {
 
                 $dbh =  PDOWrapper::getHandle();
@@ -41,17 +40,19 @@ namespace com\indigloo\fs\mysql {
 
                 // @todo input check
                 // get comment details
-                $commentRow = \com\indigloo\fs\mysql\Comment::getOnId($commentId);
+                $commentRow = Comment::getOnId($commentId);
                 // @todo raise error on empty comment
+                $sourceRow = Source::getOnId($commentRow["source_id"]);
 
-                $sql1 = " insert into fs_invoice(login_id, source_id, post_id, comment_id, name, ".
+                $sql1 = " insert into fs_invoice(login_id, source_id, source_name,post_id, comment_id, name, ".
                         " email, quantity, total_price, op_bit,seller_info,created_on, updated_on) " .
-                        " values (:login_id, :source_id, :post_id, :comment_id, :name, ".
+                        " values (:login_id, :source_id, :source_name, :post_id, :comment_id, :name, ".
                         " :email, :quantity, :price, 1, :seller_info, now(), now()) ";
 
                 $stmt1 = $dbh->prepare($sql1);
                 $stmt1->bindParam(":login_id", $loginId);
                 $stmt1->bindParam(":source_id", $commentRow["source_id"]);
+                $stmt1->bindParam(":source_name", $sourceRow["name"]);
                 $stmt1->bindParam(":post_id", $commentRow["post_id"]);
                 $stmt1->bindParam(":comment_id", $commentId);
                 $stmt1->bindParam(":name", $name);

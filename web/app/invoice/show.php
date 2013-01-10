@@ -40,6 +40,7 @@
 
     $commentId = $invoiceRow["comment_id"];
     $commentRow = $commentDao->getOnId($commentId);
+    $invoiceHtml = AppHtml::getInvoice($invoiceRow,$commentRow);
     
 
 ?>
@@ -48,7 +49,7 @@
 <html>
 
     <head>
-        <title> Invoice Details</title>
+        <title> Invoice # <?php echo $invoiceRow["id"]; ?></title>
         <?php include(APP_WEB_DIR . '/app/inc/meta.inc'); ?>
         <?php echo \com\indigloo\fs\util\Asset::version("/css/fs-bundle.css"); ?>
          
@@ -69,10 +70,22 @@
                 <div class="span8 offset1">
 
                     <div class="page-header">
-                        <h3>Invoice Details </h3>
+                        <h3> Invoice # <?php echo $invoiceRow["id"]; ?> </h3>
                     </div>
-                    <?php print_r($invoiceRow); ?>
-                   
+                    <?php echo $invoiceHtml;  ?>
+                    
+
+                    <div class="section">
+                        <form  id="form1"  name="form1" action="/app/action/invoice/mail.php"  method="POST">
+                            <button class="btn btn-success" type="submit" name="save" value="Save">Mail Invoice</button>
+                              
+                            <input type="hidden" name="invoice_id" value="<?php echo $invoiceRow['id']; ?>" /> 
+                            <input type="hidden" name="qUrl" value="<?php echo $qUrl; ?>" />
+                            <input type="hidden" name="fUrl" value="<?php echo $fUrl; ?>" />
+
+                        </form>
+                    </div>
+
                 </div>
             </div>
         </div> <!-- container -->

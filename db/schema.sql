@@ -111,14 +111,15 @@ CREATE TABLE  fs_comment  (
 
 DROP TABLE IF EXISTS  fs_invoice ;
 CREATE TABLE  fs_invoice  (
-  id  int(11) NOT NULL AUTO_INCREMENT,
-  comment_id int not null,
-  source_id int not null,
   login_id int not null,
-  post_id int not null,
+  id  int(11) NOT NULL AUTO_INCREMENT,
+  comment_id varchar(64) not null,
+  source_id varchar(64) not null,
+  source_name varchar(64) not null,
+  post_id varchar(64) not null,
   name varchar(64) not null,
   email varchar(64) not null,
-  total_price decimal not null,
+  total_price decimal(11,2) not null,
   quantity int not null,
   seller_info varchar(512),
   op_bit int default 1,
@@ -126,3 +127,10 @@ CREATE TABLE  fs_invoice  (
   updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+
+--
+-- patching
+--
+
+-- recreate fs_invoice table

@@ -62,7 +62,7 @@ namespace com\indigloo\fs\html {
             $view->post_text = $row["post_text"];
 
             //unix timestamp to actual date
-            $view->time = date("d-M g:i A",$row["created_ts"]);
+            $view->time = date("d-M h:i A",$row["created_ts"]);
             $view->userName = $row["user_name"];
             $view->comment = $row["message"];
 
@@ -78,6 +78,31 @@ namespace com\indigloo\fs\html {
             return $html ;
         }
         
+        static function getInvoice($invoiceRow,$commentRow) {
+
+            $html = NULL ;
+
+            
+            $template = "/app/fragments/invoice.tmpl" ;
+            $view = new \stdClass;
+            
+            $view->invoiceId = $invoiceRow["id"];
+            $view->name = $invoiceRow["name"];
+            $view->email = $invoiceRow["email"];
+            $view->quantity = $invoiceRow["quantity"];
+            $view->price = $invoiceRow["total_price"];
+            $view->createdOn = $invoiceRow["created_on"];
+            
+
+            $view->picture = $commentRow["picture"] ;
+            $view->post_text = $commentRow["post_text"];
+            $view->link = $commentRow["link"];
+            $view->comment = $commentRow["message"];
+            $view->profile = sprintf("http://www.facebook.com/profile.php?id=%s",$commentRow["from_id"]) ;
+
+            $html = Template::render($template,$view);
+            return $html ;
+        }
     
     }
 }
