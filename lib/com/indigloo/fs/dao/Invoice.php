@@ -8,6 +8,11 @@ namespace com\indigloo\fs\dao {
 
     class Invoice {
 
+        function getOnId($invoiceId) {
+            $row = mysql\Invoice::getonId($invoiceId);
+            return $row ;
+        }
+
         function create($loginId,
                         $commentId,
                         $name,

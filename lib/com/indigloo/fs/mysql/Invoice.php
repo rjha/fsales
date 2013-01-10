@@ -11,6 +11,17 @@ namespace com\indigloo\fs\mysql {
 
     class Invoice {
 
+        static function getOnId($invoiceId) {
+
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            $invoiceId = $mysqli->real_escape_string($invoiceId);
+             
+            $sql = " select * from fs_invoice where id = %d ";
+            $sql = sprintf($sql,$invoiceId);
+            
+            $row = MySQL\Helper::fetchRow($mysqli, $sql);
+            return $row;
+        }
 
         static function create($loginId,
                                 $commentId,

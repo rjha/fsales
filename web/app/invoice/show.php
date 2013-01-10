@@ -29,6 +29,18 @@
 
     $invoiceId = Url::tryQueryParam("invoice_id");
     
+    $invoiceDao = new \com\indigloo\fs\dao\Invoice();
+    $commentDao = new \com\indigloo\fs\dao\Comment();
+
+    $invoiceRow = $invoiceDao->getOnId($invoiceId);
+    if(empty($invoiceRow)) {
+        $message = " No invoice  found for supplied invoice_id ";
+        throw new UIException(array($message)) ;
+    }
+
+    $commentId = $invoiceRow["comment_id"];
+    $commentRow = $commentDao->getOnId($commentId);
+    
 
 ?>
 
@@ -59,7 +71,7 @@
                     <div class="page-header">
                         <h3>Invoice Details </h3>
                     </div>
-                    <?php echo $invoiceId; ?>
+                    <?php print_r($invoiceRow); ?>
                    
                 </div>
             </div>

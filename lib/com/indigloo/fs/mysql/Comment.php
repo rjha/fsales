@@ -10,7 +10,7 @@ namespace com\indigloo\fs\mysql {
 
     class Comment {
 
-         static function getOnId($commentId) {
+        static function getOnId($commentId) {
 
             $mysqli = MySQL\Connection::getInstance()->getHandle();
             $commentId = $mysqli->real_escape_string($commentId);
