@@ -5890,7 +5890,8 @@ a.badge:hover {
         border-bottom: 1px solid #f1f1f1 ;
         min-height:60px;
         float: left ;
-        padding-bottom:7px;
+        padding-bottom:15px;
+        padding-top:15px;
     }
 
     .widget .options {
@@ -6462,6 +6463,31 @@ a.badge:hover {
         height:80px;
     }
 
+    .form-table {
+        padding-top :30px;
+    }
+    
+    .form-table  input{
+        word-spacing: 1px;
+        line-height: 1.8em;
+        color: #333;
+        border: 1px solid #bbb;
+        width: 460px;
+        height: 22px;
+        padding-top:4px;
+
+    }
+
+    .form-table  textarea{
+        word-spacing: 1px;
+        line-height: 1.8em;
+        color: #333;
+        border: 1px solid #ccc;
+        width: 460px;
+        height :110px;
+        padding-top:10px
+    }
+
 
     /* @imp : last section - override 3rd party libraries */
     /* bootstrap css */
@@ -6509,6 +6535,7 @@ a.badge:hover {
         border-radius: 0;
     }
     
+
 
 
  /* cat:sc:file:1:css/fs.css */ 

@@ -2,7 +2,9 @@
 
 namespace com\indigloo\fs\html {
 
-    use \com\indigloo\Template as Template;
+    use \com\indigloo\Template ;
+    use \com\indigloo\Url ;
+    use \com\indigloo\Util ;
     
     class Application {
 
@@ -43,9 +45,13 @@ namespace com\indigloo\fs\html {
             return $html ;
         }
 
-        static function getComment($row) {
+        static function getComment($row, $options=NULL) {
+
             if(empty($row)) { return ""; }
             $html = NULL ;
+
+            $defaults = array( "invoice" => true );
+            $settings = Util::getSettings($options,$defaults);
 
             $template = "/app/fragments/comment.tmpl" ;
             $view = new \stdClass;
@@ -53,26 +59,25 @@ namespace com\indigloo\fs\html {
             $view->commentId = $row["comment_id"];
             $view->picture = $row["picture"] ;
             $view->link = $row["link"];
-            $view->message = $row["message"];
+            $view->post_text = $row["post_text"];
 
             //unix timestamp to actual date
             $view->time = date("d-M g:i A",$row["created_ts"]);
             $view->userName = $row["user_name"];
-            $view->comment = $row["comment"];
+            $view->comment = $row["message"];
+
             $view->profile = sprintf("http://www.facebook.com/profile.php?id=%s",$row["from_id"]) ;
+            $params = array(
+                "q" => base64_encode(Url::current()) , 
+                "comment_id" => $row["comment_id"]);
+
+            $view->hasInvoice = $settings["invoice"];
+            $view->invoiceUrl = Url::createUrl("/app/invoice/new.php", $params);
 
             $html = Template::render($template,$view);
             return $html ;
         }
-        /*
-        select p.picture, p.link, p.message, 
-        c.message as comment, c.from_id, c.user_name, c.created_ts 
-        from fs_post p, fs_comment c 
-        where c.source_id = '%s' 
-        and c.post_id = p.post_id 
-        and c.created_ts < 1357632064 
-        order by c.created_ts DESC LIMIT 3
-        */
+        
     
     }
 }

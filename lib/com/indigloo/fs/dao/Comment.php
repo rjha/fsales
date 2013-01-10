@@ -32,6 +32,11 @@ namespace com\indigloo\fs\dao {
             return $rows ;
         }
 
+        function getOnId($commentId) {
+            $row = mysql\Comment::getonId($commentId);
+            return $row ;
+        }
+
     }
 }
 

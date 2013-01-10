@@ -1,5 +1,5 @@
 
-<div class="widget pt10">
+<div class="widget">
 
     <div class="row">
         
@@ -7,7 +7,12 @@
             <h4> <a href="~~$view->profile~" target="_blank">~~$view->userName~</a> </h4>
             <span class="faded-text">~~$view->time~</span> 
             <p class="comment-text">  ~~$view->comment~ </p>
-            <div class="pt10"> <a href= "/app/invoice/new.php?comment_id=~~$view->commentId~" class="btn btn-mini">invoice</a> </div>
+            
+            ~if($view->hasInvoice) {~
+            <div class="pt10"> 
+                <a href= "~~$view->invoiceUrl~" class="btn btn-mini">invoice</a> 
+            </div>
+            ~}~
             
 
         </div>
@@ -18,7 +23,7 @@
             </a>
         </div>
         <div class="span2">
-            <p class="faded-text"><small> ~~$view->message~ </small></p>
+            <p class="faded-text"><small> ~~$view->post_text~ </small></p>
         </div>
 
     </div> <!-- row -->

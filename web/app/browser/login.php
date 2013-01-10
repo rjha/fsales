@@ -30,7 +30,7 @@
     <head>
         <title> Sign In</title>
         <?php include(APP_WEB_DIR . '/app/inc/meta.inc'); ?>
-        <?php echo \com\indigloo\fs\util\Asset::version("/css/bundle.css"); ?>
+        <?php echo \com\indigloo\fs\util\Asset::version("/css/fs-bundle.css"); ?>
 
 
     </head>

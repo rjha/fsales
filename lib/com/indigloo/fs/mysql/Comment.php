@@ -10,14 +10,28 @@ namespace com\indigloo\fs\mysql {
 
     class Comment {
 
+         static function getOnId($commentId) {
+
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            $commentId = $mysqli->real_escape_string($commentId);
+             
+            $sql = " select p.picture, p.link, p.message as post_text, c.* " .
+                " from fs_post p, fs_comment c where c.comment_id = '%s' ".
+                " and c.post_id = p.post_id " ;
+
+            $sql = sprintf($sql,$commentId);
+            $row = MySQL\Helper::fetchRow($mysqli, $sql);
+
+            return $row;
+        }
+
         static function getLatest($sourceId,$limit) {
 
             $mysqli = MySQL\Connection::getInstance()->getHandle();
             $sourceId = $mysqli->real_escape_string($sourceId);
             settype($limit, "integer");
 
-            $sql = " select p.picture, p.link, p.message, ".
-                " c.message as comment, c.from_id, c.user_name, c.created_ts, c.comment_id ".
+            $sql = " select p.picture, p.link, p.message as post_text, c.* ".
                 " from fs_post p, fs_comment c ".
                 " where c.source_id = '%s' ".
                 " and c.post_id = p.post_id order by created_ts desc limit %d " ;
@@ -39,8 +53,7 @@ namespace com\indigloo\fs\mysql {
             $direction = $mysqli->real_escape_string($direction);
 
              $sql = 
-                " select p.picture, p.link, p.message, ".
-                " c.message as comment, c.from_id, c.user_name, c.created_ts ".
+                " select p.picture, p.link, p.message as post_text ,c.* ".
                 " from fs_post p, fs_comment c ".
                 " where c.source_id = '%s' ".
                 " and c.post_id = p.post_id  " ;
