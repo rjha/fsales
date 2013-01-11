@@ -26,10 +26,14 @@
             $firstName = "Rajeev" ;
             $lastName = "Jha" ;
             $email ="jha.rajeev@gmail.com" ;
-            // although we get 1 HR token from graph API explorer
-            // we need to ensure that expiry > 1 DAY
+            
+            // we need to ensure that expiry > what is in valid token check
             // otherwise our code goes nuts!
-            $expires = 2*24*3600 ;
+            // @see http://developers.facebook.com/docs/howtos/login/extending-tokens/
+            // facebook short lived token should be valid for 1-2 HR
+            // our code validation is for 30 minutes 
+            // so lets put the expire_on after 1 HR
+            $expires = 1*3600 ;
             
             $facebookDao = new \com\indigloo\fs\dao\Facebook();
             $data = $facebookDao->getOrCreate($facebookId,
