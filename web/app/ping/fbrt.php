@@ -9,9 +9,7 @@
 
  	if ($_SERVER['REQUEST_METHOD'] == 'GET' 
  		&& isset($_GET['hub_mode'])
-   		&& $_GET['hub_mode'] == 'subscribe' 
-   		&& isset($_GET['hub_verify_token'])
-    	&& $_GET['hub_verify_token'] == $verify_token) {
+   		&& $_GET['hub_mode'] == 'subscribe' ) {
 
  		// echo back hub.challenge
  		// @see https://developers.facebook.com/docs/reference/api/realtime/
@@ -33,7 +31,7 @@
     	}
 
     }
-    
+
     // $fbObject contains the list of fields that have changed
     /*
     
