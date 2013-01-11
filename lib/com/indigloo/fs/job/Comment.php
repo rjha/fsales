@@ -33,7 +33,9 @@ namespace com\indigloo\fs\job {
         	$loginDao = new Dao\Login();
         	$streamDao = new Dao\Stream();
 
-        	$token = $loginDao->getValidTokenOnSource($sourceId);
+        	// $token = $loginDao->getValidTokenOnSource($sourceId);
+            $sourceDao = new \com\indigloo\fs\dao\Source();
+            $token = $sourceDao->getToken($sourceId);
 
         	// is d_bit = 0 ? 
         	if($d_bit == 0) {

@@ -21,8 +21,10 @@ namespace com\indigloo\fs\job {
                 $ts = $source["last_stream_ts"];
                 $loginId = $source["login_id"];
                 $loginDao = new Dao\Login();
-                $token = $loginDao->getValidToken($loginId);
 
+                // $token = $loginDao->getValidToken($loginId);
+                $token = $source["token"];
+                
                 // @todo : error if token is stale
                 // write to error_log table
                 // show on user dashboard and admin dashboard

@@ -116,7 +116,8 @@ namespace com\indigloo\fs\api {
             $photos = array();
 
             // @todo check type = 247 for photos 
-            // there were photots but type was null(!!!)
+            // there were photots but type was null
+            // so adding photo = 247 does not work!
             // --------------------------------------------------------
             // capturing stream.updated_time > a_timestamp posts
             // ---------------------------------------------------------
@@ -131,7 +132,7 @@ namespace com\indigloo\fs\api {
             // 
 
             $fql = " select post_id, updated_time from stream where source_id = %s ".
-                    " and type = 247 order by updated_time DESC LIMIT 25 OFFSET 0 " ;
+                    " order by updated_time DESC LIMIT 25 OFFSET 0 " ;
 
             $fql = sprintf($fql,$sourceId,$ts);
 
