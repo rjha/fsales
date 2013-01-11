@@ -8,6 +8,12 @@ namespace com\indigloo\fs\dao {
 
     class Source {
 
+        function getToken($sourceId) {
+            $row = mysql\Source::getToken($sourceId);
+            $token = empty($row) ? NULL : $row["token"];
+            return $token ;
+        }
+
         function getAll($loginId) {
             $rows = mysql\Source::getAll($loginId);
             return $rows ;

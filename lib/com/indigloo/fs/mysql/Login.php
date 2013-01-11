@@ -13,7 +13,7 @@ namespace com\indigloo\fs\mysql {
 
             $sql = " select access_token from fs_login where id = ".
                 " (select login_id from fs_source where source_id = '%s' ) ".
-                " and expire_on > (now() + interval 1 DAY ) " ;
+                " and expire_on > (now() + interval 1 HOUR ) " ;
             $sql = sprintf($sql,$sourceId);
 
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
@@ -26,7 +26,7 @@ namespace com\indigloo\fs\mysql {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
             settype($loginId, "integer");
 
-            $sql = "select access_token from fs_login where id = %d and expire_on > (now() + interval 1 DAY )" ;
+            $sql = "select access_token from fs_login where id = %d and expire_on > (now() + interval 1 HOUR )" ;
             $sql = sprintf($sql,$loginId);
 
             $row = MySQL\Helper::fetchRow($mysqli, $sql);

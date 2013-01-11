@@ -16,13 +16,15 @@ namespace com\indigloo\fs\api {
             // php json_decode can return TRUE | FALSE | NULL
            
     		if($fbObject === FALSE || $fbObject ===  TRUE || $fbObject == NULL ) {
+                //@todo more instrumentation
+                $graphUrl = urldecode($graphUrl);
                 $message = sprintf("Graph URL [%s] returned TRUE|FALSE|NULL",$graphUrl) ;
                 Logger::getInstance()->error($message);
                 $flag = false ;
                 return $flag ;
             }
 
-            if(property_exists($fbObject, "error")) { 
+            if(is_object($fbObject) && property_exists($fbObject, "error")) { 
                 $message = sprintf("Graph URL [%s] returned error",$graphUrl) ;
                 Logger::getInstance()->error($message);
                 Logger::getInstance()->error($fbObject->error);
@@ -30,7 +32,7 @@ namespace com\indigloo\fs\api {
                 return $flag ;
             }
 
-            if(!empty($attributes)) {
+            if(is_object($fbObject) && !empty($attributes)) {
             	foreach($attributes as $attribute) {
             		if(!property_exists($fbObject,$attribute)) {
             			$flag = false ;
@@ -41,20 +43,6 @@ namespace com\indigloo\fs\api {
            
             return $flag ;
     	}
-
-        static function getPageTabs($pageId,$pageToken) {
-            $graphAPI = "https://graph.facebook.com/%s/tabs" ;
-            $graphAPI = sprintf($graphAPI,$pageId);
-
-            $params = array("access_token" => $pageToken);
-            $response = @file_get_contents($graphAPI);
-
-            printf(" \n ---- \n");
-            print_r($response);
-            printf(" \n ---- \n");
-
-
-        }
 
         static function addAppToPage($appId, $pageId,$pageToken) {
 
@@ -75,24 +63,19 @@ namespace com\indigloo\fs\api {
             );
 
             $context  = stream_context_create($opts);
-            $response = file_get_contents($graphAPI,false,$context);
-            
-            printf(" \n ---- \n");
-            print_r($response);
-            printf(" \n ---- \n");
-
-            /*
+            $response = @file_get_contents($graphAPI,false,$context);
             $fbObject = json_decode($response);
 
-            if(property_exists($fbObject, "error")) { 
-                $message = sprintf("Graph URL [%s] returned error",$graphUrl) ;
+            // The API actually returns true| false so we cannot run this 
+            // through our usual error checker!
+            if(is_object($fbObject) && property_exists($fbObject, "error")) { 
+                $message = sprintf(" Error: Not able to add App %s to page %s ",$appId, $pageId) ;
                 Logger::getInstance()->error($message);
                 Logger::getInstance()->error($fbObject->error);
-                $flag = false ;
-                return $flag ;
+                return false ;
             }
 
-            return $fbObject ; */
+            return $fbObject ; 
 
         }
 

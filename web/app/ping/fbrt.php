@@ -15,30 +15,25 @@
  		// @see https://developers.facebook.com/docs/reference/api/realtime/
 		echo $_GET['hub_challenge'];
 
-  } else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-  	Logger::getInstance()->info("received a ping from facebook ");
+	} else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+  		Logger::getInstance()->info("received a ping from facebook ");
 
-    $post_body = @file_get_contents('php://input');
-    $fbObject = json_decode($post_body, true);
-    $data = $fbObject->entry ;
-    foreach($data as $part) {
-    	Logger::getInstance()->info("uid = " .$part->uid);
-    	Logger::getInstance()->info("time = " .$part->time);
+	    $post_body = @file_get_contents('php://input');
+	    $fbObject = json_decode($post_body);
 
-    	$fields = $part["changed_fields"];
-    	foreach($fields as $field) {
-    		Logger::getInstance()->info("field = " .$field);
-    	}
+	    // check for true | false | null ?
+	    if(is_object($fbObject) && property_exists($fbObject, "entry")){
+		    $data = $fbObject->entry ;
+		    foreach($data as $part) {
+		       Logger::getInstance()->info("id = " .$part->id);
+		       Logger::getInstance()->info("time = " .$part->time);
 
-    }
+		       $fields = $part["changed_fields"];
+		       foreach($fields as $field) {
+	               Logger::getInstance()->info("field = " .$field);
+		       }
 
-    // $fbObject contains the list of fields that have changed
-    /*
-    
-    $facebookDao = new Dao\Facebook();
-    $facebookDao->addPing($data);
-	*/
-
-
+			}
+		}
   }
 ?>

@@ -10,6 +10,19 @@ namespace com\indigloo\fs\mysql {
 
     class Source {
 
+        static function getToken($sourceId) {
+            
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            settype($sourceId, "integer");
+            
+            $sql = "select token from fs_source where source_id = '%s' " ;
+            $sql = sprintf($sql,$sourceId);
+            
+            $row = MySQL\Helper::fetchRow($mysqli, $sql);
+            return $row;
+
+        }
+
         static function getAll($loginId) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
             settype($loginId, "integer");
