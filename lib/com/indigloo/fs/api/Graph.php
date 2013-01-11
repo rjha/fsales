@@ -42,6 +42,60 @@ namespace com\indigloo\fs\api {
             return $flag ;
     	}
 
+        static function getPageTabs($pageId,$pageToken) {
+            $graphAPI = "https://graph.facebook.com/%s/tabs" ;
+            $graphAPI = sprintf($graphAPI,$pageId);
+
+            $params = array("access_token" => $pageToken);
+            $response = @file_get_contents($graphAPI);
+
+            printf(" \n ---- \n");
+            print_r($response);
+            printf(" \n ---- \n");
+
+
+        }
+
+        static function addAppToPage($appId, $pageId,$pageToken) {
+
+            $flag = false ;
+
+            $graphAPI = "https://graph.facebook.com/%s/tabs" ;
+            $graphAPI = sprintf($graphAPI,$pageId);
+
+            //Do a POST
+            $postdata = http_build_query(array("app_id" => $appId, "access_token" => $pageToken)) ;
+
+            $opts = array('http' =>
+                array(
+                    'method'  => "POST",
+                    'header'  => "Content-type: application/x-www-form-urlencoded",
+                    'content' => $postdata
+                )
+            );
+
+            $context  = stream_context_create($opts);
+            $response = file_get_contents($graphAPI,false,$context);
+            
+            printf(" \n ---- \n");
+            print_r($response);
+            printf(" \n ---- \n");
+
+            /*
+            $fbObject = json_decode($response);
+
+            if(property_exists($fbObject, "error")) { 
+                $message = sprintf("Graph URL [%s] returned error",$graphUrl) ;
+                Logger::getInstance()->error($message);
+                Logger::getInstance()->error($fbObject->error);
+                $flag = false ;
+                return $flag ;
+            }
+
+            return $fbObject ; */
+
+        }
+
         static function getPages($token) {
 
         	$pages = array();
