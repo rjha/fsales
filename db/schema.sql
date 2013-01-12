@@ -66,7 +66,7 @@ CREATE TABLE  fs_stream  (
    post_id  varchar(64) NOT NULL ,
    last_stream_ts int, 
    next_stream_ts int,
-   d_bit int default 0 ,
+   version int default 1,
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (id),

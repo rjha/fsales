@@ -8,8 +8,8 @@ namespace com\indigloo\fs\dao {
 
     class Comment {
 
-        function add($sourceId,$postId,$ts1,$fbComments) {
-            mysql\Comment::add($sourceId,$postId,$ts1,$fbComments);
+        function add($sourceId,$postId,$last_ts,$version,$limit,$fbComments) {
+            mysql\Comment::add($sourceId,$postId,$last_ts,$version,$limit,$fbComments);
         }
 
         function getPaged($sourceId,$paginator) {

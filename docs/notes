@@ -300,6 +300,7 @@ The facebook stream view seems geared towards sorting on created_time
 
 /PAGE_ID/feed?since=ts1&until=ts2
 since and until parameters on graph API also work using created_time and not updated_time
+Hence they are of not much use to us...
 
 Fixes
 -------
@@ -360,5 +361,8 @@ date_format=U is needed to fetch unix timestamp.
 FQL is undoubtely clear(unless you can figure out a way to sort on comment.time)
 
 
++ Graph API should return ERROR - so callers can take appropriate action
++ All errors should be logged
++ input check for mysql DB columns
 
 

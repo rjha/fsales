@@ -4,6 +4,7 @@ namespace com\indigloo\fs\mysql {
     use \com\indigloo\Util as Util ;
     use \com\indigloo\mysql as MySQL;
     use \com\indigloo\Logger ;
+    use \com\indigloo\Configuration as Config ;
 
     use \com\indigloo\mysql\PDOWrapper;
     use \com\indigloo\exception\DBException as DBException;
@@ -78,7 +79,7 @@ namespace com\indigloo\fs\mysql {
             return $rows;
         }
 
-        static function add($sourceId,$postId,$ts1,$fbComments) {
+        static function add($sourceId,$postId,$last_ts,$version,$limit,$fbComments) {
                 
             $dbh = NULL ;
              
@@ -86,7 +87,7 @@ namespace com\indigloo\fs\mysql {
 
                 $dbh =  PDOWrapper::getHandle();
 
-                //Tx start
+                //Tx1: start
                 $dbh->beginTransaction();
                 
                 // @todo input check
@@ -101,8 +102,8 @@ namespace com\indigloo\fs\mysql {
                         " values(:source_id, :post_id, :comment_id, :from_id, ".
                         " :user_name, :message, :created_ts, now(), now()) " .
                         " on duplicate key update dup_count = dup_count + 1 " ;
-
-                 $max_ts = (int) $ts1 ;
+                 
+                $max_ts = (int) $last_ts ;
                
                 foreach($fbComments as $fbComment) {
             
@@ -116,9 +117,14 @@ namespace com\indigloo\fs\mysql {
                     $stmt1->bindParam(":user_name", $fbComment["user_name"]);
                     $stmt1->bindParam(":message", $fbComment["message"]);
                     $stmt1->bindParam(":created_ts", $fbComment["created_time"]);
-
-
                     $stmt1->execute();
+
+
+                    if(Config::getInstance()->is_debug()) {
+                        $message = "fs_comment insert id = %s , created_on = %s " ;
+                        $message = sprintf($message,$fbComment["comment_id"], $fbComment["created_time"]);
+                        Logger::getInstance()->debug($message);
+                    }
 
                     $comment_ts = (int) $fbComment["created_time"];
                     $max_ts = ($comment_ts > $max_ts) ? $comment_ts : $max_ts ;
@@ -128,12 +134,38 @@ namespace com\indigloo\fs\mysql {
 
                 $sql2 = " update fs_stream set last_stream_ts = '%s' ".
                         " where post_id = '%s' and source_id = '%s' " ;
-                        
+                
                 $sql2 = sprintf($sql2,$max_ts,$postId,$sourceId);
                 $dbh->exec($sql2);
 
-                //Tx end
+                //Tx1 end
                 $dbh->commit();
+
+                $num_comments = sizeof($fbComments);
+                if($num_comments < $limit) {
+                    // 
+                    // we got less than limit # of comments
+                    // and this post has not been updated in the interim
+                    // That means we have run through all the comments for this
+                    // post in stream
+                    // comparison is with version column to implement optimistic locking
+                    // 
+                    //Tx2 :start
+                    $dbh->beginTransaction();
+                    
+                    $sql3 = " delete from fs_stream where post_id = '%s' and version = %d " ;
+                    $sql3 = sprintf($sql3,$postId,$version);
+                    $dbh->exec($sql3);
+                    //Tx2:end
+                    $dbh->commit();
+
+                    if(Config::getInstance()->is_debug()) {
+                        $message = "fs_stream :: try deleting : post_id = %s , version = %d " ;
+                        $message = sprintf($message,$postId, $version);
+                        Logger::getInstance()->debug($message);
+                    }
+                }
+
                 $dbh = null;
                 
             }catch (\PDOException $e) {

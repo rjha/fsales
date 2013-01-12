@@ -10,17 +10,24 @@ namespace com\indigloo\fs\mysql {
 
     class Post {
 
-
-        static function getObjectId($postId) {
-            
+        static function getOnId($postId) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
-            
+            //input check
+            $postId = $mysqli->real_escape_string($postId);
+
+            $sql = " select * from fs_post where post_id = '%s' ";
+            $sql = sprintf($sql,$postId);
+            $row = MySQL\Helper::fetchRow($mysqli, $sql);
+            return $row;
+        }
+
+        static function getObjectId($postId) {  
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
             //input check
             $postId = $mysqli->real_escape_string($postId);
 
             $sql = " select object_id from fs_post where post_id = '%s' ";
             $sql = sprintf($sql,$postId);
-
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             return $row;
         }

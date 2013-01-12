@@ -4,65 +4,65 @@ namespace com\indigloo\fs\job {
 
     use \com\indigloo\Util as Util ;
     use \com\indigloo\Logger as Logger ;
-    
+    use \com\indigloo\Configuration as Config ;
+
     use \com\indigloo\fs\dao as Dao ;
     use \com\indigloo\fs\api\Graph as GraphAPI;
 
     class Comment {
 
         static function execute() {
-        	// look @ fs_stream_tracker
-        	// get 10 oldest posts
-
+        	
         	$streamDao = new Dao\Stream();
-        	$limit = 10 ;
-    		$posts = $streamDao->getPosts($limit);
+            // @todo - paginate on posts
+        	$limit = 25 ;
+    		$streams = $streamDao->get($limit);
 
-    		foreach($posts as $post) {
-    			self::process($post);
+    		foreach($streams as $stream) {
+    			self::process($stream);
     		}
 
         }
 
-        static function process($post) {
+        static function process($stream) {
 
-        	$postId = $post["post_id"];
-        	$sourceId = $post["source_id"];
-        	$d_bit = (int) $post["d_bit"];
+        	$postId = $stream["post_id"];
+        	$sourceId = $stream["source_id"];
+            $last_ts = $stream["last_stream_ts"];
+            $version = $stream["version"] ;
 
-        	$loginDao = new Dao\Login();
-        	$streamDao = new Dao\Stream();
-
-        	// $token = $loginDao->getValidTokenOnSource($sourceId);
-            $sourceDao = new \com\indigloo\fs\dao\Source();
+            $sourceDao = new Dao\Source();
+            // source access token
             $token = $sourceDao->getToken($sourceId);
+            $postDao = new Dao\Post();
 
-        	// is d_bit = 0 ? 
-        	if($d_bit == 0) {
-        		$postDao = new Dao\Post();
-        		// @todo : error handling for invalid token
-        		$fbPost = GraphAPI::getPost($postId,$token);
-        		// populate fs_post, flip d_bit to 1 
-        		$postDao->add($sourceId,$postId,$fbPost);
-        	}
+            if(!$postDao->exists($postId)) {
+                $fbPost = GraphAPI::getPost($postId,$token);
+                $postDao->add($sourceId,$postId,$fbPost);
 
-        	self::pull_comments($sourceId,$postId,$token);
+                if(Config::getInstance()->is_debug()) {
+                    $message = sprintf("fs_post :: fetch post_id :: %s ",$postId);
+                    Logger::getInstance()->debug($message);
+                }
+            }
+        	
+        	self::pull_comments($sourceId,$postId,$last_ts,$version,$token);
         	
         }
         
-        static function pull_comments($sourceId,$postId,$token) {
-
-        	$streamDao = new Dao\Stream();
-        	$commentDao = new Dao\Comment();
-
-        	$ts1 = $streamDao->getLastTS($postId);
-        	
+        static function pull_comments($sourceId,$postId,$last_ts,$version,$token) {
         	// pull N comments using FQL sorted by created_time
         	$limit = 20 ;
-        	$fbComments = GraphAPI::getComments($postId,$ts1,$limit,$token);
-        	// store source_id + post_id + comment
-        	// update fs_stream.last_stream_ts = comment.time
-        	$commentDao->add($sourceId,$postId,$ts1,$fbComments);
+        	$fbComments = GraphAPI::getComments($postId,$last_ts,$limit,$token);
+
+            if(Config::getInstance()->is_debug()) {
+                $message = " fs_stream :: post %s , last_ts = %s , version = %d, no_comments =  %d ";
+                $message = sprintf($message,$postId,$last_ts,$version,sizeof($fbComments));
+                Logger::getInstance()->debug($message);
+            }
+
+            $commentDao = new Dao\Comment();
+        	$commentDao->add($sourceId,$postId,$last_ts,$version,$limit,$fbComments);
 
         }
     }

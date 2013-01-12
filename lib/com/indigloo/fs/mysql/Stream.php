@@ -12,28 +12,18 @@ namespace com\indigloo\fs\mysql {
 
     class Stream {
         
-        static function getLastTS($postId) {
-            //@todo input check for post_id string
-            
-            $mysqli = MySQL\Connection::getInstance()->getHandle();
-            // @todo : how do we limit the # of posts here?
-            $sql = " select   last_stream_ts  from  fs_stream where post_id = '%s' " ;
-            $sql = sprintf($sql,$postId);
-            $row = MySQL\Helper::fetchRow($mysqli, $sql);
-            return $row;
-        }
-        
-        static function getPosts($limit) {
+         
+        static function get($limit) {
 
             //input check
             settype($limit, "integer");
 
             $mysqli = MySQL\Connection::getInstance()->getHandle();
-            // @todo : how do we limit the # of posts here?
-            $sql = " select * from fs_stream " .
-                    " order by updated_on asc LIMIT %d" ;
-
+            
+            // bring old posts first
+            $sql = " select * from fs_stream order by created_on ASC LIMIT %d" ;
             $sql = sprintf($sql,$limit);
+
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
 
@@ -47,17 +37,8 @@ namespace com\indigloo\fs\mysql {
             return $rows;
         }
 
-        static function addPhotos($sourceId,$ts,$photos) {
+        static function add($sourceId,$stream_ts,$fbPosts) {
 
-            
-            // new photo in stream for this source
-            // Add with post.last_stream_ts = crawling_time
-            // post.next_stream_ts = max_ts in this crawl
-            // for an existing stream.post
-            // update next_stream_ts
-            // After adding all the photos in this stream
-            // update source.last_stream_ts
-             
             $dbh = NULL ;
              
             try {
@@ -74,33 +55,58 @@ namespace com\indigloo\fs\mysql {
                 // post_id : maxlen 64
                 // all ts : maxlen 16
 
-                $sql1 = " insert into fs_stream(source_id,post_id,d_bit,last_stream_ts, ".
-                        " next_stream_ts, created_on, updated_on )".
-                        " values(:source_id, :post_id, 0, :source_ts, :post_ts, now(), now())".
-                        " ON DUPLICATE KEY update next_stream_ts = :post_ts, updated_on = now() " ;
+                $sql1 = " insert into fs_stream(source_id,post_id,last_stream_ts, ".
+                        " next_stream_ts, version, created_on, updated_on )".
+                        " values(:source_id, :post_id, :last_ts, :next_ts,1, now(), now())".
+                        " ON DUPLICATE KEY update next_stream_ts = :next_ts, version = version +1 , " .
+                        " updated_on = now() " ;
                 
-                $max_ts = (int) $ts ;
-                
-                foreach($photos as $photo) {
-                    $stmt1 = $dbh->prepare($sql1);
-                    $stmt1->bindParam(":source_id", $sourceId);
-                    $stmt1->bindParam(":post_id", $photo["post_id"]);
-                    $stmt1->bindParam(":source_ts", $ts);
-                    $stmt1->bindParam(":post_ts", $photo["updated_time"]);
-                    $stmt1->execute();
-                    
-                    $photo_ts = (int) $photo["updated_time"];
-                    $max_ts = ($photo_ts > $max_ts) ? $photo_ts : $max_ts ;
-                    
+                $ts_array = array();
+                $max_ts = $stream_ts ;
+
+                foreach($fbPosts as $fbPost) {
+                    $post_ts = (int) $fbPost["updated_time"];
+                    array_push($ts_array,$post_ts);
+                    // stream FQL pokes at last N posts
+                    // so that means we can bring in stream.posts 
+                    // before stream.last_ts as well
+
+                    if($post_ts > $stream_ts){
+                        $stmt1 = $dbh->prepare($sql1);
+                        $stmt1->bindParam(":source_id", $sourceId);
+                        $stmt1->bindParam(":post_id", $fbPost["post_id"]);
+                        $stmt1->bindParam(":last_ts", $stream_ts);
+                        $stmt1->bindParam(":next_ts", $fbPost["updated_time"]);
+                        $stmt1->execute();
+                        
+                        if(Config::getInstance()->is_debug()) {
+                            $message = "fs_stream insert post = %s , updated_on = %s " ;
+                            $message = sprintf($message,$fbPost["post_id"], $fbPost["updated_time"]);
+                            Logger::getInstance()->debug($message);
+                        }
+                    }
                 }
 
                 $stmt1 = NULL ;
+
+                if(!empty($ts_array)) {
+                    sort($ts_array, SORT_NUMERIC);
+                    //max is now the last element
+                    $index = sizeof($ts_array) - 1 ;
+                    $max_ts = $ts_array[$index]; 
+                }
 
                 // update stream_ts for source
                 $sql2 = " update fs_source set last_stream_ts = '%s' where source_id = '%s' ";
                 $sql2 = sprintf($sql2,$max_ts,$sourceId);
                 $dbh->exec($sql2);
-                
+
+                if(Config::getInstance()->is_debug()) {
+                    $message = " fs_source :: update source = %s , new ts = %s " ;
+                    $message = sprintf($message,$sourceId, $max_ts);
+                    Logger::getInstance()->debug($message);
+                }
+
                 //Tx end
                 $dbh->commit();
                 $dbh = null;
@@ -141,8 +147,10 @@ namespace com\indigloo\fs\mysql {
 
                 foreach($pages as $page) {
                     //@todo check : source_id : maxlength :64
-                    $sql2 = " insert into fs_source(login_id,source_id,name,token,last_stream_ts, created_on, updated_on) " ;
-                    $sql2 .= " values(:login_id, :id, :name, :token, unix_timestamp(now() - INTERVAL 1 DAY), now(), now())" ;
+                    $sql2 = " insert into fs_source(login_id,source_id,name,token,last_stream_ts, ".
+                            " loop_no,created_on, updated_on) " .
+                            " values(:login_id, :id, :name, :token, unix_timestamp(now()-INTERVAL 1 DAY), ".
+                             " 0,now(), now())" ;
 
                     $stmt2 = $dbh->prepare($sql2);
                     $stmt2->bindParam(":login_id", $loginId);
@@ -153,7 +161,6 @@ namespace com\indigloo\fs\mysql {
                     $stmt2->execute();
                 }
 
-                 
                 //Tx2:end
                 $dbh->commit();
                 $dbh = null;

@@ -5,7 +5,9 @@
     use \com\indigloo\fs\dao as Dao ;
     use \com\indigloo\Logger ;
 
-    $verify_token = 'FB_9421_B00B5';
+    // facebook app page just gobbles verify token
+    // so lets leave it for now!
+    // $verify_token = "FB_9421";
 
  	if ($_SERVER['REQUEST_METHOD'] == 'GET' 
  		&& isset($_GET['hub_mode'])

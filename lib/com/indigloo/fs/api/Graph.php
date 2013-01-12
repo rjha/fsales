@@ -6,6 +6,9 @@ namespace com\indigloo\fs\api {
     use \com\indigloo\Util as CoreUtil;
     use \com\indigloo\Logger as Logger;
     use \com\indigloo\Url ;
+    use \com\indigloo\Configuration as Config ;
+
+    // @todo Graph API should return error codes for callers
 
     class Graph {
 
@@ -18,14 +21,14 @@ namespace com\indigloo\fs\api {
     		if($fbObject === FALSE || $fbObject ===  TRUE || $fbObject == NULL ) {
                 //@todo more instrumentation
                 $graphUrl = urldecode($graphUrl);
-                $message = sprintf("Graph URL [%s] returned TRUE|FALSE|NULL",$graphUrl) ;
+                $message = sprintf("Graph URL [%s] returned true/false/null ",$graphUrl) ;
                 Logger::getInstance()->error($message);
                 $flag = false ;
                 return $flag ;
             }
 
             if(is_object($fbObject) && property_exists($fbObject, "error")) { 
-                $message = sprintf("Graph URL [%s] returned error",$graphUrl) ;
+                $message = sprintf("Graph URL [%s] returned error ",$graphUrl) ;
                 Logger::getInstance()->error($message);
                 Logger::getInstance()->error($fbObject->error);
                 $flag = false ;
@@ -116,8 +119,8 @@ namespace com\indigloo\fs\api {
             $photos = array();
 
             // @todo check type = 247 for photos 
-            // there were photots but type was null
-            // so adding photo = 247 does not work!
+            // for some photos returned type was NULL
+            // so condition type = 247 does not work!
             // --------------------------------------------------------
             // capturing stream.updated_time > a_timestamp posts
             // ---------------------------------------------------------
@@ -131,7 +134,7 @@ namespace com\indigloo\fs\api {
             // @todo implement pagination
             // 
 
-            $fql = " select post_id, updated_time from stream where source_id = %s ".
+            $fql =  " select post_id, updated_time from stream where source_id = %s ".
                     " order by updated_time DESC LIMIT 25 OFFSET 0 " ;
 
             $fql = sprintf($fql,$sourceId,$ts);

@@ -17,19 +17,13 @@ namespace com\indigloo\fs\dao {
            return $rows ;
         }
 
-        function addPhotos($sourceId,$ts,$photos) {
-           mysql\Stream::addPhotos($sourceId,$ts,$photos);
+        function add($sourceId,$last_ts,$fbPosts) {
+           mysql\Stream::addPhotos($sourceId,$last_ts,$fbPosts);
         }
 
-        function getPosts($limit) {
+        function get($limit) {
             $rows = mysql\Stream::getPosts($limit);
             return $rows ;
-        }
-
-        function getLastTS($postId) {
-            $row = mysql\Stream::getLastTS($postId);
-            $ts = empty($row) ? NULL : $row["last_stream_ts"];
-            return $ts ;
         }
 
     }

@@ -8,6 +8,12 @@ namespace com\indigloo\fs\dao {
 
     class Post {
 
+        function exists($postId) {
+            $row = mysql\Post::getOnId($postId);
+            $flag = empty($row) ? false : true ;
+            return $flag ;
+        }
+
         function getObjectId($postId) {
             $row = mysql\Post::getObjectId($postId);
             $objectId = empty($row) ? NULL : $row["object_id"];
