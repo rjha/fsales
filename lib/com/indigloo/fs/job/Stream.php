@@ -50,6 +50,8 @@ namespace com\indigloo\fs\job {
             }
 
             if(empty($fbPosts)) { return ; }
+
+            $streamDao = new Dao\Stream();
             $streamDao->add($sourceId,$last_ts,$fbPosts);
 
         }

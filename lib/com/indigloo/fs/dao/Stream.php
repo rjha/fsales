@@ -18,11 +18,11 @@ namespace com\indigloo\fs\dao {
         }
 
         function add($sourceId,$last_ts,$fbPosts) {
-           mysql\Stream::addPhotos($sourceId,$last_ts,$fbPosts);
+           mysql\Stream::add($sourceId,$last_ts,$fbPosts);
         }
 
         function get($limit) {
-            $rows = mysql\Stream::getPosts($limit);
+            $rows = mysql\Stream::get($limit);
             return $rows ;
         }
 

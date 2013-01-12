@@ -3,6 +3,7 @@ namespace com\indigloo\fs\mysql {
 
     use \com\indigloo\Util as Util ;
     use \com\indigloo\mysql as MySQL;
+    
     use \com\indigloo\Logger ;
     use \com\indigloo\Configuration as Config ;
 

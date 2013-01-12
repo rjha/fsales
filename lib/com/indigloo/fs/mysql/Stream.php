@@ -4,6 +4,8 @@ namespace com\indigloo\fs\mysql {
 
     use \com\indigloo\mysql as MySQL;
     use \com\indigloo\Util as Util ;
+
+    use \com\indigloo\Logger as Logger ;
     use \com\indigloo\Configuration as Config ;
 
     use \com\indigloo\mysql\PDOWrapper;
@@ -148,9 +150,9 @@ namespace com\indigloo\fs\mysql {
                 foreach($pages as $page) {
                     //@todo check : source_id : maxlength :64
                     $sql2 = " insert into fs_source(login_id,source_id,name,token,last_stream_ts, ".
-                            " loop_no,created_on, updated_on) " .
+                            " created_on, updated_on) " .
                             " values(:login_id, :id, :name, :token, unix_timestamp(now()-INTERVAL 1 DAY), ".
-                             " 0,now(), now())" ;
+                             " now(), now())" ;
 
                     $stmt2 = $dbh->prepare($sql2);
                     $stmt2->bindParam(":login_id", $loginId);
