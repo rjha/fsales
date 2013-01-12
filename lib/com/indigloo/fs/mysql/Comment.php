@@ -10,6 +10,8 @@ namespace com\indigloo\fs\mysql {
     use \com\indigloo\mysql\PDOWrapper;
     use \com\indigloo\exception\DBException as DBException;
 
+    use \com\indigloo\fs\Constants as AppConstants ;
+
     class Comment {
 
         static function getOnId($commentId) {
@@ -99,9 +101,9 @@ namespace com\indigloo\fs\mysql {
                 // all ts : maxlen 16
 
                 $sql1 = " insert into fs_comment(source_id,post_id, comment_id,from_id, " .
-                        " user_name, message, created_ts, created_on, updated_on ) ".
+                        " user_name, message, created_ts, created_on, updated_on, verb) ".
                         " values(:source_id, :post_id, :comment_id, :from_id, ".
-                        " :user_name, :message, :created_ts, now(), now()) " .
+                        " :user_name, :message, :created_ts, now(), now(), :verb) " .
                         " on duplicate key update dup_count = dup_count + 1 " ;
                  
                 $max_ts = (int) $last_ts ;
@@ -116,7 +118,15 @@ namespace com\indigloo\fs\mysql {
 
                     $stmt1->bindParam(":from_id", $fbComment["from_id"]);
                     $stmt1->bindParam(":user_name", $fbComment["user_name"]);
-                    $stmt1->bindParam(":message", $fbComment["message"]);
+
+                    // comment contains verb?
+                    $comment_text =  $fbComment["message"];
+                    $verb = (Util::contains($comment_text, AppConstants::COMMENT_VERB)) ? 1 : 0 ;
+
+                    $stmt1->bindParam(":message",$comment_text);
+                    $stmt1->bindParam(":verb",$verb);
+                    
+
                     $stmt1->bindParam(":created_ts", $fbComment["created_time"]);
                     $stmt1->execute();
 

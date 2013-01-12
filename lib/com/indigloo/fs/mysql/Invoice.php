@@ -26,7 +26,7 @@ namespace com\indigloo\fs\mysql {
                                 $commentId,
                                 $name,
                                 $email,
-                                $price,
+                                $unitPrice,
                                 $quantity,
                                 $seller_info) {
 
@@ -45,9 +45,9 @@ namespace com\indigloo\fs\mysql {
                 $sourceRow = Source::getOnId($commentRow["source_id"]);
 
                 $sql1 = " insert into fs_invoice(login_id, source_id, source_name,post_id, comment_id, name, ".
-                        " email, quantity, total_price, op_bit,seller_info,created_on, updated_on) " .
+                        " email, quantity, unit_price,total_price, op_bit,seller_info,created_on, updated_on) " .
                         " values (:login_id, :source_id, :source_name, :post_id, :comment_id, :name, ".
-                        " :email, :quantity, :price, 1, :seller_info, now(), now()) ";
+                        " :email, :quantity, :unit_price, :total_price, 1, :seller_info, now(), now()) ";
 
                 $stmt1 = $dbh->prepare($sql1);
                 $stmt1->bindParam(":login_id", $loginId);
@@ -55,10 +55,14 @@ namespace com\indigloo\fs\mysql {
                 $stmt1->bindParam(":source_name", $sourceRow["name"]);
                 $stmt1->bindParam(":post_id", $commentRow["post_id"]);
                 $stmt1->bindParam(":comment_id", $commentId);
+
                 $stmt1->bindParam(":name", $name);
                 $stmt1->bindParam(":email", $email);
                 $stmt1->bindParam(":quantity", $quantity);
-                $stmt1->bindParam(":price", $price);
+
+                $stmt1->bindParam(":unit_price", $unitPrice);
+                $totalPrice = $unitPrice * $quantity ;
+                $stmt1->bindParam(":total_price", $totalPrice);
                 $stmt1->bindParam(":seller_info", $seller_info);
 
                 $stmt1->execute();

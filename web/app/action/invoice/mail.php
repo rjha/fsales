@@ -13,7 +13,7 @@
     use \com\indigloo\exception\UIException as UIException;
 
     use \com\indigloo\fs\auth\Login as Login ;
-     use \com\indigloo\fs\html\Mail as MailHtml ;
+    use \com\indigloo\fs\mail\Application as AppMail ;
 
 
     $gWeb = \com\indigloo\core\Web::getInstance(); 
@@ -39,17 +39,9 @@
         $invoiceRow = $invoiceDao->getOnId($invoiceId);
         $commentId = $invoiceRow["comment_id"];
         $commentRow = $commentDao->getOnId($commentId);
-        // Mail invoice
-        // update status after mail
-        $html = MailHtml::getInvoice($invoiceRow,$commentRow);
 
-        $tos = array($invoiceRow["email"]);
-        $from = "support@favsales.com" ;
-        $fromName = "3mik support";
-        $subject = " Invoice for your purchase at ".$invoiceRow["source_name"] ;
-        $text = $html ;
-        
-        \com\indigloo\mail\SendGrid::sendViaWeb($tos,$from,$fromName,$subject,$text,$html);
+        $code = AppMail::send_invoice($invoiceRow,$commentRow);
+        // @todo change status/ show error based on code
         //$invoiceDao->changeStatus($invoiceId,2) ;
 
         //success - go to invoice show screen

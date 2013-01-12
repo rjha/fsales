@@ -22,7 +22,7 @@
         $fhandler = new Form\Handler('form1', $_POST);
         $fhandler->addRule('name', 'Name', array('required' => 1));
         $fhandler->addRule('email', 'Email', array('required' => 1));
-        $fhandler->addRule('price', 'Price', array('required' => 1));
+        $fhandler->addRule('unit_price', 'Unit Price', array('required' => 1));
         $fhandler->addRule('quantity', 'Quantity', array('required' => 1));
         $fhandler->addRule('comment_id', 'Comment_ID', array('required' => 1));
 
@@ -36,11 +36,14 @@
         $invoiceDao = new \com\indigloo\fs\dao\Invoice();
         $loginId = Login::getLoginIdInSession();
 
+        // @todo : check price and quantity for absurd values
+        // zero price/ negative quantity etc.
+        
         $invoiceId = $invoiceDao->create($loginId,
                                     $fvalues["comment_id"],
                                     $fvalues["name"],
                                     $fvalues["email"],
-                                    $fvalues["price"],
+                                    $fvalues["unit_price"],
                                     $fvalues["quantity"],
                                     $fvalues["seller_info"]);
 

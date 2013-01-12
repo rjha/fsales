@@ -17,7 +17,7 @@ namespace com\indigloo\fs\dao {
                         $commentId,
                         $name,
                         $email,
-                        $price,
+                        $unitPrice,
                         $quantity,
                         $seller_info) {
 
@@ -25,7 +25,7 @@ namespace com\indigloo\fs\dao {
                                             $commentId,
                                             $name,
                                             $email,
-                                            $price,
+                                            $unitPrice,
                                             $quantity,
                                             $seller_info);
             return $invoiceId;
