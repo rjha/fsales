@@ -8,12 +8,14 @@
     use \com\indigloo\ui\form as Form;
     use \com\indigloo\Constants as Constants ;
     use \com\indigloo\Util as Util ;
+    use \com\indigloo\Logger as Logger ;
 
     use \com\indigloo\Url as Url ;
     use \com\indigloo\exception\UIException as UIException;
 
     use \com\indigloo\fs\auth\Login as Login ;
     use \com\indigloo\fs\mail\Application as AppMail ;
+    use \com\indigloo\fs\Constants as AppConstants ;
 
 
     $gWeb = \com\indigloo\core\Web::getInstance(); 
@@ -41,23 +43,43 @@
         $commentRow = $commentDao->getOnId($commentId);
 
         $code = AppMail::send_invoice($invoiceRow,$commentRow);
-        // @todo change status/ show error based on code
-        //$invoiceDao->changeStatus($invoiceId,2) ;
+        if($code > 0 ) {
+            // mail error 
+            $message = " Error: sending mail. please try again!";
+            throw new UIException(array($message));
+        } else {
+            $invoiceDao->setOpBit($invoiceId,AppConstants::INVOICE_MAIL_SENT_BIT) ;
+        }
 
-        //success - go to invoice show screen
-        $params = array("invoice_id" => $invoiceId);
-        $fwd = Url::createUrl("/app/invoice/show.php", $params);
-        header("Location: ".$fwd);
+        $message = " invoice mail sent!";
+        $gWeb->store(Constants::STICKY_MAP, $fvalues);
+        $gWeb->store(Constants::FORM_MESSAGES, array($message));
 
-    } catch(UIException $ex) {
+        // decode fUrl  for use
+        $fwd = base64_decode($fUrl);
+        header("Location: " . $fwd);
+        exit(1);
+
+    }catch(UIException $ex) {
         $gWeb->store(Constants::STICKY_MAP, $fvalues);
         $gWeb->store(Constants::FORM_ERRORS,$ex->getMessages());
 
-        // decode furl  for use
+        $fwd = base64_decode($fUrl);
+        header("Location: " . $fwd);
+        exit(1);
+
+    } catch(\Exception $ex) {
+        Logger::getInstance()->error($ex->getMessage());
+        Logger::getInstance()->backtrace($ex->getTrace());
+
+        $gWeb->store(Constants::STICKY_MAP, $fvalues);
+        $message = " Error: something went wrong!" ;
+        $gWeb->store(Constants::FORM_ERRORS,array($message));
+
+        // decode fUrl  for use
         $fwd = base64_decode($fUrl);
         header("Location: " . $fwd);
         exit(1);
     }
-
     
 ?>

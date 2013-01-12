@@ -1,6 +1,10 @@
 
 
 
+fs_config.ini params
+	- default mail address/name
+	- make sure sendgrid is set to production
+	- from address etc.	
 
 9 Jan 2013
 -------------

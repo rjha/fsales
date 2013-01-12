@@ -22,6 +22,35 @@ namespace com\indigloo\fs\mysql {
             return $row;
         }
 
+        static function setOpBit($invoiceId,$bit) {
+            $dbh = NULL ;
+            
+            try {
+                //input check
+                settype($invoiceId, "integer");
+                settype($bit, "integer");
+
+                $dbh =  PDOWrapper::getHandle();
+                
+                //Tx start
+                $dbh->beginTransaction();
+                $sql = " update fs_invoice set op_bit = %d where id = %d " ;
+                $sql = sprintf($sql,$bit,$invoiceId);
+                $dbh->exec($sql);
+
+                //Tx end
+                $dbh->commit();
+                $dbh = null;
+
+
+            } catch(\Exception $ex) {
+                $dbh->rollBack();
+                $dbh = null;
+                $message = $ex->getMessage();
+                throw new DBException($message);
+            }
+        }
+
         static function create($loginId,
                                 $commentId,
                                 $name,

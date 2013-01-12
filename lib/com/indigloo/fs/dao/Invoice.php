@@ -13,6 +13,10 @@ namespace com\indigloo\fs\dao {
             return $row ;
         }
 
+        function  setOpBit($invoiceId,$bit) {
+            mysql\Invoice::setOpBit($invoiceId,$bit);
+        }
+
         function create($loginId,
                         $commentId,
                         $name,

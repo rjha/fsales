@@ -3,19 +3,25 @@
 namespace com\indigloo\fs\mail {
    
     use \com\indigloo\Util ;
+    use \com\indigloo\Configuration as Config ;
     use \com\indigloo\mail\SendGrid as WebMail ;
 
+    use \com\indigloo\fs\html\Application as AppHtml;
+    
     class Application {
 
         static function send_invoice($invoiceRow,$commentRow) {
             
-            $html = AppHtml::getInvoiceMail($invoiceRow,$commentRow);
-
+           
+            //@todo - store this mail? fwd to another address?
             $tos = array($invoiceRow["email"]);
-            $from = "app@favsales.com" ;
-            $fromName = "Favsales app";
-            $subject = " Invoice for your purchase at ".$invoiceRow["source_name"] ;
-            $text = $html ;
+            $from = Config::getInstance()->get_value("default.mail.address");
+            $fromName = Config::getInstance()->get_value("default.mail.name");
+            
+            $subject = sprintf(" Your invoice from %s",$invoiceRow["source_name"]) ;
+            $mail_body = AppHtml::getInvoiceMail($invoiceRow,$commentRow);
+            $html = $mail_body["html"];
+            $text = $mail_body["text"];
             
             $code =  WebMail::sendViaWeb($tos,$from,$fromName,$subject,$text,$html);
             return $code ;

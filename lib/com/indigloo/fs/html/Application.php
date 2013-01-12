@@ -106,29 +106,31 @@ namespace com\indigloo\fs\html {
 
          static function getInvoiceMail($invoiceRow,$commentRow) {
 
-            $html = NULL ;
+            $html_tmpl = "/app/fragments/mail/html/invoice.tmpl" ;
+            $text_tmpl = "/app/fragments/mail/text/invoice.tmpl" ;
 
-            
-            $template = "/app/fragments/mail/invoice.tmpl" ;
             $view = new \stdClass;
             
             $view->invoiceId = $invoiceRow["id"];
-            $view->name = $invoiceRow["name"];
-            $view->email = $invoiceRow["email"];
-            $view->quantity = $invoiceRow["quantity"];
+            $view->userName = $invoiceRow["name"];
             $view->price = $invoiceRow["total_price"];
-            $view->createdOn = $invoiceRow["created_on"];
             $view->sourceName = $invoiceRow["source_name"] ;           
+            
 
-            $view->picture = $commentRow["picture"] ;
             $view->post_text = $commentRow["post_text"];
-            $view->link = $commentRow["link"];
-            $view->comment = $commentRow["message"];
-            $view->profile = sprintf("http://www.facebook.com/profile.php?id=%s",$commentRow["from_id"]) ;
+            $view->post_link = $commentRow["link"];
+            
+            $crypt = Util::encrypt($view->invoiceId);
+            $checkout_link = Url::base()."/app/pub/checkout.php";
+            $params = array("invoice_id" => urlencode($view->invoiceId));
+            $view->checkout_link = Url::createUrl($checkout_link,$params);
 
-            $html = Template::render($template,$view);
-            return $html ;
+            $html = Template::render($html_tmpl,$view);
+            $text = Template::render($text_tmpl,$view);
+            $mail_body = array("html" => $html, "text" => $text );
+            return $mail_body ;
         }
+
     
     }
 }
