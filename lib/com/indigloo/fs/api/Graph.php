@@ -9,7 +9,9 @@ namespace com\indigloo\fs\api {
     use \com\indigloo\Configuration as Config ;
 
     // @todo Graph API should return error codes for callers
-
+    // Graph API should always check for existence of properties
+    // to avoid E_NOTICE 
+    
     class Graph {
 
     	static function isValidResponse($graphUrl,$fbObject,$attributes=NULL) {
@@ -145,6 +147,7 @@ namespace com\indigloo\fs\api {
             $graphUrl = Url::createUrl($graphAPI,$params);
             
             $response = @file_get_contents($graphUrl);
+            
             $fbObject = json_decode($response);
             
             $attributes = array("data");
