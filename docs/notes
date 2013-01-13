@@ -366,3 +366,62 @@ FQL is undoubtely clear(unless you can figure out a way to sort on comment.time)
 + input check for mysql DB columns
 
 
+# Multiple invoices
+when an invoice has been created for a comment
+show invoice_no? + status  link to edit invoice ?
+on invoice form - show status?
+
+Or simply use the invoice screen for that?
+we need an invoice screen
+
+
+zaakpay API requirements
+----------------------------
+
+first_name
+last_name
+email
+address
+city
+state
+country
+pincode
+phone
+
+
+order_id
+
+
+
+
+merchantIdentifier (merchant identifier)
+checksum
+orderId
+returnUrl 
+buyerEmail (valid email address)
+buyerFirstName (<> last Name)
+buyerLastName (max 30 no special char dash etc.)
+buyerAddress (100 max)
+
+buyerCity ( min 3 max 30)
+buyerState (combo box)
+
+buyerCountry
+buyerPincode (2 to 12 digits)
+buyerPhoneNumber (09886124428 / 08032906693)
+txnType (1 - credit cards / debit cards)  
+zpPayOption  (3 - API )
+
+mode (0/1 - 0 for development)
+currency INR  
+amount (paisa)
+merchantIpAddress ( buyer IP address)
+
+
+txnDate (yyyy-MM-DD)
+purpose (1 Goods 3 - Others)
+productDescription (M  100 max)
+checksum
+
+https://api.zaakpay.com/transact
+checksum
