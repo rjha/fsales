@@ -1,5 +1,4 @@
-
-<div id="site-toolbar" class="navbar navbar-fixed-top">
+<div class="navbar">
     <div class="navbar-inner">
         <div class="container">
             <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -7,7 +6,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </a> <!-- 3bars for smaller screens -->
-            <a class="brand" href="/">Sales App<span class="beta">BETA</span> </a>
+            <a class="brand" href="/"><?php echo G_APP_NAME ?><span class="beta">&nbsp;BETA</span> </a>
 
             <div class="nav-collapse">
                 <ul class="nav">
@@ -21,4 +20,4 @@
         </div>
 
     </div>
-</div> <!-- user toolbar -->
+</div> <!-- default toolbar -->

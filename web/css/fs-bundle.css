@@ -5792,7 +5792,7 @@ a.badge:hover {
         font-family: "HelveticaNeue", "Helvetica Neue", Helvetica, Verdana, Arial, sans-serif ;
         position: relative;
         background-color:white  ;
-        padding-top:50px;
+        padding-top:1px;
     }
 
     a:hover { text-decoration:none ; }
@@ -6070,126 +6070,6 @@ a.badge:hover {
          
     }
 
-  
-
-    /* +site toolbar , navigation and popup styles */
-
-    #navbar-search{
-       height:20px;
-       float:left ;
-       margin-top:5px;
-       width:400px;
-    }
-
-    #navbar-search input {
-        width: 380px;
-        border-radius: 0;
-    }
-
-    /* beta next to brand */
-    .beta {
-        vertical-align: sub ;
-        font-size:11px;
-    }
-
-    #site-toolbar {
-        border-bottom: 1px solid #CACACA ;
-        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.4),0 0px 10px rgba(0, 0, 0, 0.1);
-        line-height:26px;
-    }
-
-    #site-toolbar .navbar-inner {
-        background: #FAFAFA ;
-        /* fix for black toolbar in IE9 */
-        /* http://stackoverflow.com/questions/9780464/twitter-bootstrap-nav-bar-issues-in-internet-explorer */
-        filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#FAFAFA', endColorstr='#FAFAFA', GradientType=0)
-        
-    }
-
-    #site-toolbar .caret {
-        border-top-color: black ;
-    }
-
-    #site-toolbar a {
-        color:#222 ;
-        font-weight:bold ;
-        text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
-
-    }
-
-    #site-toolbar .dropdown-menu a {
-        color : #333 ;
-        font-weight:normal;
-    }
-
-    #site-toolbar .dropdown-menu li > a:hover,
-    #site-toolbar .dropdown-menu .active > a,
-    #site-toolbar .dropdown-menu .active > a:hover {
-        color: #222;
-        font-weight: normal;
-        text-decoration: underline;
-        background-color: inherit;
-    } 
-
-    #submenu-col2 {
-        width:380px;
-        display : block ;
-        overflow:hidden;
-    }
-
-    #submenu-col2 ul {
-        float:left ;
-        width: 50%;
-        list-style:none ;
-        margin : 0 auto;
-    }
-
-    #site-navigator {
-        font-size:13px ;
-        line-height: 18px ;
-        padding: 10px 20px 10px 20px;
-        margin-bottom: 20px;
-        background-color: white ;
-    }
-
-    #site-navigator .explore {
-        color: #FF555D;
-        font-size: 15px;
-    }
-
-    #site-navigator a {
-        color:#444 ;
-        cursor : pointer ;
-    }
-
-    #site-toolbar .caret {
-        border-top-color: black ;
-    }
-
-    #site-navigator .dropdown-menu a {
-        color : #333 ;
-        font-weight:normal;
-    }
-
-    #site-navigator .dropdown-menu li > a:hover,
-    #site-navigator .dropdown-menu .active > a,
-    #site-navigator .dropdown-menu .active > a:hover {
-        color: #333;
-        font-weight: normal;
-        text-decoration: underline;
-        background-color: inherit;
-        background-image: none ;
-    } 
-
-    #top-unit {
-        padding:40px 25px 20px 25px;
-        background-color: #FEFFC5 ;
-        margin-top:-10px;
-        border-radius: 5px;
-        margin-bottom:15px;
-    }
-
-
    /* + simple popup */
    /* position is fixed : popup should scroll down with page */
    /* overflow  auto is to get  scrollbar when content is more than 
@@ -6336,30 +6216,23 @@ a.badge:hover {
         margin-bottom: 10px;
     }
 
+    
     #user-menu .item {
-        float:left ;
-        padding-left:10px;
-        padding-right:10px;
-    }
-
-    #user-menu .item1 {
-        float:left ;
-        border-bottom: 3px solid #DD4B39;
+        float: left;
+        border-bottom: 2px solid #DD4B39;
         padding: 0 4px;
         margin: 1px 12px 0;
-        font-weight: bold;
-    }
-
-    #user-menu .item1 a {
-          color: #DD4B39;
+        
     }
 
     #user-menu .item a {
-        color: #333;
+        color : #333 ;
+        text-decoration: none ;
     }
 
     #user-menu .item a:hover {
-        text-decoration: underline ;
+        color : #b1b1b1;
+        text-decoration: none ;
     }
 
     /* +flat button used on dashboard */
@@ -6471,45 +6344,26 @@ a.badge:hover {
     }
 
 
+
     /* @imp : last section - override 3rd party libraries */
     /* bootstrap css */
     
-    .carousel img {
-        max-width :100% ;
+    .beta {
+        font-size: 11px;
+        vertical-align: sub ;
     }
-
-    .table th, .table td {
-        border-top : none ;
-    }
-
-    .form-actions {
-        background-color: #ffffff ;
-    }
-
-    /* to fix blue backgorund on links */
     
-    .dropdown-menu  a:hover,
-    .dropdown-menu  a:focus {
-        background-color: #ffffff ;
-        background-image:none ;
-
+    .navbar-inner  {
+        border :0 ;
+        border-radius : 0 ;
+        border-bottom : 1px solid #d5d5d5;
     }
 
-    .dropdown-menu li > a:hover,
-    .dropdown-menu li > a:focus,
-    .dropdown-submenu:hover > a {
-        background-color: #ffffff ;
-        background-image:none ;
-        filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#FAFAFA', endColorstr='#FAFAFA', GradientType=0);
+    .navbar .brand {
+        padding: 10px 20px 10px 80px ;
     }
 
-    .dropdown-menu .active > a,
-    .dropdown-menu .active > a:hover {
-        background-color: #ffffff ;
-        background-image:none ;
-        filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#FAFAFA', endColorstr='#FAFAFA', GradientType=0);
-   
-    }
+    
     /* bootstrap pager - make rectangular */
     .pager a,.pager span{
         -webkit-border-radius: 0 ;

@@ -92,7 +92,7 @@
             <div class="row">
                 <div class="span8 offset1">
                     <div class="page-header">
-                        <h3> Dashboard </h3>
+                        <h3> Comments </h3>
                         <?php echo $sourceHtml; ?>
                     </div>
                     

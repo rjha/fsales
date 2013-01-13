@@ -1,6 +1,8 @@
 
+12 Jan 2013
+--------------------
 
-
+- Reload schema
 fs_config.ini params
 	- default mail address/name
 	- make sure sendgrid is set to production
