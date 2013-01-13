@@ -1,0 +1,34 @@
+
+<div class="widget">
+
+    <div class="row">
+        
+        <div class="span2">
+            <div>
+                 <a href="~~$view->link~" target="_blank"> 
+                    <img src="~~$view->picture~" alt="photo" /> 
+                   
+                </a>
+            </div>
+           
+        </div>
+
+        <div class="span6">
+            <p>~~$view->post_text~</p>
+            <ul>
+                <li> <span class="b">~~$view->quantity~ </span> Qty </li>
+                <li> <span class="b"> created on </span> ~~$view->createdOn~</li>
+                <li> <span class="b"> Merchant </span> ~~$view->sourceName~</li>
+
+            </ul>
+
+        </div>
+
+    </div> <!-- row -->
+
+</div> <!-- widget -->
+<div class="floatr">
+    <div>
+        <span class="huge-text">Total: &nbsp; ~~$view->price~ </span>
+    </div>
+</div>

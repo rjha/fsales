@@ -77,7 +77,15 @@ namespace com\indigloo\fs\html {
             $html = Template::render($template,$view);
             return $html ;
         }
-        
+
+        static function getNoInvoice() {
+            $html = NULL ;
+            $template = "/app/fragments/no-invoice.tmpl" ;
+            $view = new \stdClass;
+            $html = Template::render($template,$view);
+            return $html ;
+        }
+
         static function getInvoice($invoiceRow,$commentRow) {
 
             $html = NULL ;
@@ -104,7 +112,54 @@ namespace com\indigloo\fs\html {
             return $html ;
         }
 
-         static function getInvoiceMail($invoiceRow,$commentRow) {
+        static function getInvoice2($invoiceRow) {
+
+            $html = NULL ;
+
+            $template = "/app/fragments/invoice2.tmpl" ;
+            $view = new \stdClass;
+            
+            $view->invoiceId = $invoiceRow["id"];
+            $view->name = $invoiceRow["name"];
+            $view->email = $invoiceRow["email"];
+            $view->quantity = $invoiceRow["quantity"];
+
+            $view->price = $invoiceRow["total_price"];
+            $view->picture = $invoiceRow["picture"] ;
+            $view->post_text = $invoiceRow["post_text"];
+
+            $view->link = $invoiceRow["link"];
+            $view->updatedOn = $invoiceRow["updated_on"];
+            $view->opBit = $invoiceRow["op_bit"];
+
+            $html = Template::render($template,$view);
+            return $html ;
+        }
+
+        static function getInvoice3($invoiceRow) {
+
+            $html = NULL ;
+
+            $template = "/app/fragments/invoice3.tmpl" ;
+            $view = new \stdClass;
+            
+            $view->invoiceId = $invoiceRow["id"];
+            $view->name = $invoiceRow["name"];
+            $view->quantity = $invoiceRow["quantity"];
+            $view->price = $invoiceRow["total_price"];
+
+            $view->picture = $invoiceRow["picture"] ;
+            $view->post_text = $invoiceRow["post_text"];
+            $view->link = $invoiceRow["link"];
+
+            $view->createdOn = $invoiceRow["created_on"];
+            $view->sourceName = $invoiceRow["source_name"];
+            
+            $html = Template::render($template,$view);
+            return $html ;
+        }
+
+        static function getInvoiceMail($invoiceRow,$commentRow) {
 
             $html_tmpl = "/app/fragments/mail/html/invoice.tmpl" ;
             $text_tmpl = "/app/fragments/mail/text/invoice.tmpl" ;

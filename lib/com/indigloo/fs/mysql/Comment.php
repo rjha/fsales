@@ -67,12 +67,8 @@ namespace com\indigloo\fs\mysql {
             $q->setPrefixAnd();
             $sql .= $q->getPagination($start,$direction,"c.created_ts",$limit);
 
-            //@debug 
-            // echo $sql; exit ;
-
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
-
-
+            
             //reverse rows for 'before' direction
             if($direction == 'before') {
                 $results = array_reverse($rows) ;

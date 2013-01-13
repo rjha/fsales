@@ -22,6 +22,69 @@ namespace com\indigloo\fs\mysql {
             return $row;
         }
 
+        static function getOnId2($invoiceId) {
+
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            $invoiceId = $mysqli->real_escape_string($invoiceId);
+             
+             $sql = " select p.picture, p.link, p.message as post_text, inv.* ".
+                " from fs_post p, fs_invoice inv ".
+                " where inv.id = %d and inv.post_id = p.post_id " ;
+
+            $sql = sprintf($sql,$invoiceId);
+            $row = MySQL\Helper::fetchRow($mysqli, $sql);
+            return $row;
+        }
+
+        static function getLatest($loginId,$limit) {
+
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+             
+            settype($loginId, "integer");
+            settype($limit, "integer");
+
+            $sql = " select p.picture, p.link, p.message as post_text, inv.* ".
+                " from fs_post p, fs_invoice inv ".
+                " where inv.id = %d ".
+                " and inv.post_id = p.post_id order by inv.id desc limit %d " ;
+            
+            $sql = sprintf($sql,$loginId,$limit);
+            $rows = MySQL\Helper::fetchRows($mysqli, $sql);
+            return $rows;
+        }
+
+        static function getPaged($loginId,$start,$direction,$limit) {
+
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            //sanitize input
+            settype($loginId, "integer");
+            settype($limit, "integer");
+            settype($start,"integer");
+            $direction = $mysqli->real_escape_string($direction);
+
+             $sql = 
+                " select p.picture, p.link, p.message as post_text ,inv.* ".
+                " from fs_post p, fs_invoice inv ".
+                " where inv.id = %d ".
+                " and inv.post_id = p.post_id  " ;
+
+            $sql = sprintf($sql,$loginId);
+            $q = new MySQL\Query($mysqli);
+            $q->setPrefixAnd();
+            $sql .= $q->getPagination($start,$direction,"inv.id",$limit);
+
+            $rows = MySQL\Helper::fetchRows($mysqli, $sql);
+
+            //reverse rows for 'before' direction
+            if($direction == 'before') {
+                $results = array_reverse($rows) ;
+                return $results ;
+            }
+
+            return $rows;
+        }
+
         static function setOpBit($invoiceId,$bit) {
             $dbh = NULL ;
             

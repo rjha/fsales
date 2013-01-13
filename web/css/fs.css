@@ -60,6 +60,16 @@
         word-wrap: break-word;
     }
 
+    .huge-text {
+        font-family: Georgia, Arial, sans-serif;
+        font-size: 22px;
+        line-height: 32px;
+        text-align: left;
+        color: #222;
+        font-weight: bold;
+        word-wrap: break-word;
+    }
+
     .wrap-it { word-wrap : break-word;}
     
     .floatl {float:left;}

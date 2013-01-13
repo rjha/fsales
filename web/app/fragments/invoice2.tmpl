@@ -21,7 +21,7 @@
                 <dd>~~$view->invoiceId~</dd>
 
                 <dt>Name</dt>
-                <dd>~~$view->name~</dd>
+                <dd><a href="~~$view->profile~" target="_blank">~~$view->name~</a> </dd>
 
 
                 <dt>Email</dt>
@@ -32,8 +32,10 @@
                 
                 <dt>Price</dt>
                 <dd>~~$view->price~</dd>
-                <dt>Created On</dt>
-                <dd>~~$view->createdOn~</dd>
+                <dt>Updated On</dt>
+                <dd>~~$view->updatedOn~</dd>
+                <dt>Status</dt>
+                <dd>~~$view->opBit~</dd>
                 
 
             </dl>
@@ -43,8 +45,3 @@
     </div> <!-- row -->
 
 </div> <!-- widget -->
-<div class="clear"> </div>
-
-<div class="section">
-    <h4> <a href="~~$view->profile~" target="_blank">View Facebook page of ~~$view->name~</a> </h4>
-</div>

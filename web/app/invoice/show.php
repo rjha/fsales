@@ -31,7 +31,7 @@
     
     $invoiceDao = new \com\indigloo\fs\dao\Invoice();
     $commentDao = new \com\indigloo\fs\dao\Comment();
-
+    
     $invoiceRow = $invoiceDao->getOnId($invoiceId);
     if(empty($invoiceRow)) {
         $message = " No invoice  found for supplied invoice_id ";
