@@ -4,15 +4,16 @@
     <div class="row">
         
         <div class="span4">
-            <h4> <a href="~~$view->profile~" target="_blank">~~$view->userName~</a> </h4>
-            <span class="faded-text">~~$view->time~</span> 
-            <p class="comment-text">  ~~$view->comment~ </p>
+            <h5> <a href="~~$view->profile~" target="_blank">~~$view->userName~</a> </h5>
             
+            <p class="comment-text">  ~~$view->comment~ </p>
+            <span class="faded-text">~~$view->time~</span> 
             ~if($view->hasInvoice) {~
             <div class="pt10"> 
                 <a href= "~~$view->invoiceUrl~" class="btn btn-mini">invoice</a> 
             </div>
             ~}~
+            
             
 
         </div>

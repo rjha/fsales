@@ -112,8 +112,10 @@
         border-bottom: 1px solid #f1f1f1 ;
         min-height:60px;
         float: left ;
-        padding-bottom:15px;
-        padding-top:15px;
+        padding:20px;
+        
+        border: 1px solid #F1F1F1 ;
+        margin-bottom: 20px; 
     }
 
     .widget .options {
@@ -565,6 +567,16 @@
         padding-top:10px
     }
 
+    #footer {
+        padding-top:60px;
+        font-size: 12px;
+        text-align:center;
+        line-height:18px;
+    }
+
+    #footer a {
+
+    }
 
 
     /* @imp : last section - override 3rd party libraries */
@@ -593,4 +605,12 @@
         border-radius: 0;
     }
     
+    .page-header {
+        padding-bottom: 29px;
+        border-bottom: 0;
+    }
+
+    .form-actions {
+        background-color: #ffffff ;
+    }
 
