@@ -53,7 +53,7 @@
 
                     <div class="box-shadow p20 mt20">
                         <!-- image -->
-                        <img src="/site/page/sales-2.jpg" class="aligncenter" alt="main-image" />
+                        <img src="/site/page/images/home-image_480_320.jpg" class="aligncenter" alt="main-image" />
                     </div>
 
                    

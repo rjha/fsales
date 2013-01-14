@@ -74,7 +74,7 @@
                     
 
                     <div class="form-wrapper">
-                        <form  id="form1"  name="form1" action="/app/action/zaakpay/tx.php"  method="POST">
+                        <form  id="form1"  name="form1" action="/app/action/order/new.php"  method="POST">
                             <table class="form-table">
                                 
                                 <tr>
@@ -116,13 +116,10 @@
                                 <tr>
                                     <td> 
                                         <span>State*</span>
-                                        <?php include(APP_WEB_DIR. "/app/inc/data/state.inc"); ?>
+                                        <?php $gUIStateId = "billing_state" ; include(APP_WEB_DIR. "/app/inc/data/state.inc"); ?>
                                     </td>
                                 </tr>
        
-
-                                
-
                                 <tr>
                                     <td>
                                         <div class="form-actions">
@@ -139,6 +136,7 @@
                                 </tr>
 
                             </table> 
+
                             <input type="hidden" name="invoice_id" value="<?php echo $invoiceRow['id']; ?>" /> 
                             <input type="hidden" name="qUrl" value="<?php echo $qUrl; ?>" />
                             <input type="hidden" name="fUrl" value="<?php echo $fUrl; ?>" />

@@ -387,9 +387,7 @@ state
 country
 pincode
 phone
-
-
-order_id
+amount
 
 
 
@@ -408,6 +406,8 @@ buyerState (combo box)
 
 buyerCountry
 buyerPincode (2 to 12 digits)
+
+
 buyerPhoneNumber (09886124428 / 08032906693)
 txnType (1 - credit cards / debit cards)  
 zpPayOption  (3 - API )

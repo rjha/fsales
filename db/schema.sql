@@ -132,6 +132,49 @@ CREATE TABLE  fs_invoice  (
 
 
 
+-- 
+-- Jan 15, 2012
+--
+
+
+DROP TABLE IF EXISTS  fs_order ;
+CREATE TABLE  fs_order  (
+ 
+  id  int NOT NULL AUTO_INCREMENT,
+  invoice_id int not null,
+  
+  first_name varchar(30) not null,
+  last_name varchar(30) not null,
+  email varchar(64) not null,
+  phone varchar(16) not null,
+  total_price decimal(11,2) not null,
+  currency varchar(8) not null,
+  ip_address varchar(46) not null,
+
+  item_description varchar(100) not null,
+  billing_address varchar(100) not null,
+  billing_city varchar(30) not null,
+  billing_state varchar(50) not null,
+  billing_pincode varchar(12) not null,
+  billing_country varchar(16) not null,
+
+  shipping_first_name varchar(30) not null,
+  shipping_last_name varchar(30) not null,
+  shipping_address varchar(100) not null,
+  shipping_city varchar(30) not null,
+  shipping_state varchar(50) not null,
+  shipping_pincode varchar(12) not null,
+  shipping_country varchar(16) not null,
+
+  op_bit int default 1,
+  tx_date timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (id)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+
+
 
 
 

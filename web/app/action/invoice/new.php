@@ -61,6 +61,18 @@
         $fwd = base64_decode($fUrl);
         header("Location: " . $fwd);
         exit(1);
+    }catch(\Exception $ex) {
+        Logger::getInstance()->error($ex->getMessage());
+        Logger::getInstance()->backtrace($ex->getTrace());
+
+        $gWeb->store(Constants::STICKY_MAP, $fvalues);
+        $message = " Error: something went wrong!" ;
+        $gWeb->store(Constants::FORM_ERRORS,array($message));
+
+        // decode fUrl  for use
+        $fwd = base64_decode($fUrl);
+        header("Location: " . $fwd);
+        exit(1);
     }
 
     
