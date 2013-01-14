@@ -9,8 +9,6 @@
     
     use \com\indigloo\ui\form\Message as FormMessage;
     use \com\indigloo\ui\form\Sticky;
-
-    use \com\indigloo\fs\auth\Login as Login ;
     use \com\indigloo\fs\html\Application as AppHtml ;
 
 
@@ -20,7 +18,6 @@
     // transfer encoded - decode to use!
     $qUrl = Url::tryBase64QueryParam("q", "/");
     $fUrl = base64_encode(Url::current());
-    $loginId = Login::getLoginIdInSession();
     $invoiceId = Url::tryQueryParam("invoice_id");
     
     if(empty($invoiceId)) {

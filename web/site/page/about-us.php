@@ -26,13 +26,13 @@
                 <div class="span8 offset1">
                     <div class="pt100">
                         <div class="section">
-                            <img src="rjha-mug.jpg" class="alignleft" alt="rjha-mugshot" width="96" height="96"/>
+                            <img src="/site/page/images/rjha-mug.jpg" class="alignleft" alt="rjha-mugshot" width="96" height="96"/>
                             Rajeev Jha has worked with Citrix, Americal Online, Oracle and Mahindra BT. He was
                             also part of startups Indegene and Everypath. He is
                             an alumnus of IIT Kanpur and studied at IIM Bangalore.
                         </div>
                         <div class="section">
-                             <img src="ss-mug.jpg" class="alignleft" alt="ss-mugshot" width="96" height="96" />
+                             <img src="/site/page/images/ss-mug_96_96.png" class="alignleft" alt="ss-mugshot" width="96" height="96" />
                              Saurabh Srivastava has earilier worked with Infosys, Franklin Templeton 
                              ,Ness Technologies and TCG Software. He has consulted 7to9 retail and "Show Off", 
                              an apparel retailer. He is an alumnus of IIT Kanpur and studied at IIM Calcutta.

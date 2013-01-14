@@ -25,10 +25,10 @@
                 <div class="span8 offset1">
                     <div class="box-shadow p20 mt20">
                         <!-- image -->
-                        <img src="/site/page/sales-2.jpg" class="aligncenter" alt="main-image" />
+                        <img src="/site/page/images/home-image_720_362.png" class="aligncenter" alt="main-image" />
                     </div>
                 </div>
-                
+
             </div> <!-- row:1 -->
 
             <div class="row">
@@ -51,20 +51,20 @@
                             <span class="badge badge-warning">1</span>
                             Upload items on facebook
                             <br>
-                            <img src="/site/page/explain-1.png" alt="explain-1"/>
+                            <img src="/site/page/images/facebook_220_167.png" alt="facebook-image"/>
                         </div>
                          <div class="stack">
                             <span class="badge badge-warning">2</span>
                             Your fans purchase by commenting on posts.
                             <br>
-                            <img src="/site/page/explain-2.png" alt="explain-2"/>
+                            <img src="/site/page/images/buyit_220_112.png" alt="buy-it-image"/>
                         </div>
                          <div class="stack">
                             <span class="badge badge-warning">3</span>
                             Favsales does the processing and your receive 
                             payment in your bank account!
                             <br>
-                            <img src="/site/page/explain-3.png" alt="explain-3" />
+                            <img src="/site/page/images/explain-34.jpg" alt="money-image" />
                         </div>
                         <div class="clear">&nbsp; </div>
 
