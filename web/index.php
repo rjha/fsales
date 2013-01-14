@@ -23,11 +23,14 @@
              <?php include(APP_WEB_DIR . '/app/inc/top/site.inc'); ?>
             <div class="row">
                 <div class="span8 offset1">
-                 <div class="box-shadow p20 mt20">
-                    <!-- image -->
-                    <img src="/site/page/sales-2.jpg" class="aligncenter" alt="main-image" />
+                    <div class="box-shadow p20 mt20">
+                        <!-- image -->
+                        <img src="/site/page/sales-2.jpg" class="aligncenter" alt="main-image" />
+                    </div>
                 </div>
+                
             </div> <!-- row:1 -->
+
             <div class="row">
 
                 <div class="span8 offset1">
@@ -48,20 +51,20 @@
                             <span class="badge badge-warning">1</span>
                             Upload items on facebook
                             <br>
-                            <img src="/site/page/explain-1.png" />
+                            <img src="/site/page/explain-1.png" alt="explain-1"/>
                         </div>
                          <div class="stack">
                             <span class="badge badge-warning">2</span>
                             Your fans purchase by commenting on posts.
                             <br>
-                            <img src="/site/page/explain-2.png" />
+                            <img src="/site/page/explain-2.png" alt="explain-2"/>
                         </div>
                          <div class="stack">
                             <span class="badge badge-warning">3</span>
                             Favsales does the processing and your receive 
                             payment in your bank account!
                             <br>
-                            <img src="/site/page/explain-3.png" />
+                            <img src="/site/page/explain-3.png" alt="explain-3" />
                         </div>
                         <div class="clear">&nbsp; </div>
 

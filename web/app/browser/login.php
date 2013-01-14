@@ -39,7 +39,7 @@
         <?php include(APP_WEB_DIR . '/app/inc/toolbar.inc'); ?>
         
         <div class="container mh600">
-            <?php include(APP_WEB_DIR . '/app/inc/top-unit.inc'); ?>
+            <?php include(APP_WEB_DIR . '/app/inc/top/site.inc'); ?>
         	<div class="row">
         		<div class="span8 offset1">
                     <?php FormMessage::render() ?>
@@ -47,10 +47,16 @@
         			   <h3> Sign in</h3>
                     </div>
                     <div class="p10"> <?php FormMessage::render(); ?> </div>
-                     <p class="lead">
-                        Sign in using your facebook account now!
-                    </p>
-        			<a href="<?php echo $fbDialogUrl; ?>" class="btn btn-large btn-success"> Sign in</a>
+                    <div class="p20">
+                        <a href="<?php echo $fbDialogUrl; ?>" class="btn btn-large btn-success">Sign in using your facebook account -></a>
+                    </div>
+
+                    <div class="box-shadow p20 mt20">
+                        <!-- image -->
+                        <img src="/site/page/sales-2.jpg" class="aligncenter" alt="main-image" />
+                    </div>
+
+                   
         		</div>
         	</div>
         </div>
