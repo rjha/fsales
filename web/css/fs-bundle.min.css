@@ -933,6 +933,7 @@ form{margin:0;padding:0}
 .error{color:#f00}
 .no-border{border:0!important}
 div.hr{font-size:1px;height:1px;line-height:1px;background:#ededed}
+div.hr-red{font-size:2px;height:2px;line-height:2px;background:#dd4b39}
 .clear{clear:both;margin-top:-1px;height:1px;overflow:hidden}
 .faded-text{color:#8c7e7e}
 .feed-text{font-family:arial;font-size:11px;line-height:16px}
@@ -993,7 +994,7 @@ img.aligncenter{display:block;margin-left:auto;margin-right:auto}
 .tools a{color:#333}
 .tools a:hover{text-decoration:underline}
 .section{min-height:40px;padding:20px 0 20px 0;border-bottom:1px solid #f1f1f1;overflow:hidden}
-.stack{width:210px;float:left;padding:4px;margin:4px;cursor:pointer}
+.stack{width:230px;float:left;padding:4px;margin:4px;cursor:pointer}
 .feeds{font-size:12px;padding:0 0 0 10px;font-family:arial}
 .feeds a{color:#333}
 .feeds .item{width:100%;clear:both;padding-top:5px;border-top:1px solid #eee;padding-bottom:5px}

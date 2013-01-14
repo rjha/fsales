@@ -1,4 +1,14 @@
 
+14 Jan 2013
+-------------
+- Add nginx regex rule to match asset files with timestamp 
+
+server_name_in_redirect  off;
+# asset versioning with timestamp
+rewrite ^/(css|js)/(.*)\.t(\d+)\.(css|js)$  /$1/$2.$4 ;
+
+
+
 12 Jan 2013
 --------------------
 

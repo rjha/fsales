@@ -36,6 +36,13 @@
         background : #ededed ;
     }
 
+    div.hr-red {
+        font-size: 2px;
+        height: 2px;
+        line-height: 2px;
+        background : #DD4B39 ;
+    }
+
     .clear {
         clear:both;
         margin-top:-1px;
@@ -244,7 +251,7 @@
 
     /* generic left floating div */
     .stack {
-        width:210px;
+        width:230px;
         float:left;
         padding:4px;
         margin:4px;
