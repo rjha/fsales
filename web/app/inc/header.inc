@@ -19,6 +19,6 @@
     //define constants
     define("G_APP_NAME", "Favsales");
     define("G_APP_DOMAIN", "www.favsales.com");
-    define("G_APP_TAGLINE", "A long line about application");
+    define("G_APP_TAGLINE", "Favsales helps you sell more!");
     
 ?>
