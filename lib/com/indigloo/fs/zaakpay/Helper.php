@@ -7,7 +7,7 @@ namespace com\indigloo\fs\zaakpay  {
 		const SECRET_KEY = "d409bd01a7114a5186bf82b9d466c741" ;
 		const IDENTIFIER = "90efd5c603c3427f93f7b9de57f60195" ;
 
-		function calculateChecksum($data) {
+		static function calculateChecksum($data) {
 
 			$all = '';
 			foreach($data as $key => $value){
@@ -27,7 +27,7 @@ namespace com\indigloo\fs\zaakpay  {
 			return $checksum;
 		}
 
-		function outputForm($data,$checksum) {
+		static function outputForm($data,$checksum) {
 			 
 			foreach($data as $key => $value) {
 				if ($key == 'returnUrl') {
@@ -40,7 +40,7 @@ namespace com\indigloo\fs\zaakpay  {
 			echo '<input type="hidden" name="checksum" value="'.$checksum.'" />'."\n";
 		}
 
-		function sanitizedParam($param) {
+		static function sanitizedParam($param) {
 			$pattern[0] = "%,%";
 		        $pattern[1] = "%#%";
 		        $pattern[2] = "%\(%";
@@ -71,7 +71,7 @@ namespace com\indigloo\fs\zaakpay  {
 			return $sanitizedParam;
 		}
 
-		function sanitizedURL($param) {
+		static function sanitizedURL($param) {
 			$pattern[0] = "%,%";
 		        $pattern[1] = "%\(%";
 	       		$pattern[2] = "%\)%";
