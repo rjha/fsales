@@ -36,7 +36,7 @@
 
 	$data["merchantIdentifier"] = Zaakpay::IDENTIFIER ;
 	$data["orderId"] = $orderId ;
-	$data["returnUrl"] = "/app/ping/zaakpay-tx.php" ;
+	$data["returnUrl"] = Url::base()."/app/ping/zaakpay-tx.php" ;
 
 	$data["buyerEmail"] = $orderRow["email"] ;
 	$data["buyerFirstName"] = $orderRow["first_name"] ;
@@ -57,7 +57,7 @@
 
 	// 1 = debit/credit card
 	// 3 = net banking
-	$data["$txnType"] = 1 ;
+	$data["txnType"] = 1 ;
 	// option API = 3 
 	$data["zpPayOption"] = 3 ;
 	// mode = 0 for dev, 1 for production
