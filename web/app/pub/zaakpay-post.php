@@ -78,11 +78,17 @@
         <title> Zaakpay payment gateway</title>
         <?php include(APP_WEB_DIR . '/app/inc/meta.inc'); ?>
         <?php echo \com\indigloo\fs\util\Asset::version("/css/fs-bundle.css"); ?>
-
+        <script type="text/javascript">
+            function submitForm(){
+                var form = document.forms[0];
+                form.submit();
+            }
+        </script>
+</head>
 
     </head>
 
-     <body>
+     <body onload="javascript:submitForm()">
         <?php include(APP_WEB_DIR . '/app/inc/toolbar.inc'); ?>
         
         <div class="container mh600">
