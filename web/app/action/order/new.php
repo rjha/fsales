@@ -101,7 +101,7 @@
         // make sure you have the right data before fwd-ing to 
         // zaakpay
         $params = array("order_id" => $orderId);
-        $fwd = Url::createUrl("/app/zaakpay/tx-post.php", $params);
+        $fwd = Url::createUrl("/app/pub/zaakpay-post.php", $params);
         header("Location: ".$fwd);
 
     } catch(UIException $ex) {
