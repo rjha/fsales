@@ -29,6 +29,8 @@
                             <p class="lead">
                                 For any queries or issues email us at 
                                 <a href="mailto:support@favsales.com">support@favsales.com</a> 
+                                <br>
+                                Or Give us a call on +91 90070 15444
                             </p>
                         </div>
                     </div>

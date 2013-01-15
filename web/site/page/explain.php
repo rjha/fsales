@@ -27,20 +27,28 @@
                     <div class="pt100">
                         <div class="section">
                             <h3> Timeline comments </h3>
-                            IMAGE_1 <br>
-                            <p class="comment-text"> Your fans buy by commenting on your post </p>
+                            <br>
+                            <p class="comment-text"> 1. Your fans buy by commenting on your post </p>
                         </div>
 
                          <div class="section">
                             <h3> Comments dashboard </h3>
-                            IMAGE_2 <br>
-                            <p class="comment-text"> All comments appear on your dashboard </p>
+                            <br>
+                            <p class="comment-text"> 2. All comments appear on your Favsales dashboard </p>
                         </div>
 
                         <div class="section">
-                            <h3> Invoice status </h3>
-                            IMAGE_3 <br>
-                            <p class="comment-text"> You can update the invoice status </p>
+                            <h3> Invoice</h3>
+                            <br>
+                            <p class="comment-text"> 3. You can send invoice for comments through Favsales</p>
+                        </div>
+
+
+                        <div class="section">
+                            <h3> Payment</h3>
+                            <br>
+                            <p class="comment-text"> 4. Fans pay for item on Favsales app. 
+                                Favsales manages credit card and netbanking payments.</p>
                         </div>
 
 

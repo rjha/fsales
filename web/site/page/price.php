@@ -42,8 +42,10 @@
                             <tr>
                                 <td>2) Small Business</td>
                                 <td> 
-                                    Rs. 200 per month + Bank transfer(max Rs. 25) <br>
-                                    Upto Rs. 2000 in Favsales transactions 
+                                    Rs. 200 per month + Bank transfer(max Rs. 25) 
+                                    + Payment gateway (3.37% including tax)
+                                    <br> 
+                                    Upto Rs. 2000 in Favsales transactions
                                  
                                 </td>
                             </tr>
@@ -51,7 +53,9 @@
                              <tr>
                               <td>3) Standard</td>
                                 <td> 
-                                   Rs. 200 + 3% + Bank transfer(max Rs. 25) <br>
+                                   Rs. 200 + 3% + Bank transfer(max Rs. 25) 
+                                   + Payment gateway (3.37% including tax)
+                                   <br>
                                     From Rs. 2000 to Rs. 5,00,000 in Favsales transactions 
                                  
                                 </td>
