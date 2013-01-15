@@ -157,7 +157,7 @@ CREATE TABLE  fs_order  (
   billing_state varchar(50) not null,
   billing_pincode varchar(12) not null,
   billing_country varchar(16) not null,
-
+  
   shipping_first_name varchar(30) not null,
   shipping_last_name varchar(30) not null,
   shipping_address varchar(100) not null,

@@ -13,8 +13,10 @@ namespace com\indigloo\fs\mysql {
         static function getOnId($invoiceId) {
 
             $mysqli = MySQL\Connection::getInstance()->getHandle();
-            $invoiceId = $mysqli->real_escape_string($invoiceId);
-             
+            
+            // input
+            settype($invoiceId, "integer");
+              
             $sql = " select * from fs_invoice where id = %d ";
             $sql = sprintf($sql,$invoiceId);
 
@@ -25,9 +27,10 @@ namespace com\indigloo\fs\mysql {
         static function getOnId2($invoiceId) {
 
             $mysqli = MySQL\Connection::getInstance()->getHandle();
-            $invoiceId = $mysqli->real_escape_string($invoiceId);
+            // input
+            settype($invoiceId, "integer");
              
-             $sql = " select p.picture, p.link, p.message as post_text, inv.* ".
+            $sql = " select p.picture, p.link, p.message as post_text, inv.* ".
                 " from fs_post p, fs_invoice inv ".
                 " where inv.id = %d and inv.post_id = p.post_id " ;
 
@@ -35,7 +38,7 @@ namespace com\indigloo\fs\mysql {
             $row = MySQL\Helper::fetchRow($mysqli, $sql);
             return $row;
         }
-
+        
         static function getLatest($loginId,$limit) {
 
             $mysqli = MySQL\Connection::getInstance()->getHandle();

@@ -8,6 +8,17 @@ namespace com\indigloo\fs\html {
     
     class Application {
 
+        static function messageBox($message) {
+            $message = empty($message) ? "No message supplied!" : $message;
+             
+            $html = NULL ;
+            $template = "/app/fragments/message-box.tmpl" ;
+            $view = new \stdClass;
+            $view->message = $message ;
+            $html = Template::render($template,$view);
+            return $html ;
+        }
+
         static function getPageTable($pages) {
             if(empty($pages)) { return ""; }
             $html = NULL ;

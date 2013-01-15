@@ -1,7 +1,7 @@
 
 
 <select id="<?php echo $gUIStateId; ?>" name="<?php echo $gUIStateId; ?>">
-	<option value="0">--Select State--</option>
+	<option value="">--Select State--</option>
 	<option value="Andaman and Nicobar Islands">Andaman and Nicobar</option>
 	<option value="Andhra Pradesh">Andhra Pradesh</option>
 	<option value="Arunachal Pradesh">Arunachal Pradesh</option>

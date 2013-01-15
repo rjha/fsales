@@ -17,7 +17,7 @@ namespace com\indigloo\fs\dao {
             $row = mysql\Invoice::getonId2($invoiceId);
             return $row ;
         }
-
+    
         function getPaged($loginId,$paginator) {
             $limit = $paginator->getPageSize();
             

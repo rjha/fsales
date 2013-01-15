@@ -142,14 +142,14 @@
                     errorLabelContainer: $("#form-message"),
                     rules: {
                         name: {required: true } ,
-                        email: {required: true } ,
+                        email: {required: true, email: true } ,
                         price: {required: true } ,
                         quantity: {required: true } ,
                         
                     },
                     messages: {
-                        name: {required: " Buyer Name is required" },
-                        email: {required: " Buyer Email is required"},
+                        name: {required: " Name (Buyer) is required" },
+                        email: {required: " Email (Buyer) is required"},
                         price: {required: " Price of item is required"},
                         quantity: {required: " Quantity is required"}
 
