@@ -1,3 +1,8 @@
+<?php
+    include ('fs-app.inc');
+    include (APP_WEB_DIR.'/app/inc/header.inc');
+
+?>
 
 <!DOCTYPE html>
 <html>
