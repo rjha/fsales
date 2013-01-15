@@ -48,7 +48,7 @@
 	$data["buyerPincode"] = $orderRow["billing_pincode"] ;
 	$data["buyerPhoneNumber"] = $orderRow["phone"] ;
 	$data["currency"] = $orderRow["currency"] ;
-	$data["amount"] = $orderRow["total_price"] ;
+	$data["amount"] = $orderRow["total_price"] * 100 ;
 	$data["merchantIpAddress"] = $orderRow["ip_address"] ;
 	// DDDD-MM-YY
 
