@@ -48,7 +48,7 @@
                     </div>
                     <div class="p10"> <?php FormMessage::render(); ?> </div>
                     <div class="p20">
-                        <a href="<?php echo $fbDialogUrl; ?>" class="btn btn-large btn-success">Sign in using your facebook account -></a>
+                        <a target="_top" href="<?php echo $fbDialogUrl; ?>" class="btn btn-large btn-success">Sign in using your facebook account -></a>
                     </div>
 
                     <div class="box-shadow p20 mt20">
