@@ -47,6 +47,7 @@ namespace com\indigloo\fs\mysql {
                 
                 $currency =  "INR" ;
                 $country = "India";
+                $ipAddress =  Url::getRemoteIp();
 
                 $stmt1 = $dbh->prepare($sql1);
 
@@ -60,7 +61,7 @@ namespace com\indigloo\fs\mysql {
                 $stmt1->bindParam(":phone", $formData["phone"]);
                
                 $stmt1->bindParam(":currency", $currency);
-                $stmt1->bindParam(":ip", Url::getRemoteIp());
+                $stmt1->bindParam(":ip", $ipAddress);
 
                 $stmt1->bindParam(":address", $formData["billing_address"]);
                 $stmt1->bindParam(":city", $formData["billing_city"]);
