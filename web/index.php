@@ -81,18 +81,15 @@
 
                     <p class="lead">
                      Facebook comments increase sales as impulse buying increases. 
-                     You can seamlessly sell to existing fans and friends who are more 
-                     likely to browse and purchase from your Facebook pages 
+                      
                     </p>
                     <p class="lead">
-                        Integrated seamlessly with your Facebook Fan page. 
-                        You can keep on posting on your fan page even 
-                        when you do not want to sell and use it parallely to market 
-                        and engage fans. Your fans will never see any difference.
+                     Sell to existing fans and friends who are more 
+                     likely to browse and purchase from your Facebook pages
                     </p>
                     <p class="lead">
-                        Many other sales activities like running an auction, 
-                        running a end of season sale, preorder for new products, 
+                        Many other sales activities like auction, 
+                        end of season sale, preorders and 
                         flash sales can easily be done.
                     </p>
                     <div class="widget">

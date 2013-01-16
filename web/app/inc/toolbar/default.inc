@@ -7,7 +7,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </a> <!-- 3bars for smaller screens -->
-            <a class="brand" href="/"><?php echo G_APP_NAME ?><span class="beta">&nbsp;BETA</span> </a>
+            <a class="brand" href="/"><?php echo G_APP_NAME ?><span class="beta">&nbsp;private beta</span> </a>
 
             <div class="nav-collapse">
                 <ul class="nav">

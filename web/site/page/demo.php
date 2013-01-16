@@ -27,7 +27,13 @@
                     <div class="pt100">
                         <div class="widget">
                             <p class="lead">
-                                To Request a demo <br>
+                                We are first releasing the product into a private beta before 
+                                entering a  public release. The private beta program is a 
+                                set of users who commit to providing feedback in the form of 
+                                direct comments and user testing. 
+                            </p>
+                            <p>
+                                To see a demo and request the features you are interested in.<br>
                                 Give us a call on +91 90070 15444 <br>
                                 Or write to us at <a href="mailto:support@favsales.com">support@favsales.com</a> <br>
                             </p>
