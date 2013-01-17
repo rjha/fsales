@@ -10,6 +10,7 @@ namespace com\indigloo\fs\controller{
     use \com\indigloo\fs\html\Application as AppHtml ;
     use \com\indigloo\fs\api\Graph as GraphAPI ;
 
+    use \com\indigloo\fs\Constants as AppConstants ;
 
     class Canvas {
 
@@ -44,13 +45,23 @@ namespace com\indigloo\fs\controller{
             
         }
 
+        private function login_check() {
+            if(!Login::hasSession()) {
+                $qUrl = Url::tryBase64QueryParam("q", AppConstants::DASHBOARD_URL);
+                $fwd = AppConstants::LOGIN_URL.'?q='. $qUrl;
+                header('location: '.$fwd);
+                exit ;
+            }
+        }
+
         private function process_home() {
             $view = APP_WEB_DIR. '/app/view/home.tmpl' ;
             include ($view);
         }
 
         private function process_dashboard() {
-
+            // dashboard needs login 
+            $this->login_check();
             $gWeb = \com\indigloo\core\Web::getInstance();
             $qparams = Url::getRequestQueryParams();
             $loginId = Login::getLoginIdInSession();
@@ -79,8 +90,13 @@ namespace com\indigloo\fs\controller{
             $gNumRecords = 0 ;
             $pageBaseURI ="/ghost/canvas/dashboard" ;
             
+            if(empty($sourceId)) {
+                $sourceHtml = AppHtml::getNoSource();
+                //include view 
+                include(APP_WEB_DIR."/app/view/dashboard.tmpl");
+                 
+            }else {
              
-            if(!empty($sourceId)) {
                 $sourceRow = $sourceDao->getOnId($sourceId);
                 $commentDao = new \com\indigloo\fs\dao\Comment();
                 $commentRows = $commentDao->getPaged($sourceId,$paginator);
@@ -101,19 +117,14 @@ namespace com\indigloo\fs\controller{
                     $commentHtml =  AppHtml::getNoComment();
                 }
 
-
-            }else {
-                // no source message 
-                $sourceHtml = AppHtml::getNoSource();
+                include(APP_WEB_DIR."/app/view/dashboard.tmpl");
             }
-
-            //include view 
-            include(APP_WEB_DIR."/app/view/dashboard.tmpl");
     
         }
 
         private function process_select_page() {
-
+            //select-page needs login
+            $this->login_check();
             $gWeb = \com\indigloo\core\Web::getInstance();
             $qparams = Url::getRequestQueryParams();
             
@@ -134,9 +145,7 @@ namespace com\indigloo\fs\controller{
             $pages = GraphAPI::getPages($access_token);
             $gWeb->store("fs.user.pages",$pages);
             $pageTableHtml = AppHtml::getPageTable($pages);
-
-            $selfUrl = Url::current();
-
+            
             $view = empty($pages) ? "/app/view/no-page.tmpl" : "/app/view/page-table.tmpl";
             $view = APP_WEB_DIR.$view ;
             include($view);

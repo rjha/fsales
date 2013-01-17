@@ -1,6 +1,7 @@
 <?php
     use \com\indigloo\fs\auth\Login as Login ;
     use \com\indigloo\Url as Url ;
+    use com\indigloo\fs\Constants as AppConstants ;
  
     if(!Login::hasSession()) {
         /* 
@@ -11,8 +12,8 @@
          * 
          */
 
-        $qUrl = Url::tryBase64QueryParam("q", "/app/dashboard.php");
-        $fwd = '/ghost/canvas/login?q='. $qUrl;
+        $qUrl = Url::tryBase64QueryParam("q", AppConstants::DASHBOARD_URL);
+        $fwd = AppConstants::LOGIN_URL.'?q='. $qUrl;
         header('location: '.$fwd);
         exit ;
     }

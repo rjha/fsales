@@ -3,9 +3,13 @@
     include (APP_WEB_DIR.'/app/inc/header.inc');
     include (APP_WEB_DIR.'/app/inc/role/user.inc');
 
-    use com\indigloo\Constants as Constants;
+    use \com\indigloo\Url ;
+    use \com\indigloo\Constants as Constants;
     use \com\indigloo\Logger as Logger;
+
     use \com\indigloo\fs\auth\Login as Login ;
+    use \com\indigloo\fs\Constants as AppConstants ;
+
 
     try{
 
@@ -18,7 +22,8 @@
         if(empty($checkboxes)) {
             $message = "You need to select a page!" ;
             $gWeb->store(Constants::FORM_ERRORS,array($message));
-            $fwd = "/app/show-page.php" ;
+            $fwd =  AppConstants::SELECT_PAGE_URL ;
+
             header("location: ".$fwd);
             exit(1);
 
@@ -40,7 +45,7 @@
             $streamDao->addSources($loginId,$bucket);
         }
 
-        $fwd = "/app/dashboard.php" ;
+        $fwd = AppConstants::DASHBOARD_URL ;
         header("location: ".$fwd);
         exit(1);
         
@@ -51,7 +56,10 @@
 
         $message = "Error: something went wrong!" ;
         $gWeb->store("fs.router.message",$message);
-        $fwd = "/app/router.php?q=". base64_encode("/app/show-page.php");
+
+        $params = array("q" => base64_encode(AppConstants::SELECT_PAGE_URL)) ;
+        $fwd = Url::createUrl(AppConstants::ROUTER_URL,$params);
+        
         header("location: ".$fwd);
         exit(1);
     }
