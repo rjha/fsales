@@ -52,12 +52,56 @@ namespace com\indigloo\fs\html {
             return $html ;
         }
 
-        static function getPageTable($pages) {
-            if(empty($pages)) { return ""; }
+        static function getPageTable($pages,$sources) {
+            if(empty($pages) && empty($sources)) { return ""; }
+
+            // source in page - should be checked + highlighted
+            // source not in page - should be unchecked + highlighted
+
             $html = NULL ;
             $template = "/app/fragments/page/table.tmpl" ;
+
+            $rows = array();
+            $sourceIds = array();
+            $pageIds = array();
+            
+            foreach($sources as $source) {
+                array_push($sourceIds, $source["source_id"]);
+            }
+
+            foreach($pages as $page) {
+                array_push($pageIds,$page["id"]);
+                //needle,haystack
+                // page["id"] is stored as fs_source.source_id
+                if(!in_array($page["id"],$sourceIds)) {
+                    //fresh pages
+                    $page["rowClass"] = "" ;
+                    $page["checked"] = "" ;
+                    array_push($rows,$page);
+
+                }
+                
+            }
+
+            foreach($sources as $source) {
+                $row = array();
+                $row["id"] = $source["source_id"];
+                $row["name"] = $source["name"];
+
+                if(in_array($source["source_id"],$pageIds)) {
+                    $row["rowClass"] = "success" ;
+                    $row["checked"] = "checked" ;
+                }else {
+                    $row["rowClass"] = "warning" ;
+                    $row["checked"] = "" ;
+                }
+
+                array_push($rows,$row);
+                 
+            }
+
             $view = new \stdClass;
-            $view->pages = $pages ;
+            $view->rows = $rows ;
             $html = Template::render($template,$view);
             return $html ;
         }

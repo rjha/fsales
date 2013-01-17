@@ -10,6 +10,9 @@ namespace com\indigloo\fs  {
     	const ROUTER_URL = "/app/router.php";
     	const SELECT_PAGE_URL = "/ghost/canvas/select-page";
     	const LOGIN_URL = "/ghost/canvas/login";
+
+    	const WWW_LOGIN_URL = "http://www.favsales.com/ghost/canvas/login";
+    	const WWW_LOGIN_ERROR_URL = "http://www.favsales.com/ghost/canvas/login-error";
     }
 
 }

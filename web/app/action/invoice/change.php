@@ -14,7 +14,7 @@
          
         $response = array(
             "code" => 401 , 
-            "message" => "Authentication failure: You need to login!");
+            "message" => "Authentication failure : You need to login!");
         $html = json_encode($response);
         echo $html;
         exit;

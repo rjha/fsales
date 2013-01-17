@@ -1,4 +1,4 @@
-<table class="table table-striped">
+<table class="table">
   <thead>
     <tr>
       <th>select</th>
@@ -7,12 +7,12 @@
     </tr>
   </thead>
   <tbody>
-    ~foreach($view->pages as $page){ ~
-    <tr>
+    ~foreach($view->rows as $row){ ~
+    <tr class="~~$row['rowClass']~">
       <td>
-        <input type="checkbox" name="p[]" value="~~$page['id']~" />
+        <input type="checkbox" name="p[]" value="~~$row['id']~" ~~$row['checked']~ />
       </td>
-      <td>~~$page["name"]~</a></td>
+      <td>~~$row['name']~</a></td>
       
     </tr>
     

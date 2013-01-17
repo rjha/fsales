@@ -47,8 +47,7 @@ namespace com\indigloo\fs\controller{
 
         private function login_check() {
             if(!Login::hasSession()) {
-                $qUrl = Url::tryBase64QueryParam("q", AppConstants::DASHBOARD_URL);
-                $fwd = AppConstants::LOGIN_URL.'?q='. $qUrl;
+                $fwd = AppConstants::WWW_LOGIN_URL ;
                 header('location: '.$fwd);
                 exit ;
             }
@@ -126,25 +125,26 @@ namespace com\indigloo\fs\controller{
             //select-page needs login
             $this->login_check();
             $gWeb = \com\indigloo\core\Web::getInstance();
-            $qparams = Url::getRequestQueryParams();
             
             $loginId = Login::getLoginIdInSession();
             $loginDao = new \com\indigloo\fs\dao\Login();
             $access_token = $loginDao->getValidToken($loginId);
 
             if(empty($access_token)) {
-                $error = "Your session has expired. Please login again!";
-                $errors = array($error);
-                $gWeb->store(Constants::FORM_MESSAGES,$errors);
-               
-                $fwd = "/ghost/canvas/login" ;
+                 
+                // no point fwding to localhost
+                $fwd = AppConstants::WWW_LOGIN_ERROR_URL ;
                 header("location: ".$fwd);
                 exit ;
-            } 
+            }
+
+            // get what is stored for user
+            $sourceDao = new \com\indigloo\fs\dao\Source();
+            $sources = $sourceDao->getAll($loginId);
 
             $pages = GraphAPI::getPages($access_token);
             $gWeb->store("fs.user.pages",$pages);
-            $pageTableHtml = AppHtml::getPageTable($pages);
+            $pageTableHtml = AppHtml::getPageTable($pages,$sources);
             
             $view = empty($pages) ? "/app/view/no-page.tmpl" : "/app/view/page-table.tmpl";
             $view = APP_WEB_DIR.$view ;

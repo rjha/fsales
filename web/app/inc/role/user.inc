@@ -12,8 +12,7 @@
          * 
          */
 
-        $qUrl = Url::tryBase64QueryParam("q", AppConstants::DASHBOARD_URL);
-        $fwd = AppConstants::LOGIN_URL.'?q='. $qUrl;
+        $fwd = AppConstants::WWW_LOGIN_URL ;
         header('location: '.$fwd);
         exit ;
     }
