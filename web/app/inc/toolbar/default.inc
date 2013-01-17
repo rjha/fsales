@@ -11,8 +11,8 @@
 
             <div class="nav-collapse">
                 <ul class="nav">
-                    <li> <a href="/"><i class="icon-home"></i>&nbsp;Home</a></li>
-                    <li> <a href="/app/browser/login.php">Sign in</a> </li>
+                    <li> <a href="/ghost/canvas/"><i class="icon-home"></i>&nbsp;Home</a></li>
+                    <li> <a href="/ghost/canvas/login">Sign in</a> </li>
                 </ul>
                 
             </div>
