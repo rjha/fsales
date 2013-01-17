@@ -1,0 +1,27 @@
+<?php
+    require_once ('fs-app.inc');
+    require_once (APP_WEB_DIR.'/app/inc/header.inc');
+
+    use com\indigloo\Util;
+    use com\indigloo\Url as Url;
+    use com\indigloo\Constants as Constants;
+    use com\indigloo\Configuration as Config;
+     
+    use com\indigloo\ui\form\Message as FormMessage;
+
+    $gWeb = \com\indigloo\core\Web::getInstance();
+    $stoken = Util::getMD5GUID();
+    $gWeb->store("fb_state_token",$stoken);
+
+    $fbAppId = Config::getInstance()->get_value("facebook.app.id");
+    $host = Url::base();
+    //callback for login
+    $fbCallback = $host."/app/browser/login-router.php" ;
+
+    $fbDialogUrl = "https://www.facebook.com/dialog/oauth?client_id=".$fbAppId ;
+    $fbDialogUrl .= "&redirect_uri=".urlencode($fbCallback)."&scope=email,manage_pages,publish_stream&state=".$stoken ;
+
+    echo("<script> window.top.location ='" . $fbDialogUrl . "'</script>");
+    exit ;
+
+?>

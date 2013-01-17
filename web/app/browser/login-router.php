@@ -1,6 +1,6 @@
 <?php
 
-    include 'fs-app.inc';
+    include('fs-app.inc');
     include(APP_WEB_DIR . '/app/inc/header.inc');
     include (APP_WEB_DIR.'/app/inc/fb-error.inc');
 
@@ -8,7 +8,9 @@
     set_error_handler('app_browser_errors');
 
     use \com\indigloo\Util;
+    use \com\indigloo\Url ;
     use \com\indigloo\Constants as Constants;
+
     use \com\indigloo\Configuration as Config;
     use \com\indigloo\Logger as Logger;
     
@@ -16,7 +18,7 @@
    	use \com\indigloo\fs\mysql as mysql ;
 
     function raiseUIError() {
-        $uimessage = "something went wrong with the signup process. Please try again." ;
+        $uimessage = "something went wrong with the signin process. please try again" ;
         trigger_error($uimessage,E_USER_ERROR);
     }
 
@@ -50,7 +52,7 @@
 
         $fbDialogUrl = "http://www.facebook.com/dialog/oauth?client_id=" .$fbAppId;
         $fbDialogUrl .= "&redirect_uri=" . urlencode($fbCallback) ."&scope=email,manage_pages,publish_stream&state=".$stoken;
-        echo("<script> top.location.href='" . $fbDialogUrl . "'</script>");
+        echo("<script> window.top.location ='" . $fbDialogUrl . "'</script>");
         exit ;
     }
 
@@ -143,9 +145,26 @@
         mysql\Login::updateTokenIp(session_id(),$loginId,$access_token,$expires,$remoteIp);
         $code = Login::startOAuth2Session($loginId,$name);
 
-        $location = ($signup) ? "/app/show-page.php" : "/app/dashboard.php" ;
+        $gWeb = \com\indigloo\core\Web::getInstance();
+        // push sign up info inside session
+        $gWeb->store("global.first.login",$signup);
+        //leave the global.ui.mode in session
+        $uiMode = $gWeb->find("global.ui.mode",false);
+
+        // by default map to web_root/app folder
+        $rootUrl = Url::base(). "/ghost/canvas";
+
+        if(!empty($uiMode) && (strcmp($uiMode,"canvas") == 0)) {
+            // when running inside facebook : root is canvas URL
+            // canvas URL is mapped to web_root/app
+            $rootUrl = "http://apps.facebook.com/favsales" ;
+        }
+
+        $location = ($signup) ? "/select-page" : "/dashboard" ;
+        $location = $rootUrl.$location ;
         header("Location: ".$location);
-	        
+	   
     }
+
 
  ?>

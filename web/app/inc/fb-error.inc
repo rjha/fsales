@@ -16,18 +16,25 @@ function app_browser_errors($errorno,$errorstr,$file,$line) {
             \com\indigloo\Logger::getInstance()->error(" $file :: $line :: $errorstr");
             break ;
 
-        case E_USER_ERROR:
-            \com\indigloo\Logger::getInstance()->error(" $file :: $line :: $errorstr");
-            com\indigloo\Logger::getInstance()->backtrace();
-            $_SESSION["form.errors"] = array($errorstr);
-            header('Location: /app/browser/login.php');
-            exit(1);
-
         default:
             \com\indigloo\Logger::getInstance()->error(" $file :: $line :: $errorstr");
-            com\indigloo\Logger::getInstance()->backtrace();
-            $_SESSION["form.errors"] = array("Error happened during login");
-            header('Location: /app/browser/login.php');
+            \com\indigloo\Logger::getInstance()->backtrace();
+
+            $message = "something went wrong with the sign-in. please try again" ;
+            $_SESSION["form.errors"] = array($message);
+            $location = "/ghost/canvas/login-error" ;
+
+            //running inside facebook canvas?
+            $uiMode = NULL ;
+            if( isset($_SESSION["global.ui.mode"]) 
+                && !empty($_SESSION["global.ui.mode"])
+                && (strcmp($_SESSION["global.ui.mode"], "canvas") == 0 )) {
+                
+                $location = "http://apps.facebook.com/favsales/login-error";
+            }
+
+
+            header('Location: '.$location);
             exit(1);
             
     }

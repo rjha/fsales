@@ -1,0 +1,77 @@
+<?php
+    
+    require_once('fs-app.inc');
+    require_once(APP_WEB_DIR . '/app/inc/header.inc');
+    require_once (APP_WEB_DIR.'/app/inc/role/user.inc');
+    
+?>
+
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title> User Dashboard</title>
+        <?php include(APP_WEB_DIR . '/app/inc/meta.inc'); ?>
+        <?php echo \com\indigloo\fs\util\Asset::version("/css/fs-bundle.css"); ?>
+
+
+    </head>
+
+     <body>
+        <?php include(APP_WEB_DIR . '/app/inc/toolbar.inc'); ?>
+        
+        <div class="container mh600">
+            <?php include(APP_WEB_DIR . '/app/inc/top-unit.inc'); ?>
+            <div class="row">
+                <div class="span8 offset1">
+                    <div class="page-header">
+                        <h3> Comments </h3>
+                        <?php echo $sourceHtml; ?>
+                    </div>
+                    
+                    <?php \com\indigloo\ui\form\Message::render() ?>
+                    <?php echo $commentHtml; ?>
+                    
+                    
+                </div>
+
+            </div>
+
+            
+        </div>
+        
+        <?php $paginator->render($pageBaseURI,$startId,$endId,$gNumRecords);  ?>
+         
+        <?php echo \com\indigloo\fs\util\Asset::version("/js/fs-bundle.js"); ?>
+        <script type="text/javascript">
+            
+            $(document).ready(function(){
+                $("a.open-panel").click(function(event) {
+
+                    var divId = '#' + $(this).attr("rel");
+                    //hide any open panels
+                    $('.panel').hide();
+                    //hide page message
+                    $("#page-message").html('');
+                    $("#page-message").hide();
+                    // show target panel
+                    $(divId).show("slow");
+                });
+
+                $("a.close-panel").click(function(event) {
+                    var divId = '#' + $(this).attr("rel");
+                    $(divId).hide("slow");
+                    //hide page message as well
+                    $("#page-message").html('');
+                    $("#page-message").hide();
+                });
+              
+            });
+        </script>
+
+
+        <?php include(APP_WEB_DIR . '/app/inc/footer.inc'); ?>
+
+    </body>
+</html>
+

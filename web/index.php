@@ -1,13 +1,12 @@
 <?php
 
     $s_time = microtime(true);
-    include 'fs-app.inc';
-    include(APP_WEB_DIR . '/app/inc/header.inc');
+    require_once('fs-app.inc');
+    require_once(APP_WEB_DIR . '/app/inc/header.inc');
 
     use \com\indigloo\Configuration as Config ;
     use \com\indigloo\Logger  as Logger ;
-    use \com\indigloo\Util  as Util ;
-
+    
 
     $router = new com\indigloo\fs\router\Router();
     $originalURI = $_SERVER['REQUEST_URI'];

@@ -1,6 +1,6 @@
 <?php
-    include ('fs-app.inc');
-    include (APP_WEB_DIR.'/app/inc/header.inc');
+    require_once ('fs-app.inc');
+    require_once (APP_WEB_DIR.'/app/inc/header.inc');
 
     use com\indigloo\Util;
     use com\indigloo\Url as Url;
@@ -15,6 +15,7 @@
 
     $fbAppId = Config::getInstance()->get_value("facebook.app.id");
     $host = Url::base();
+    //callback for login
     $fbCallback = $host."/app/browser/login-router.php" ;
 
     $fbDialogUrl = "https://www.facebook.com/dialog/oauth?client_id=".$fbAppId ;

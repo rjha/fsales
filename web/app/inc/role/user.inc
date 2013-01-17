@@ -12,7 +12,7 @@
          */
 
         $qUrl = Url::tryBase64QueryParam("q", "/app/dashboard.php");
-        $fwd = '/app/browser/login.php?q='. $qUrl;
+        $fwd = '/ghost/canvas/login?q='. $qUrl;
         header('location: '.$fwd);
         exit ;
     }
