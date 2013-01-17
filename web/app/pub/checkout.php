@@ -41,7 +41,7 @@
         exit;
     }
 
-    $invoiceHtml = AppHtml::getInvoice3($invoiceRow);
+    $invoiceHtml = AppHtml::getCheckoutInvoice($invoiceRow);
     //@todo : make the form tampering proof
 ?>
 <!DOCTYPE html>

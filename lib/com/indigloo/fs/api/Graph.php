@@ -199,7 +199,7 @@ namespace com\indigloo\fs\api {
             $post["link"] = $fbObject->link ;
             $post["object_id"] = $fbObject->object_id ;
             $post["message"] = $fbObject->message ;
-
+            $post["from_id"] = $fbObject->from->id ;
             return $post ;
            
         }

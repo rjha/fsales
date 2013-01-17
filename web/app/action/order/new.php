@@ -7,6 +7,8 @@
     use \com\indigloo\ui\form as Form;
     use \com\indigloo\Constants as Constants ;
     use \com\indigloo\Util as Util ;
+    use \com\indigloo\Logger ;
+    
 
     use \com\indigloo\Url as Url ;
     use \com\indigloo\exception\UIException as UIException;

@@ -95,7 +95,7 @@
                                         <input type="text"  name="quantity" maxlength="4" value="<?php echo $sticky->get('quantity',1); ?>" style="width:30px;" />
                                         
                                         <span>Unit Price *</span>
-                                        <input type="text"  name="unit_price" maxlength="10" value="<?php echo $sticky->get('price'); ?>" style="width:90px;" />
+                                        <input type="text"  name="unit_price" maxlength="10" value="<?php echo $sticky->get('unit_price'); ?>" style="width:90px;" />
                                         
                                     </td>
                                 </tr>
@@ -103,7 +103,7 @@
                                 <tr>
                                     <td>
                                         <label>Any other info &nbsp;(max 512 chars)</label>
-                                        <textarea  id="selller_info" maxlength="512" name="seller_info" style="height:110px;" cols="50" rows="4" ></textarea>
+                                        <textarea  id="seller_info" maxlength="512" name="seller_info" style="height:110px;" cols="50" rows="4" ><?php echo $sticky->get('seller_info'); ?></textarea>
                                          
                                     </td>
                                 </tr>
@@ -143,14 +143,14 @@
                     rules: {
                         name: {required: true } ,
                         email: {required: true, email: true } ,
-                        price: {required: true } ,
+                        unit_price: {required: true } ,
                         quantity: {required: true } ,
                         
                     },
                     messages: {
                         name: {required: " Name (Buyer) is required" },
                         email: {required: " Email (Buyer) is required"},
-                        price: {required: " Price of item is required"},
+                        unit_price: {required: " Unit price is required"},
                         quantity: {required: " Quantity is required"}
 
                     }

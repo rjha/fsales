@@ -8,6 +8,39 @@ namespace com\indigloo\fs\html {
     
     class Application {
 
+        static function getInvoiceState($state) {
+            $text = "Unknown" ;
+
+            switch($state) {
+                case 1 : 
+                    $text = "New" ;
+                    break ;
+                case 2 :
+                    $text = "Mail sent" ;
+                    break ;
+                case 3 :
+                    $text = "Paid" ;
+                    break ;
+                case 4 :
+                    $text = "Shipped" ;
+                    break ;
+                case 5 :
+                    $text = "Closed" ;
+                    break ;
+                default :
+                    $text = "Unknown" ;
+
+            }
+
+            return $text ;
+        }
+
+        static function getInvoiceActions($invoiceId,$state) {
+            //Actions are array of action - link
+            $actions = array() ;
+
+        }
+
         static function messageBox($message) {
             $message = empty($message) ? "No message supplied!" : $message;
              
@@ -76,6 +109,7 @@ namespace com\indigloo\fs\html {
             $view->time = date("d-M h:i A",$row["created_ts"]);
             $view->userName = $row["user_name"];
             $view->comment = $row["message"];
+            $view->invoiceId = $row["has_invoice"];
 
             $view->profile = sprintf("http://www.facebook.com/profile.php?id=%s",$row["from_id"]) ;
             $params = array(
@@ -97,7 +131,7 @@ namespace com\indigloo\fs\html {
             return $html ;
         }
 
-        static function getInvoice($invoiceRow,$commentRow) {
+        static function getInvoice($invoiceRow) {
 
             $html = NULL ;
 
@@ -109,49 +143,26 @@ namespace com\indigloo\fs\html {
             $view->name = $invoiceRow["name"];
             $view->email = $invoiceRow["email"];
             $view->quantity = $invoiceRow["quantity"];
-            $view->price = $invoiceRow["total_price"];
+
+            $view->totalPrice = $invoiceRow["total_price"];
+            $view->unitPrice = $invoiceRow["unit_price"];
             $view->createdOn = $invoiceRow["created_on"];
-            
+            $view->status = self::getInvoiceState($invoiceRow["op_bit"]);
 
-            $view->picture = $commentRow["picture"] ;
-            $view->post_text = $commentRow["post_text"];
-            $view->link = $commentRow["link"];
-            $view->comment = $commentRow["message"];
-            $view->profile = sprintf("http://www.facebook.com/profile.php?id=%s",$commentRow["from_id"]) ;
-
-            $html = Template::render($template,$view);
-            return $html ;
-        }
-
-        static function getInvoice2($invoiceRow) {
-
-            $html = NULL ;
-
-            $template = "/app/fragments/invoice2.tmpl" ;
-            $view = new \stdClass;
-            
-            $view->invoiceId = $invoiceRow["id"];
-            $view->name = $invoiceRow["name"];
-            $view->email = $invoiceRow["email"];
-            $view->quantity = $invoiceRow["quantity"];
-
-            $view->price = $invoiceRow["total_price"];
             $view->picture = $invoiceRow["picture"] ;
             $view->post_text = $invoiceRow["post_text"];
-
             $view->link = $invoiceRow["link"];
-            $view->updatedOn = $invoiceRow["updated_on"];
-            $view->opBit = $invoiceRow["op_bit"];
+            $view->profile = sprintf("http://www.facebook.com/profile.php?id=%s",$invoiceRow["from_id"]) ;
 
             $html = Template::render($template,$view);
             return $html ;
         }
 
-        static function getInvoice3($invoiceRow) {
+        static function getCheckoutInvoice($invoiceRow) {
 
             $html = NULL ;
 
-            $template = "/app/fragments/invoice3.tmpl" ;
+            $template = "/app/fragments/checkout-invoice.tmpl" ;
             $view = new \stdClass;
             
             $view->invoiceId = $invoiceRow["id"];
@@ -170,7 +181,7 @@ namespace com\indigloo\fs\html {
             return $html ;
         }
 
-        static function getInvoiceMail($invoiceRow,$commentRow) {
+        static function getMailInvoice($invoiceRow) {
 
             $html_tmpl = "/app/fragments/mail/html/invoice.tmpl" ;
             $text_tmpl = "/app/fragments/mail/text/invoice.tmpl" ;
@@ -183,8 +194,8 @@ namespace com\indigloo\fs\html {
             $view->sourceName = $invoiceRow["source_name"] ;           
             
 
-            $view->post_text = $commentRow["post_text"];
-            $view->post_link = $commentRow["link"];
+            $view->post_text = $invoiceRow["post_text"];
+            $view->post_link = $invoiceRow["link"];
             
             $crypt = Util::encrypt($view->invoiceId);
             $checkout_link = Url::base()."/app/pub/checkout.php";

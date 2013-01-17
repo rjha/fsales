@@ -50,8 +50,9 @@ namespace com\indigloo\fs\mysql {
                 // all ts : maxlen 16
 
                 $sql1 = " insert into fs_post(source_id,post_id, picture,link, object_id,message, ".
-                        " created_on, updated_on )".
-                        " values(:source_id, :post_id, :picture, :link, :object_id, :message, now(), now())" ;
+                        " created_on, updated_on, from_id )".
+                        " values(:source_id, :post_id, :picture, :link, :object_id, :message, ".
+                        " now(), now(), :from_id)" ;
 
                 $stmt1 = $dbh->prepare($sql1);
                 $stmt1->bindParam(":source_id", $sourceId);
@@ -61,6 +62,7 @@ namespace com\indigloo\fs\mysql {
                 $stmt1->bindParam(":link", $fbPost["link"]);
                 $stmt1->bindParam(":object_id", $fbPost["object_id"]);
                 $stmt1->bindParam(":message", $fbPost["message"]);
+                $stmt1->bindParam(":from_id", $fbPost["from_id"]);
                 
                 $stmt1->execute();
                 $stmt1 = NULL ;

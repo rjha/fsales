@@ -10,7 +10,7 @@ namespace com\indigloo\fs\mail {
     
     class Application {
 
-        static function send_invoice($invoiceRow,$commentRow) {
+        static function send_invoice($invoiceRow) {
             
            
             //@todo - store this mail? fwd to another address?
@@ -19,7 +19,7 @@ namespace com\indigloo\fs\mail {
             $fromName = Config::getInstance()->get_value("default.mail.name");
             
             $subject = sprintf(" Your invoice from %s",$invoiceRow["source_name"]) ;
-            $mail_body = AppHtml::getInvoiceMail($invoiceRow,$commentRow);
+            $mail_body = AppHtml::getMailInvoice($invoiceRow);
             $html = $mail_body["html"];
             $text = $mail_body["text"];
             

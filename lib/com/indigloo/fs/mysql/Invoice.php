@@ -30,7 +30,7 @@ namespace com\indigloo\fs\mysql {
             // input
             settype($invoiceId, "integer");
              
-            $sql = " select p.picture, p.link, p.message as post_text, inv.* ".
+            $sql = " select p.picture, p.link, p.message as post_text, p.from_id,inv.* ".
                 " from fs_post p, fs_invoice inv ".
                 " where inv.id = %d and inv.post_id = p.post_id " ;
 
@@ -46,9 +46,9 @@ namespace com\indigloo\fs\mysql {
             settype($loginId, "integer");
             settype($limit, "integer");
 
-            $sql = " select p.picture, p.link, p.message as post_text, inv.* ".
+            $sql = " select p.picture, p.link, p.message as post_text, p.from_id,inv.* ".
                 " from fs_post p, fs_invoice inv ".
-                " where inv.id = %d ".
+                " where inv.login_id = %d ".
                 " and inv.post_id = p.post_id order by inv.id desc limit %d " ;
             
             $sql = sprintf($sql,$loginId,$limit);
@@ -67,9 +67,9 @@ namespace com\indigloo\fs\mysql {
             $direction = $mysqli->real_escape_string($direction);
 
              $sql = 
-                " select p.picture, p.link, p.message as post_text ,inv.* ".
+                " select p.picture, p.link, p.message as post_text, p.from_id,inv.* ".
                 " from fs_post p, fs_invoice inv ".
-                " where inv.id = %d ".
+                " where inv.login_id = %d ".
                 " and inv.post_id = p.post_id  " ;
 
             $sql = sprintf($sql,$loginId);
@@ -165,6 +165,12 @@ namespace com\indigloo\fs\mysql {
 
                 $invoiceId = $dbh->lastInsertId();
                 settype($invoiceId, "integer");
+
+                // write this invoice_id in fs_comment
+                $sql2 = "update fs_comment set has_invoice = %d where comment_id = '%s' ";
+                $sql2 = sprintf($sql2,$invoiceId,$commentId);
+                $dbh->exec($sql2);
+                
                 //Tx end
                 $dbh->commit();
                 $dbh = null;

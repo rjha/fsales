@@ -76,15 +76,16 @@ CREATE TABLE  fs_stream  (
 
 DROP TABLE IF EXISTS  fs_post ;
 CREATE TABLE  fs_post  (
-   id  int NOT NULL AUTO_INCREMENT,
-   source_id  varchar(64) NOT NULL ,
-   post_id  varchar(64) NOT NULL ,
-   picture text,
-   link text,
-   object_id varchar(64),
-   message varchar(256),
-   created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-   updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  id  int NOT NULL AUTO_INCREMENT,
+  source_id  varchar(64) NOT NULL ,
+  post_id  varchar(64) NOT NULL ,
+  picture text,
+  link text,
+  object_id varchar(64),
+  message varchar(256),
+  unit_price decimal(11,2) not null,
+  created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (id),
   UNIQUE KEY uniq_post(post_id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
@@ -102,6 +103,7 @@ CREATE TABLE  fs_comment  (
   message varchar(256),
   dup_count int default 0,
   verb int default 0,
+  has_invoice int default 0,
   created_ts int not null,
   created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -175,11 +177,19 @@ CREATE TABLE  fs_order  (
 
 
 
-
-
-
-
-
+--
+-- 17 Jan 2012
+--
+-- patch
+--
+-- alter table fs_comment add column has_invoice int default 0 ;
+-- alter table fs_post add column from_id varchar(64) ;
+-- 
+-- update fs_post p  inner join fs_comment c on c.post_id = p.post_id 
+-- set p.from_id = c.from_id;
+-- we also have to clean the DB
+-- 
+-- 
 
 
 

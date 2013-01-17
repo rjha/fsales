@@ -45,7 +45,7 @@
         $startId = $invoiceRows[0]["id"];
         $endId = $invoiceRows[$gNumRecords - 1]["id"];
         foreach($invoiceRows as $invoiceRow) {
-            $invoiceHtml .= AppHtml::getInvoice2($invoiceRow);
+            $invoiceHtml .= AppHtml::getInvoice($invoiceRow);
         }
     } else {
         $invoiceHtml = AppHtml::getNoInvoice();

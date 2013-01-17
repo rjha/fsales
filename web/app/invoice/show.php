@@ -28,19 +28,16 @@
     $fUrl = base64_encode(Url::current());
 
     $invoiceId = Url::tryQueryParam("invoice_id");
-    
     $invoiceDao = new \com\indigloo\fs\dao\Invoice();
-    $commentDao = new \com\indigloo\fs\dao\Comment();
     
-    $invoiceRow = $invoiceDao->getOnId($invoiceId);
+    // fetch invoice + post details
+    $invoiceRow = $invoiceDao->getOnId2($invoiceId);
     if(empty($invoiceRow)) {
         $message = " No invoice  found for supplied invoice_id ";
         throw new UIException(array($message)) ;
     }
-
-    $commentId = $invoiceRow["comment_id"];
-    $commentRow = $commentDao->getOnId($commentId);
-    $invoiceHtml = AppHtml::getInvoice($invoiceRow,$commentRow);
+    
+    $invoiceHtml = AppHtml::getInvoice($invoiceRow);
     
 
 ?>
@@ -77,7 +74,7 @@
 
                     <div class="section">
                         <form  id="form1"  name="form1" action="/app/action/invoice/mail.php"  method="POST">
-                            <button class="btn btn-success" type="submit" name="save" value="Save">Mail Invoice</button>
+                            <button class="btn btn-success" type="submit" name="save" value="Save"># Mail Invoice</button>
                               
                             <input type="hidden" name="invoice_id" value="<?php echo $invoiceRow['id']; ?>" /> 
                             <input type="hidden" name="qUrl" value="<?php echo $qUrl; ?>" />

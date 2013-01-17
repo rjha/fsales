@@ -35,14 +35,10 @@
         $invoiceId = $fvalues["invoice_id"];
 
         // get invoice data
-        $invoiceDao = new \com\indigloo\fs\dao\Invoice();
-        $commentDao = new \com\indigloo\fs\dao\Comment();
+        $invoiceDao = new \com\indigloo\fs\dao\Invoice();   
+        $invoiceRow = $invoiceDao->getOnId2($invoiceId);
+        $code = AppMail::send_invoice($invoiceRow);
 
-        $invoiceRow = $invoiceDao->getOnId($invoiceId);
-        $commentId = $invoiceRow["comment_id"];
-        $commentRow = $commentDao->getOnId($commentId);
-
-        $code = AppMail::send_invoice($invoiceRow,$commentRow);
         if($code > 0 ) {
             // mail error 
             $message = " Error: sending mail. please try again!";
