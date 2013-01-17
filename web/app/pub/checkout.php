@@ -163,7 +163,7 @@
             </div>
         </div> <!-- container -->
 
-         <?php echo \com\indigloo\fs\util\Asset::version("/js/fs-bundle.js"); ?>
+        <?php echo \com\indigloo\fs\util\Asset::version("/js/fs-bundle.js"); ?>
 
         <script type="text/javascript">
 
@@ -177,7 +177,7 @@
                 // city : 3-30 chars | alphabets only
                 // state : required
                 // pincode 2-12 : numbers only
-                /*
+                
                 $("#form1").validate({
                     errorLabelContainer: $("#form-message"),
                     rules: {
@@ -229,7 +229,7 @@
                             minlength: "Atleast 2 chars required in Pincode (billing)"
                         } 
                     }
-                }); */
+                }); 
 
             });
         

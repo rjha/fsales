@@ -184,15 +184,9 @@ CREATE TABLE  fs_order  (
 --
 -- alter table fs_comment add column has_invoice int default 0 ;
 -- alter table fs_post add column from_id varchar(64) ;
--- 
--- update fs_post p  inner join fs_comment c on c.post_id = p.post_id 
--- set p.from_id = c.from_id;
--- we also have to clean the DB
--- 
--- 
-
-
-
+-- clean the DB
+--
+ 
 
 
 

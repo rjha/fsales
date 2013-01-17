@@ -77,7 +77,7 @@
                     </div>
                     
                     <?php FormMessage::render() ?>
-                     <?php echo $invoiceHtml; ?>
+                    <?php echo $invoiceHtml; ?>
                     
                     
                 </div>
@@ -88,6 +88,36 @@
         </div>
         
         <?php $paginator->render($pageBaseURI,$startId,$endId,$gNumRecords);  ?>
+
+        <?php echo \com\indigloo\fs\util\Asset::version("/js/fs-bundle.js"); ?>
+        
+        <script type="text/javascript">
+
+            $(document).ready(function(){
+                $("a.invoice-action").live("click",function(event){
+                    
+                    event.preventDefault();
+
+                    var dataObj = {} ;
+                    dataObj.params = {} ;
+                    dataObj.params.invoiceId  = $(this).attr("id");
+                    dataObj.params.action = $(this).attr("rel");
+                    dataObj.endPoint = "/app/action/invoice/change.php";
+                    
+
+                    var options = {
+                        "dataType" : "json", 
+                        "timeout" : 9000,
+                        "messageDivId" : "#invoice-message-" + dataObj.params.invoiceId
+                    };
+                    
+                    webgloo.fs.Ajax.post(dataObj,options) ;
+ 
+                }) ;
+            }) ;
+
+        </script>
+
         <?php include(APP_WEB_DIR . '/app/inc/footer.inc'); ?>
 
     </body>
