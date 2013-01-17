@@ -15,7 +15,7 @@
 <div id="all-sources" class="panel panel-form">
 	<ul>
 		~foreach($view->allRows as $row){~
-		<li> <a href="/app/dashboard.php?source_id=~~$row['source_id']~">~~$row['name']~</a></li>
+		<li> <a href="/ghost/canvas/dashboard?source_id=~~$row['source_id']~">~~$row['name']~</a></li>
 		~}~
 	</ul>
 
