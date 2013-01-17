@@ -7,12 +7,11 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </a> <!-- 3bars for smaller screens -->
-            <a class="brand" href="/"><?php echo G_APP_NAME ?><span class="beta">&nbsp;private beta</span> </a>
+            <a class="brand" href="/ghost/canvas/"><?php echo G_APP_NAME ?><span class="beta">&nbsp;private beta</span> </a>
 
             <div class="nav-collapse">
                 <ul class="nav">
                     <li> <a href="/ghost/canvas/"><i class="icon-home"></i>&nbsp;Home</a></li>
-                    <li> <a href="/ghost/canvas/login">Sign in</a> </li>
                 </ul>
                 
             </div>

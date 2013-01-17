@@ -10,7 +10,7 @@ namespace com\indigloo\fs\controller{
 
         function process($params,$options) {
             $view = APP_WEB_DIR. '/app/view/home.tmpl' ;
-            include ($file);
+            include ($view);
         }
         
     }
