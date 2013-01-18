@@ -29,23 +29,25 @@ namespace com\indigloo\fs\mysql {
             return $row;
         }
 
-        static function getLatest($sourceId,$limit) {
+        static function getLatest($sourceId,$ft,$limit) {
 
             $mysqli = MySQL\Connection::getInstance()->getHandle();
             $sourceId = $mysqli->real_escape_string($sourceId);
             settype($limit, "integer");
 
+            $ftPredicate = (strcmp($ft, "verb") == 0) ? " and c.verb = 1 " : "" ;
+
             $sql = " select p.picture, p.link, p.message as post_text, c.* ".
                 " from fs_post p, fs_comment c ".
-                " where c.source_id = '%s' ".
+                " where c.source_id = '%s'  %s ".
                 " and c.post_id = p.post_id order by created_ts desc limit %d " ;
             
-            $sql = sprintf($sql,$sourceId,$limit);
+            $sql = sprintf($sql,$sourceId,$ftPredicate,$limit);
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
             return $rows;
         }
 
-        static function getPaged($sourceId,$start,$direction,$limit) {
+        static function getPaged($sourceId,$ft,$start,$direction,$limit) {
 
             $mysqli = MySQL\Connection::getInstance()->getHandle();
 
@@ -56,13 +58,15 @@ namespace com\indigloo\fs\mysql {
             $sourceId = $mysqli->real_escape_string($sourceId);
             $direction = $mysqli->real_escape_string($direction);
 
-             $sql = 
+            $ftPredicate = (strcmp($ft, "verb") == 0) ? " and c.verb = 1 " : "" ;
+
+            $sql = 
                 " select p.picture, p.link, p.message as post_text ,c.* ".
                 " from fs_post p, fs_comment c ".
                 " where c.source_id = '%s' ".
-                " and c.post_id = p.post_id  " ;
+                " and c.post_id = p.post_id  %s " ;
 
-            $sql = sprintf($sql,$sourceId);
+            $sql = sprintf($sql,$sourceId,$ftPredicate);
             $q = new MySQL\Query($mysqli);
             $q->setPrefixAnd();
             $sql .= $q->getPagination($start,$direction,"c.created_ts",$limit);

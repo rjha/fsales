@@ -179,19 +179,6 @@ CREATE TABLE  fs_order  (
 
 
 
---
--- 17 Jan 2012
---
--- patch
---
--- alter table fs_comment add column has_invoice int default 0 ;
--- alter table fs_post add column from_id varchar(64) ;
--- clean the DB
---
- 
-
-
-
 DROP TABLE IF EXISTS  fs_mail_queue ;
 CREATE TABLE  fs_mail_queue  (
   id  int(11) NOT NULL AUTO_INCREMENT,

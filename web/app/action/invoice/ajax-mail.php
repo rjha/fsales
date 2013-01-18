@@ -13,8 +13,6 @@
 
     set_exception_handler('webgloo_ajax_exception_handler');
     $message = NULL ;
-    //@todo remove sleep
-    sleep(3);
     
     function send_error($code,$message) {
         $response = array(

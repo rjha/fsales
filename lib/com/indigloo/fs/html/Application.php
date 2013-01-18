@@ -5,6 +5,8 @@ namespace com\indigloo\fs\html {
     use \com\indigloo\Template ;
     use \com\indigloo\Url ;
     use \com\indigloo\Util ;
+
+    use \com\indigloo\fs\Constants as AppConstants;
     
     class Application {
 
@@ -13,22 +15,22 @@ namespace com\indigloo\fs\html {
 
             switch($state) {
                 case 1 : 
-                    $text = "New" ;
+                    $text = "pending" ;
                     break ;
                 case 2 :
-                    $text = "Mail sent" ;
+                    $text = "sent" ;
                     break ;
                 case 3 :
-                    $text = "Paid" ;
+                    $text = "paid" ;
                     break ;
                 case 4 :
-                    $text = "Shipped" ;
+                    $text = "shipped" ;
                     break ;
                 case 5 :
-                    $text = "Closed" ;
+                    $text = "closed" ;
                     break ;
                 default :
-                    $text = "Unknown" ;
+                    $text = "unknown" ;
 
             }
 
@@ -106,11 +108,50 @@ namespace com\indigloo\fs\html {
             return $html ;
         }
 
-        static function getSource($selectedRow, $allRows) {
+        /**
+         * @param qparams request query parameters
+         *
+         */
+        static function getSource($selectedRow, $allRows,$qparams) {
             $html = NULL ;
-            $template = "/app/fragments/source.tmpl" ;
+            $num_pages = sizeof($allRows);
+            $template = ($num_pages == 1) ? "/app/fragments/source2.tmpl" : "/app/fragments/source.tmpl" ;
+
             $view = new \stdClass;
-            $view->allRows = $allRows ;
+            $commentData = array();
+
+            //copy request parameters for comments
+            $cparams = $qparams ;
+            // destroy ft
+            unset($cparams["ft"]);
+            // base URL for comment
+            $baseURI = Url::createUrl(AppConstants::DASHBOARD_URL,$cparams) ;
+
+            // first filter for comments
+            $c1link = Url::addQueryParameters($baseURI, array("ft" => AppConstants::ALL_COMMENT_FILTER));
+            $c1 = array("name" => "show all comments", "link" =>$c1link);
+            array_push($commentData,$c1);
+
+            $c2link = Url::addQueryParameters($baseURI, array("ft" => AppConstants::VERB_COMMENT_FILTER));
+            $c2 = array("name" => "only show comments with buyit", "link" =>$c2link);
+            array_push($commentData,$c2);
+
+            $sourceData = array() ;
+
+            if($num_pages > 1 ) {
+                //source rows
+                unset($qparams["source_id"]);
+
+                foreach($allRows as $srow) {
+                    $link = Url::createUrl(AppConstants::DASHBOARD_URL, $qparams);
+                    $link = Url::addQueryParameters($link, array("source_id" => $srow["source_id"]));
+                    $sdata = array("name" => $srow["name"], "link" => $link);
+                    array_push($sourceData,$sdata);
+                }
+            }
+
+            $view->sourceData = $sourceData ;
+            $view->commentData = $commentData ;
             $view->selectedRow = $selectedRow;
 
             $html = Template::render($template,$view);
@@ -155,13 +196,13 @@ namespace com\indigloo\fs\html {
             $view->comment = $row["message"];
             $view->invoiceId = $row["has_invoice"];
 
-            $view->profile = sprintf("http://www.facebook.com/profile.php?id=%s",$row["from_id"]) ;
+            $view->profile = sprintf(AppConstants::FACEBOOK_PROFILE_URL,$row["from_id"]) ;
             $params = array(
                 "q" => base64_encode(Url::current()) , 
                 "comment_id" => $row["comment_id"]);
 
             $view->hasInvoice = $settings["invoice"];
-            $view->invoiceUrl = Url::createUrl("/app/invoice/new.php", $params);
+            $view->invoiceUrl = Url::createUrl(AppConstants::NEW_INVOICE_URL, $params);
 
             $html = Template::render($template,$view);
             return $html ;
@@ -195,7 +236,7 @@ namespace com\indigloo\fs\html {
             $view->picture = $invoiceRow["picture"] ;
             $view->post_text = $invoiceRow["post_text"];
             $view->link = $invoiceRow["link"];
-            $view->profile = sprintf("http://www.facebook.com/profile.php?id=%s",$invoiceRow["from_id"]) ;
+            $view->profile = sprintf(AppConstants::FACEBOOK_PROFILE_URL,$invoiceRow["from_id"]) ;
 
             $html = Template::render($template,$view);
             return $html ;
@@ -210,7 +251,7 @@ namespace com\indigloo\fs\html {
             $view = new \stdClass;
             
             $params = array("invoice_id" => $invoiceId);
-            $view->editUrl = Url::createUrl("/app/invoice/edit.php",$params);
+            $view->editUrl = Url::createUrl(AppConstants::EDIT_INVOICE_URL,$params);
             $view->invoiceId = $invoiceId;
             
             $html = Template::render($template,$view);
@@ -257,7 +298,8 @@ namespace com\indigloo\fs\html {
             $view->post_link = $invoiceRow["link"];
             
             $crypt = Util::encrypt($view->invoiceId);
-            $checkout_link = Url::base()."/app/pub/checkout.php";
+            
+            $checkout_link = AppConstants::WWW_CHECKOUT_URL ;
             $params = array("invoice_id" => urlencode($view->invoiceId));
             $view->checkout_link = Url::createUrl($checkout_link,$params);
 

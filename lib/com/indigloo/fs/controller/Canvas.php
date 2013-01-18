@@ -78,8 +78,20 @@ namespace com\indigloo\fs\controller{
             $sourceHtml = "" ;
             $commentHtml = "" ;
 
+            $sourceRow = $sourceDao->getOnId($sourceId);
+
+            if(empty($sourceRow)) {
+                $sourceHtml = AppHtml::getNoSource();
+                include(APP_WEB_DIR."/app/view/dashboard.tmpl");
+                return ;
+            }
+
+            // ft := [verb | all]
+            // by default show only comments with verb
+            $ft = (isset($qparams["ft"])) ? $qparams["ft"] : AppConstants::ALL_COMMENT_FILTER;
+
             //pagination variables
-           
+            
             $pageSize = 10 ;
             $paginator = new \com\indigloo\ui\Pagination($qparams,$pageSize);
             $paginator->setBaseConvert(false);
@@ -89,35 +101,28 @@ namespace com\indigloo\fs\controller{
             $gNumRecords = 0 ;
             $pageBaseURI ="/ghost/canvas/dashboard" ;
             
-            if(empty($sourceId)) {
-                $sourceHtml = AppHtml::getNoSource();
-                //include view 
-                include(APP_WEB_DIR."/app/view/dashboard.tmpl");
-                 
-            }else {
-             
-                $sourceRow = $sourceDao->getOnId($sourceId);
-                $commentDao = new \com\indigloo\fs\dao\Comment();
-                $commentRows = $commentDao->getPaged($sourceId,$paginator);
+            $commentDao = new \com\indigloo\fs\dao\Comment();
+            $commentRows = $commentDao->getPaged($sourceId,$ft,$paginator);
+            $sourceHtml = AppHtml::getSource($sourceRow,$sources,$qparams);
 
-                //fix pagination variables
-                $gNumRecords = sizeof($commentRows) ;
-                if ($gNumRecords > 0) {
-                    $startId = $commentRows[0]["created_ts"];
-                    $endId = $commentRows[$gNumRecords - 1]["created_ts"];
-                }
-
-                $sourceHtml = AppHtml::getSource($sourceRow,$sources);
-                foreach($commentRows as $commentRow) {
-                    $commentHtml .= AppHtml::getComment($commentRow);
-                }
-
-                if(empty($commentRows)) {
-                    $commentHtml =  AppHtml::getNoComment();
-                }
-
-                include(APP_WEB_DIR."/app/view/dashboard.tmpl");
+            //fix pagination variables
+            $gNumRecords = sizeof($commentRows) ;
+            if ($gNumRecords > 0) {
+                $startId = $commentRows[0]["created_ts"];
+                $endId = $commentRows[$gNumRecords - 1]["created_ts"];
             }
+
+            foreach($commentRows as $commentRow) {
+                $commentHtml .= AppHtml::getComment($commentRow);
+            }
+
+            if(empty($commentRows)) {
+                $commentHtml =  AppHtml::getNoComment();
+            }
+
+            include(APP_WEB_DIR."/app/view/dashboard.tmpl");
+            return ;
+        
     
         }
 

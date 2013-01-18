@@ -2,28 +2,34 @@
 <div class="wrapper">
 	<span class="faded-text b"> page : ~~$view->selectedRow['name']~</span>
 	&nbsp;&nbsp;
-	<a class="open-panel" rel="default-source" href="#">make default</a>
+	<a class="open-panel" rel="default-source" href="#">
+		<span class="label label-info">make default </span>
+	</a>
 	&nbsp;|&nbsp;
-	<a class="open-panel" rel="all-sources" href="#">change page</a>
-	
-	
+	<a class="open-panel" rel="all-sources" href="#">
+		<span class="label label-info">change page</span>
+	</a>
+	&nbsp;|&nbsp;
+	<a class="open-panel" rel="filter-comments" href="#">
+		<span class="label label-info">filter comments</span>
+	</a>
 	                                         
-</div>
+</div> <!-- page actions -->
 
 <div id="page-message" class="hide-me"> </div>
 
 <div id="all-sources" class="panel panel-form">
 	<ul>
-		~foreach($view->allRows as $row){~
-		<li> <a href="/ghost/canvas/dashboard?source_id=~~$row['source_id']~">~~$row['name']~</a></li>
+		~foreach($view->sourceData as $row){~
+		<li> <a href="~~$row['link']~">~~$row['name']~</a></li>
 		~}~
 	</ul>
 
-<div class="pt10">
-	<a class="btn btn-small close-panel" rel="all-sources">Cancel</a>
-</div>
+	<div class="pt10">
+		<a class="btn btn-small close-panel" rel="all-sources">Cancel</a>
+	</div>
 
-</div>
+</div> <!-- panel:1 -->
 
 
 <div id="default-source" class="panel panel-form">
@@ -39,5 +45,20 @@
         <a class="btn btn-small close-panel" rel="default-source">Cancel</a>
         <input type="hidden" name="source_id" value="~~$view->selectedRow['source_id']~"/>
     </form> <!-- form:1 -->
-</div>
+</div> <!-- panel:2 -->
+
+
+<div id="filter-comments" class="panel panel-form">
+	<ul>
+		~foreach($view->commentData as $row){~
+		<li> <a href="~~$row['link']~">~~$row['name']~</a></li>
+		~}~
+	</ul>
+
+	<div class="pt10">
+		<a class="btn btn-small close-panel" rel="filter-comments">Cancel</a>
+	</div>
+
+</div> <!-- panel:1 -->
+
 

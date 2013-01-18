@@ -1,0 +1,26 @@
+
+<div class="wrapper">
+	<span class="faded-text b"> page : ~~$view->selectedRow['name']~</span>
+	&nbsp;|&nbsp;
+	<a class="open-panel" rel="filter-comments" href="#">
+		<span class="label label-info">filter comments </span>
+	</a>
+	                                         
+</div> <!-- page actions -->
+
+<div id="page-message" class="hide-me"> </div>
+
+<div id="filter-comments" class="panel panel-form">
+	<ul>
+		~foreach($view->commentData as $row){~
+		<li> <a href="~~$row['link']~"> ~~$row['name']~</a></li>
+		~}~
+	</ul>
+
+	<div class="pt10">
+		<a class="btn btn-small close-panel" rel="filter-comments">Cancel</a>
+	</div>
+
+</div> <!-- panel:1 -->
+
+

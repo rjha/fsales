@@ -70,7 +70,7 @@
                         &nbsp;
                     </div>
 
-                    <?php echo AppHtml::getInvoicePreview(1,$invoiceId);  ?>
+                    <?php echo AppHtml::getInvoicePreview($invoiceRow["op_bit"],$invoiceId);  ?>
                     <?php echo AppHtml::getInvoice($invoiceRow);  ?>
                     
 
