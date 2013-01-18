@@ -5,11 +5,11 @@ namespace com\indigloo\fs\controller{
     use \com\indigloo\Util as Util;
     use \com\indigloo\Url as Url;
     use \com\indigloo\Constants as Constants;
-    
+    use \com\indigloo\Logger as Logger ;
+
     use \com\indigloo\fs\auth\Login as Login ;
     use \com\indigloo\fs\html\Application as AppHtml ;
     use \com\indigloo\fs\api\Graph as GraphAPI ;
-
     use \com\indigloo\fs\Constants as AppConstants ;
 
     class Canvas {
@@ -126,35 +126,64 @@ namespace com\indigloo\fs\controller{
     
         }
 
+        /*
+         * display of /ghost/canvas/select-page is controlled by 
+         * fs_facebook_user.op_bit flag. op_bit state corresponds to 
+         * steps completed in login workflow. possible values of op_bit is
+         * 1|2. we only process this page to show user pages 
+         *
+         * when no user pages :- no-page message
+         * when only one page - one page in DIV
+         * when multiple pages - table with selection 
+         * 
+         *
+         */
         private function process_select_page() {
-            //select-page needs login
-            $this->login_check();
-            $gWeb = \com\indigloo\core\Web::getInstance();
-            
-            $loginId = Login::getLoginIdInSession();
-            $loginDao = new \com\indigloo\fs\dao\Login();
-            $access_token = $loginDao->getValidToken($loginId);
 
-            if(empty($access_token)) {
-                 
-                // no point fwding to localhost
-                $fwd = AppConstants::WWW_LOGIN_ERROR_URL ;
-                header("location: ".$fwd);
-                exit ;
+            try {
+                $this->login_check();
+                $gWeb = \com\indigloo\core\Web::getInstance();
+                
+                $loginId = Login::getLoginIdInSession();
+                $loginDao = new \com\indigloo\fs\dao\Login();
+                $access_token = $loginDao->getValidToken($loginId);
+               
+                if(empty($access_token)) {
+                    // page fetch needs access token
+                    $fwd = AppConstants::WWW_LOGIN_ERROR_URL ;
+                    header("location: ".$fwd);
+                    exit ;
+                }
+
+                $fbPages = GraphAPI::getPages($access_token);
+                $num_pages = sizeof($fbPages);
+
+                if($num_pages == 0 ) {
+                    $view = APP_WEB_DIR."/app/view/no-page.tmpl" ;
+                    include($view);
+                } else if($num_pages == 1 ) {
+                    // store $page in DB
+                    // flip fs_facebook_user.op_bit to 2
+                    $streamDao = new \com\indigloo\fs\dao\Stream();
+                    $streamDao->addSources($loginId,$fbPages);
+                    $view = APP_WEB_DIR."/app/view/account-done.php" ;
+                    include($view);
+                }else {
+                    $gWeb->store("fs.user.pages",$fbPages);
+                    $view = APP_WEB_DIR."/app/view/page-table.tmpl" ;
+                    include($view);
+                }
+
+            } catch(\Exception $ex) {
+                // Error during Account setup
+                Logger::getInstance()->error($ex->getMessage());
+                Logger::getInstance()->backtrace($ex->getTrace());
+
+                $view = APP_WEB_DIR."/app/view/account-error.php" ;
+                include($view);
             }
-
-            // get what is stored for user
-            $sourceDao = new \com\indigloo\fs\dao\Source();
-            $sources = $sourceDao->getAll($loginId);
-
-            $pages = GraphAPI::getPages($access_token);
-            $gWeb->store("fs.user.pages",$pages);
-            $pageTableHtml = AppHtml::getPageTable($pages,$sources);
+                       
             
-            $view = empty($pages) ? "/app/view/no-page.tmpl" : "/app/view/page-table.tmpl";
-            $view = APP_WEB_DIR.$view ;
-            include($view);
-
         }
 
         private function process_login() {

@@ -45,7 +45,6 @@
                 $expires);
 
             $loginId = $data["loginId"];
-            $signup = $data["signup"];
             
             // success - update login record
             // start a session

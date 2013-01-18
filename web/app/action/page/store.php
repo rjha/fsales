@@ -45,7 +45,7 @@
             $streamDao->addSources($loginId,$bucket);
         }
 
-        $fwd = AppConstants::DASHBOARD_URL ;
+        $fwd = "/app/account-done.php" ;
         header("location: ".$fwd);
         exit(1);
         
@@ -54,12 +54,7 @@
         Logger::getInstance()->error($ex->getMessage());
         Logger::getInstance()->backtrace($ex->getTrace());
 
-        $message = "Error: something went wrong!" ;
-        $gWeb->store("fs.router.message",$message);
-
-        $params = array("q" => base64_encode(AppConstants::SELECT_PAGE_URL)) ;
-        $fwd = Url::createUrl(AppConstants::ROUTER_URL,$params);
-        
+        $fwd = "/app/account-error.php";
         header("location: ".$fwd);
         exit(1);
     }

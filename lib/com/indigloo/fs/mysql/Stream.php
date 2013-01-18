@@ -134,7 +134,7 @@ namespace com\indigloo\fs\mysql {
              try {
 
                 $dbh =  PDOWrapper::getHandle();
-                //Tx1:start
+                //Tx:start
                 $dbh->beginTransaction();
 
                 $sql1 = " delete from fs_source where login_id  = :login_id " ;
@@ -142,11 +142,6 @@ namespace com\indigloo\fs\mysql {
                 $stmt1->bindParam(":login_id", $loginId);
                 $stmt1->execute();
                 
-                 //Tx1:end
-                $dbh->commit();
-                //Tx2:start
-                $dbh->beginTransaction();
-
                 foreach($pages as $page) {
                     //@todo check : source_id : maxlength :64
                     $sql2 = " insert into fs_source(login_id,source_id,name,token,last_stream_ts, ".
@@ -163,7 +158,12 @@ namespace com\indigloo\fs\mysql {
                     $stmt2->execute();
                 }
 
-                //Tx2:end
+                $sql3 = " update fs_facebook_user set op_bit = 2 where login_id = %d " ;
+                $sql3 = sprintf($sql3,$loginId) ;
+                $dbh->exec($sql3);
+
+
+                //Tx:end
                 $dbh->commit();
                 $dbh = null;
                 $stmt1 = NULL ;

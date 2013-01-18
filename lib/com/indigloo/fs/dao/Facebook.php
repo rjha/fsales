@@ -52,14 +52,22 @@ namespace com\indigloo\fs\dao {
                     $remoteIp);
 
                 $data["loginId"] = $loginId;
-                $data["signup"] = true ;
+                // A new user has not selected his 
+                // facebook pages yet!
+                $data["select_page"] = true ;
                 
 
             } else {
-                // existing
+                // existing  facebook user
+                // op_bit = 1 is for user who have not 
+                // selected their facebook pages yet.
+                // op_bit = 2 is for users who have selected their 
+                // facebook pages.
                 $loginId = $row["login_id"];
+                $op_bit  = $row["op_bit"];
+
                 $data["loginId"] = $loginId;
-                $data["signup"] = false ;
+                $data["select_page"] = ($op_bit == 1 ) ? true : false ;
                 
             }
 
@@ -69,6 +77,11 @@ namespace com\indigloo\fs\dao {
 
         function getOnFacebookId($facebookId) {
             $row = mysql\Facebook::getOnFacebookId($facebookId);
+            return $row ;
+        }
+
+        function getOnLoginId($loginId) {
+            $row = mysql\Facebook::getOnLoginId($loginId);
             return $row ;
         }
         

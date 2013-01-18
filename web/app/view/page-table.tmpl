@@ -21,25 +21,47 @@
         <?php include(APP_WEB_DIR . '/app/inc/toolbar.inc'); ?>
         
         <div class="container mh600">
-            <?php include(APP_WEB_DIR . '/app/inc/top-unit.inc'); ?>
+            
             <div class="row">
                 <div class="span8 offset1">
                     <div class="page-header">
                         <h3>Select pages</h3>
                     </div>
-                    <p class="comment-text">
-                        We found the following facebook pages.
-                        &nbsp;Please select the ones you want to monitor.
+                    <p class="lead">
+                        
+                        Please select the pages you want to monitor (by clicking on checkboxes) 
+                        and press "Save"
+
                     </p>
                     <?php \com\indigloo\ui\form\Message::render() ?>
                      
                     <form name="web-form1" action="/app/action/page/store.php" method="POST">
                         
-                        <?php echo $pageTableHtml ; ?>
+                        <table class="table table-striped">
+                          <thead>
+                            <tr>
+                              <th>select</th>
+                              <th>page</th>
+                              
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <?php foreach($fbPages as $fbPage){ ?>
+                            <tr>
+                                <td>
+                                    <input type="checkbox" name="p[]" value="<?php echo $fbPage['id'] ?>" />
+                                </td>
+                                <td><?php echo $fbPage['name'] ?></a></td>
+                              
+                            </tr>
+                            
+                            <?php } ?>
+                          </tbody>
+                        </table> <!-- table:pages -->
+
                         <div class="section">
-                            <button class="btn btn-success" type="submit" name="select" value="Select">Select</button>
-                            &nbsp;
-                            <a class="btn" href="/app/action/page/remove-session.php">Cancel</a>
+                            <button class="btn btn-success" type="submit" name="save" value="Save">Save</button>
+                            
                         </div>
                     </form>
                      

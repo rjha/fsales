@@ -29,6 +29,18 @@ namespace com\indigloo\fs\mysql {
             return $row ;
         }
 
+        static function getOnLoginId($loginId) {
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+
+            settype($loginId, "inetger");
+
+            $sql = " select * from fs_facebook_user where login_id = %d " ;
+            $sql = sprintf($sql,$loginId);
+
+            $row = MySQL\Helper::fetchRow($mysqli,$sql);
+            return $row ;
+        }
+
         static function create($facebookId,
                     $name,
                     $firstName, 

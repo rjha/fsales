@@ -1,7 +1,8 @@
 <?php
     require_once ('fs-app.inc');
     require_once (APP_WEB_DIR.'/app/inc/header.inc');
-    
+    require_once (APP_WEB_DIR.'/app/inc/role/user.inc');
+
     
 ?>
 
@@ -9,7 +10,7 @@
 <html>
 
     <head>
-        <title> User facebook pages</title>
+        <title> Welcome to favsales</title>
         <?php include(APP_WEB_DIR . '/app/inc/meta.inc'); ?>
         <?php echo \com\indigloo\fs\util\Asset::version("/css/fs-bundle.css"); ?>
 
@@ -24,20 +25,18 @@
             <div class="row">
                 <div class="span8 offset1">
                     <div class="page-header">
-                        <h3>No pages found</h3>
+                        <h3>Welcome to favsales</h3>
                     </div>
-                    
                     <p class="lead">
-                        We did not find any facebook page for your account.
+                        
+                        Congratulations. Your account has been setup with Favsales.
+                        Now you can start monitoring comments on your facebook 
+                        page.
                     </p>
-                    
-                    
                 </div>
-
             </div>
-
             
-        </div>        
+        </div>  <!-- container -->      
 
         <?php include(APP_WEB_DIR . '/app/inc/footer.inc'); ?>
 

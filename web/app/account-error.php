@@ -1,7 +1,8 @@
 <?php
     require_once ('fs-app.inc');
     require_once (APP_WEB_DIR.'/app/inc/header.inc');
-    
+    require_once (APP_WEB_DIR.'/app/inc/role/user.inc');
+
     
 ?>
 
@@ -9,7 +10,7 @@
 <html>
 
     <head>
-        <title> User facebook pages</title>
+        <title> User account setup</title>
         <?php include(APP_WEB_DIR . '/app/inc/meta.inc'); ?>
         <?php echo \com\indigloo\fs\util\Asset::version("/css/fs-bundle.css"); ?>
 
@@ -20,24 +21,21 @@
         <?php include(APP_WEB_DIR . '/app/inc/toolbar.inc'); ?>
         
         <div class="container mh600">
-            <?php include(APP_WEB_DIR . '/app/inc/top-unit.inc'); ?>
+            
             <div class="row">
                 <div class="span8 offset1">
                     <div class="page-header">
-                        <h3>No pages found</h3>
+                        <h3>Account setup error</h3>
                     </div>
-                    
                     <p class="lead">
-                        We did not find any facebook page for your account.
+                        
+                        Errr. We encountered some errors during this account setup.
+                        Please sign out and try to sign in again!
                     </p>
-                    
-                    
                 </div>
-
             </div>
-
             
-        </div>        
+        </div>  <!-- container -->      
 
         <?php include(APP_WEB_DIR . '/app/inc/footer.inc'); ?>
 

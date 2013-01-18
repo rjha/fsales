@@ -131,7 +131,7 @@
             $expires);
 
         $loginId = $data["loginId"];
-        $signup = $data["signup"];
+        $select_page = $data["select_page"];
 
         if(empty($loginId)) {
             $message = "Fatal error : Not able to create login" ;
@@ -146,8 +146,7 @@
         $code = Login::startOAuth2Session($loginId,$name);
 
         $gWeb = \com\indigloo\core\Web::getInstance();
-        // push sign up info inside session
-        $gWeb->store("global.first.login",$signup);
+        
         //leave the global.ui.mode in session
         $uiMode = $gWeb->find("global.ui.mode",false);
 
@@ -160,7 +159,7 @@
             $rootUrl = "http://apps.facebook.com/favsales" ;
         }
 
-        $location = ($signup) ? "/select-page" : "/dashboard" ;
+        $location = ($select_page) ? "/select-page" : "/dashboard" ;
         $location = $rootUrl.$location ;
         header("Location: ".$location);
 	   

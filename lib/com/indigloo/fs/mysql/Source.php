@@ -47,8 +47,8 @@ namespace com\indigloo\fs\mysql {
 
         static function getOnId($sourceId) {
             $mysqli = MySQL\Connection::getInstance()->getHandle();
-            //@todo - input check
             
+            $sourceId = $mysqli->real_escape_string($sourceId) ;
             $sql = "select * from fs_source where source_id = '%s' " ;
             $sql = sprintf($sql,$sourceId);
             

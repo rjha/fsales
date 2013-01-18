@@ -10,17 +10,18 @@ CREATE TABLE  sc_php_session  (
 
 
 DROP TABLE IF EXISTS  fs_login ;
-CREATE TABLE  fs_login  (
+CREATE TABLE  fs_login (
    id  int NOT NULL AUTO_INCREMENT,
    name  varchar(32) NOT NULL,
    source  int default 1,
    access_token text ,
    ip_address varchar(46),
    session_id varchar(40),
+   op_bit int default 1,
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    expire_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  PRIMARY KEY ( id )
+  PRIMARY KEY (id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
@@ -35,6 +36,7 @@ CREATE TABLE  fs_facebook_user  (
    last_name  varchar(32) ,
    email  varchar(64),
    ip_address varchar(46),
+   op_bit int default 1,
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY ( id ),
