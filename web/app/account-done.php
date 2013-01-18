@@ -14,6 +14,9 @@
         <?php include(APP_WEB_DIR . '/app/inc/meta.inc'); ?>
         <?php echo \com\indigloo\fs\util\Asset::version("/css/fs-bundle.css"); ?>
 
+        <script>
+            window.setTimeout(function() {window.location.href = '/ghost/canvas/dashboard'; }, 8000);
+        </script>
 
     </head>
 
@@ -30,13 +33,19 @@
                     <p class="lead">
                         
                         Congratulations. Your account has been setup with Favsales.
-                        Now you can start monitoring comments on your facebook 
-                        page.
+                        You can start monitoring comments on your facebook 
+                        page now. Redirecting...   
                     </p>
+                    <div class="p10">
+                        <img src="/css/asset/fs/fb_loader.gif" alt="ajax loader" />
+                    </div>
+
                 </div>
             </div>
             
         </div>  <!-- container -->      
+
+      
 
         <?php include(APP_WEB_DIR . '/app/inc/footer.inc'); ?>
 

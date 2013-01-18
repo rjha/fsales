@@ -117,7 +117,7 @@ namespace com\indigloo\fs\controller{
             }
 
             if(empty($commentRows)) {
-                $commentHtml =  AppHtml::getNoComment();
+                $commentHtml =  AppHtml::getNoComment($sourceRow);
             }
 
             include(APP_WEB_DIR."/app/view/dashboard.tmpl");

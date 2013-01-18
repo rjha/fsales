@@ -15,10 +15,10 @@ namespace com\indigloo\fs\html {
 
             switch($state) {
                 case 1 : 
-                    $text = "pending" ;
+                    $text = "new" ;
                     break ;
                 case 2 :
-                    $text = "sent" ;
+                    $text = "pending" ;
                     break ;
                 case 3 :
                     $text = "paid" ;
@@ -27,7 +27,7 @@ namespace com\indigloo\fs\html {
                     $text = "shipped" ;
                     break ;
                 case 5 :
-                    $text = "closed" ;
+                    $text = "cancelled" ;
                     break ;
                 default :
                     $text = "unknown" ;
@@ -112,10 +112,12 @@ namespace com\indigloo\fs\html {
             return $html ;
         }
 
-        static function getNoComment() {
+        static function getNoComment($sourceRow) {
             $html = NULL ;
             $template = "/app/fragments/no-comment.tmpl" ;
             $view = new \stdClass;
+            $view->lastTime = date("d-M h:i A",$sourceRow["last_stream_ts"]);
+            
             $html = Template::render($template,$view);
             return $html ;
         }

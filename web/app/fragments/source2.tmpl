@@ -3,22 +3,24 @@
 	<span class="faded-text b"> page : ~~$view->selectedRow['name']~</span>
 	&nbsp;|&nbsp;
 	<a class="open-panel" rel="filter-comments" href="#">
-		<span class="label label-info">filter comments </span>
+		<span class="label label-info">comments filter</span>
 	</a>
-	                                         
+	&nbsp;
+	<a id="comment-popover" href="#" rel="popover" data-placement="right" data-content="To view all comments or those with  buyit word only click on comments filter." data-original-title="About comments filter">&nbsp;</a>
+
 </div> <!-- page actions -->
 
 <div id="page-message" class="hide-me"> </div>
 
 <div id="filter-comments" class="panel panel-form">
-	<ul>
+	<ol>
 		~foreach($view->commentData as $row){~
 		<li> <a href="~~$row['link']~"> ~~$row['name']~</a></li>
 		~}~
-	</ul>
+	</ol>
 
 	<div class="pt10">
-		<a class="btn btn-small close-panel" rel="filter-comments">Cancel</a>
+		<a class="btn btn-small close-panel" rel="filter-comments">Close</a>
 	</div>
 
 </div> <!-- panel:1 -->

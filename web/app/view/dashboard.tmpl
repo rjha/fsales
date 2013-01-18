@@ -3,6 +3,15 @@
     require_once('fs-app.inc');
     require_once(APP_WEB_DIR . '/app/inc/header.inc');
     require_once (APP_WEB_DIR.'/app/inc/role/user.inc');
+
+    $gWeb = \com\indigloo\core\Web::getInstance();
+    $filter_popup =  $gWeb->find("fs:comment:filter:popup");
+    $filter_popup = (is_null($filter_popup)) ? false : $filter_popup ;
+
+    
+    if(!$filter_popup) {
+        $gWeb->store("fs:comment:filter:popup", true);
+    }
     
 ?>
 
@@ -65,7 +74,11 @@
                     $("#page-message").html('');
                     $("#page-message").hide();
                 });
-              
+
+                <?php if(!$filter_popup) { ?>
+                    //show popover first time in session.
+                    $("#comment-popover").popover('show');
+                <?php } ?>
             });
         </script>
 
