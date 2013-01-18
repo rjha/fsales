@@ -166,7 +166,7 @@ namespace com\indigloo\fs\controller{
                     // flip fs_facebook_user.op_bit to 2
                     $streamDao = new \com\indigloo\fs\dao\Stream();
                     $streamDao->addSources($loginId,$fbPages);
-                    $view = APP_WEB_DIR."/app/view/account-done.php" ;
+                    $view = APP_WEB_DIR."/app/account-done.php" ;
                     include($view);
                 }else {
                     $gWeb->store("fs.user.pages",$fbPages);
@@ -179,7 +179,7 @@ namespace com\indigloo\fs\controller{
                 Logger::getInstance()->error($ex->getMessage());
                 Logger::getInstance()->backtrace($ex->getTrace());
 
-                $view = APP_WEB_DIR."/app/view/account-error.php" ;
+                $view = APP_WEB_DIR."/app/account-error.php" ;
                 include($view);
             }
                        
