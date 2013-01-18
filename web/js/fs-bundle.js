@@ -12797,34 +12797,38 @@ webgloo.fs.Ajax = {
 
     post:function (dataObj,options) {
 
+        /* @imp define all properties that we wish to override */
         var defaults = {
             type : "POST",
             dataType : "json",
-            timeout : 9000
+            timeout : 9000,
+            onDoneHandler : undefined 
         }
 
         var settings = $.extend({}, defaults, options);
         this.addSpinner(settings.messageDivId);
         
 
-        $.ajax({
+        var xmlRequest = $.ajax({
             url: dataObj.endPoint,
             type: settings.type ,
             dataType: settings.dataType,
             data :  dataObj.params,
             timeout: settings.timeout,
-            processData:true,
-           
-            error: function(XMLHttpRequest, response){
-                webgloo.fs.Ajax.show(settings.messageDivId,response);
-            },
+            processData:true
+        }) ;
 
-            // server script errors are 
-            // reported inside success callback
-            success: function(response){
-            	webgloo.fs.Ajax.show(settings.messageDivId,response.message);
+        xmlRequest.fail(function(response) {
+            webgloo.fs.Ajax.show(settings.messageDivId,response);
+        });
+
+        xmlRequest.done(function(response) {
+            webgloo.fs.Ajax.show(settings.messageDivId,response.message);
+            if(typeof settings.onDoneHandler !== "undefined") {
+                settings.onDoneHandler(response);
             }
-        }); 
+        }) ;
+        
     }
 
 

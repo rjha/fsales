@@ -39,6 +39,7 @@
 
         // @todo : check price and quantity for absurd values
         // zero price/ negative quantity etc.
+        // @todo check for PG limits on price 
         
         $invoiceId = $invoiceDao->create($loginId,
                                     $fvalues["comment_id"],
@@ -51,7 +52,7 @@
         
         //success - go to invoice send screen
         $params = array("invoice_id" => $invoiceId);
-        $fwd = Url::createUrl("/app/invoice/show.php", $params);
+        $fwd = Url::createUrl("/app/invoice/preview.php", $params);
         header("Location: ".$fwd);
 
     } catch(UIException $ex) {

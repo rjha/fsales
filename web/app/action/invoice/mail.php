@@ -24,7 +24,7 @@
 
     try{
         
-        $fhandler = new Form\Handler('form1', $_POST);
+        $fhandler = new Form\Handler('form1', $_REQUEST);
         $fhandler->addRule('invoice_id', 'Invoice_ID', array('required' => 1));
         $fvalues = $fhandler->getValues();
         

@@ -15,7 +15,7 @@
 
     use \com\indigloo\fs\auth\Login as Login ;
     use \com\indigloo\fs\html\Application as AppHtml ;
-
+    use \com\indigloo\fs\Constants as AppConstants ;
 
     $gWeb = \com\indigloo\core\Web::getInstance();
     $sticky = new Sticky($gWeb->find(Constants::STICKY_MAP,true));
@@ -37,8 +37,8 @@
         throw new UIException(array($message)) ;
     }
     
-    $invoiceHtml = AppHtml::getInvoice($invoiceRow);
-    
+    $invoiceAllUrl = AppConstants::INVOICE_ALL_URL ;
+    $invoiceState = $invoiceRow["op_bit"];
 
 ?>
 
@@ -46,7 +46,7 @@
 <html>
 
     <head>
-        <title> Invoice # <?php echo $invoiceRow["id"]; ?></title>
+        <title> Preview of invoice # <?php echo $invoiceRow["id"]; ?></title>
         <?php include(APP_WEB_DIR . '/app/inc/meta.inc'); ?>
         <?php echo \com\indigloo\fs\util\Asset::version("/css/fs-bundle.css"); ?>
          
@@ -67,26 +67,57 @@
                 <div class="span8 offset1">
 
                     <div class="page-header">
-                        <h3> Invoice # <?php echo $invoiceRow["id"]; ?> </h3>
+                        &nbsp;
                     </div>
-                    <?php echo $invoiceHtml;  ?>
+
+                    <?php echo AppHtml::getInvoicePreview(1,$invoiceId);  ?>
+                    <?php echo AppHtml::getInvoice($invoiceRow);  ?>
                     
 
-                    <div class="section">
-                        <form  id="form1"  name="form1" action="/app/action/invoice/mail.php"  method="POST">
-                            <button class="btn btn-success" type="submit" name="save" value="Save"># Mail Invoice</button>
-                              
-                            <input type="hidden" name="invoice_id" value="<?php echo $invoiceRow['id']; ?>" /> 
-                            <input type="hidden" name="qUrl" value="<?php echo $qUrl; ?>" />
-                            <input type="hidden" name="fUrl" value="<?php echo $fUrl; ?>" />
-
-                        </form>
-                    </div>
+                   
 
                 </div>
             </div>
         </div> <!-- container -->
 
+        <?php echo \com\indigloo\fs\util\Asset::version("/js/fs-bundle.js"); ?>
+        
+        <script type="text/javascript">
+
+            $(document).ready(function(){
+
+
+                $("a.invoice-mail").live("click",function(event){
+                    
+                    event.preventDefault();
+
+                    var dataObj = {} ;
+                    dataObj.params = {} ;
+                    dataObj.params.invoiceId  = $(this).attr("id");
+                    dataObj.params.action = "mail";
+                    dataObj.endPoint = "/app/action/invoice/ajax-mail.php";
+                    
+
+                    var options = {
+                        "dataType" : "json", 
+                        "timeout" : 9000,
+                        "messageDivId" : "#mail-message",
+                        onDoneHandler : function (response) {
+                            if(response.code == 200 ) {
+                                var redirectUrl = '<?php echo $invoiceAllUrl; ?>' ;
+                                window.location.replace(redirectUrl);
+                            }    
+                        
+
+                        }
+                    };
+                    
+                    webgloo.fs.Ajax.post(dataObj,options) ;
+ 
+                }) ;
+            }) ;
+
+        </script>
         <?php include(APP_WEB_DIR . '/app/inc/footer.inc'); ?>
 
     </body>

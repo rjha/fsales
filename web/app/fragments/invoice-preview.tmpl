@@ -1,0 +1,16 @@
+
+<!-- message depends on state -->
+<p class="lead">
+    Here is your new invoice. 
+    This <span style="background-color:yellow"> invoice has not been sent </span>
+    to buyer yet. To send invoice to buyer, click on "Send invoice" button. To make
+    changes, click on "Edit invoice".
+    
+</p>
+<div class="section">
+    <a id ="~~$view->invoiceId~" class="btn btn-success invoice-mail" href="#"># Send invoice</a>
+    &nbsp;&nbsp;
+    <a class="btn btn-success" href="~~$view->editUrl~"># Edit invoice</a>
+    <div id="mail-message" class="ml20"> &nbsp; </div>
+</div>
+

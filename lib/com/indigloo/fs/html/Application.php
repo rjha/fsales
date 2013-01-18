@@ -179,7 +179,6 @@ namespace com\indigloo\fs\html {
 
             $html = NULL ;
 
-            
             $template = "/app/fragments/invoice.tmpl" ;
             $view = new \stdClass;
             
@@ -198,6 +197,22 @@ namespace com\indigloo\fs\html {
             $view->link = $invoiceRow["link"];
             $view->profile = sprintf("http://www.facebook.com/profile.php?id=%s",$invoiceRow["from_id"]) ;
 
+            $html = Template::render($template,$view);
+            return $html ;
+        }
+
+         static function getInvoicePreview($state,$invoiceId) {
+            if($state > 1 ) { return "" ;}
+
+            $html = NULL ;
+
+            $template = "/app/fragments/invoice-preview.tmpl" ;
+            $view = new \stdClass;
+            
+            $params = array("invoice_id" => $invoiceId);
+            $view->editUrl = Url::createUrl("/app/invoice/edit.php",$params);
+            $view->invoiceId = $invoiceId;
+            
             $html = Template::render($template,$view);
             return $html ;
         }

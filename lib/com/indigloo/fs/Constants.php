@@ -3,7 +3,7 @@ namespace com\indigloo\fs  {
 
     class Constants {
 
-    	const COMMENT_VERB = "#buy" ;
+    	const COMMENT_VERB = "buyit" ;
     	const INVOICE_MAIL_SENT_BIT = 2 ;
 
     	const DASHBOARD_URL = "/ghost/canvas/dashboard";
@@ -13,6 +13,8 @@ namespace com\indigloo\fs  {
 
     	const WWW_LOGIN_URL = "http://www.favsales.com/ghost/canvas/login";
     	const WWW_LOGIN_ERROR_URL = "http://www.favsales.com/ghost/canvas/login-error";
+        const INVOICE_ALL_URL = "/app/invoice/all.php";
+        
     }
 
 }

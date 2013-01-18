@@ -79,6 +79,7 @@ CREATE TABLE  fs_post  (
   id  int NOT NULL AUTO_INCREMENT,
   source_id  varchar(64) NOT NULL ,
   post_id  varchar(64) NOT NULL ,
+  from_id varchar(64) NOT NULL, 
   picture text,
   link text,
   object_id varchar(64),
@@ -116,6 +117,7 @@ DROP TABLE IF EXISTS  fs_invoice ;
 CREATE TABLE  fs_invoice  (
   login_id int not null,
   id  int(11) NOT NULL AUTO_INCREMENT,
+  p_order_id int,
   comment_id varchar(64) not null,
   source_id varchar(64) not null,
   source_name varchar(64) not null,
@@ -188,6 +190,19 @@ CREATE TABLE  fs_order  (
 --
  
 
+
+
+DROP TABLE IF EXISTS  fs_mail_queue ;
+CREATE TABLE  fs_mail_queue  (
+  id  int(11) NOT NULL AUTO_INCREMENT,
+  op_bit  int DEFAULT 1,
+  source int default 1 ,
+  source_id int not null,
+  created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  expired_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (id)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
 
