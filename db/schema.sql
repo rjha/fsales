@@ -81,7 +81,7 @@ CREATE TABLE  fs_post  (
   id  int NOT NULL AUTO_INCREMENT,
   source_id  varchar(64) NOT NULL ,
   post_id  varchar(64) NOT NULL ,
-  from_id varchar(64) NOT NULL, 
+  from_id varchar(64) , 
   picture text,
   link text,
   object_id varchar(64),
