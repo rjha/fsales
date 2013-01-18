@@ -29,7 +29,7 @@
                     </div>
                     <p class="lead">
                         
-                        Errr. We encountered some errors during this account setup.
+                        Oooops! We encountered some errors during this account setup.
                         Please sign out and try to sign in again!
                     </p>
                 </div>
