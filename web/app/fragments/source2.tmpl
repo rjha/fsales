@@ -21,9 +21,9 @@
 <div id="page-message" class="hide-me"> </div>
 
 <div id="filter-comments" class="panel panel-form">
-	<ol>
+	<ol class="unstyled">
 		~foreach($view->commentData as $row){~
-		<li> <a href="~~$row['link']~"> ~~$row['name']~</a></li>
+		<li>  <a href="~~$row['link']~"> + ~~$row['name']~</a></li>
 		~}~
 	</ol>
 

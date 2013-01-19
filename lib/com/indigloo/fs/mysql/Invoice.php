@@ -117,6 +117,57 @@ namespace com\indigloo\fs\mysql {
             }
         }
 
+        static function update($loginId,
+                                $invoiceId,
+                                $name,
+                                $email,
+                                $unitPrice,
+                                $quantity,
+                                $seller_info) {
+
+            $dbh = NULL ;
+
+            try {
+
+                $dbh =  PDOWrapper::getHandle();
+                //Tx start
+                $dbh->beginTransaction();
+
+                $sql1 = 
+                    " update fs_invoice set name = :name , email = :email, unit_price = :uprice, " .
+                    " quantity = :quantity, total_price = :tprice, seller_info = :info " .
+                    " where  id = :id and login_id = :login_id" ;
+
+                $stmt1 = $dbh->prepare($sql1);
+
+                $stmt1->bindParam(":id", $invoiceId);
+                $stmt1->bindParam(":login_id", $loginId);
+
+                $stmt1->bindParam(":name", $name);
+                $stmt1->bindParam(":email", $email);
+                $stmt1->bindParam(":quantity", $quantity);
+
+                $stmt1->bindParam(":uprice", $unitPrice);
+                $totalPrice = $unitPrice * $quantity ;
+                $stmt1->bindParam(":tprice", $totalPrice);
+                $stmt1->bindParam(":info", $seller_info);
+
+                $stmt1->execute();
+                $stmt1 = NULL ;
+
+                //Tx end
+                $dbh->commit();
+                $dbh = null;
+
+            }catch(\Exception $ex) {
+                $dbh->rollBack();
+                $dbh = null;
+                $message = $ex->getMessage();
+                throw new DBException($message);
+            }
+
+        }
+
         static function create($loginId,
                                 $commentId,
                                 $name,

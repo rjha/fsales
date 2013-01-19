@@ -2,7 +2,15 @@
 <div class="widget">
 
     <div class="row">
-        
+        <div class="span4"> 
+            <div class="photo">
+                <a href="~~$view->link~" target="_blank"> 
+                    <img src="~~$view->picture~" alt="photo" /> 
+                </a>
+            </div>
+            <p class="faded-text"><small> ~~$view->post_text~ </small></p>
+        </div>
+
         <div class="span4">
             <h5> <a href="~~$view->profile~" target="_blank">~~$view->userName~</a> </h5>
             
@@ -10,25 +18,16 @@
             <span class="faded-text">~~$view->time~</span> 
             
             ~if($view->hasInvoice) {~
-            <div class="pt10"> 
-                <a href= "~~$view->invoiceUrl~" class="btn btn-small">invoice</a> 
-            </div>
-            ~}~
-            
-            
+                <div class="pt10"> 
+                    <a href= "~~$view->invoiceUrl~" class="btn btn-small">invoice</a> 
+                </div>
+            ~}~ 
 
         </div>
-        <div class="span2"> 
-            <a href="~~$view->link~" target="_blank"> 
-            	<img src="~~$view->picture~" alt="photo" /> 
-               
-            </a>
-        </div>
-        <div class="span2">
-            <p class="faded-text"><small> ~~$view->post_text~ </small></p>
-        </div>
+       
 
     </div> <!-- row -->
 
 </div> <!-- widget -->
+<div class="clear"> </div>
 

@@ -60,7 +60,22 @@ namespace com\indigloo\fs\dao {
             return $invoiceId;
         }
 
+        function update($loginId,
+                        $invoiceId,
+                        $name,
+                        $email,
+                        $unitPrice,
+                        $quantity,
+                        $seller_info) {
 
+            mysql\Invoice::update($loginId,
+                                $invoiceId,
+                                $name,
+                                $email,
+                                $unitPrice,
+                                $quantity,
+                                $seller_info);
+        }
                                   
     }
 }

@@ -27,15 +27,28 @@
     $qUrl = Url::tryBase64QueryParam("q", "/");
     $fUrl = base64_encode(Url::current());
 
-    $commentId = Url::tryQueryParam("comment_id");
+
+    $invoiceId = Url::tryQueryParam("invoice_id");
+    $invoiceDao = new \com\indigloo\fs\dao\Invoice();
+    $invoiceRow = $invoiceDao->getOnId($invoiceId);
+
+    if(empty($invoiceRow)) {
+        $message = " Error: No invoice found";
+        throw new UIException(array($message)) ;
+    }
+
+    //owner check
+    if($invoiceRow["login_id"] != $loginId ) {
+        $message = " Error: you do not own this invoice!";
+        throw new UIException(array($message)) ;
+    }
+
     $commentDao = new \com\indigloo\fs\dao\Comment();
+    $commentId = $invoiceRow["comment_id"];
     $commentRow = $commentDao->getOnId($commentId);
     $commentHtml = AppHtml::getComment($commentRow, array("invoice" => false));
     
-    if(empty($commentRow)) {
-        $message = " No comment found for invoice ";
-        throw new UIException(array($message)) ;
-    }
+    
 
 ?>
 
@@ -43,7 +56,7 @@
 <html>
 
     <head>
-        <title> New Invoice</title>
+        <title> Edit Invoice</title>
         <?php include(APP_WEB_DIR . '/app/inc/meta.inc'); ?>
         <?php echo \com\indigloo\fs\util\Asset::version("/css/fs-bundle.css"); ?>
         <style>
@@ -67,35 +80,35 @@
                 <div class="span8 offset1">
 
                     <div class="page-header">
-                        <h3> Create invoice </h3>
+                        <h3> Edit invoice </h3>
                     </div>
 
                     <?php echo $commentHtml; ?>
                     <div class="form-wrapper">
                         
                         <div id="form-message"> </div>
-                        <form  id="form1"  name="form1" action="/app/action/invoice/new.php"  method="POST">
+                        <form  id="form1"  name="form1" action="/app/action/invoice/edit.php"  method="POST">
                           
                             <table class="form-table">
                                 
                                 <tr>
                                     <td> <label>Buyer Name *</label>
-                                        <input type="text" name="name" maxlength="64" value="<?php echo $sticky->get('name',$commentRow['user_name']); ?>" />
+                                        <input type="text" name="name" maxlength="64" value="<?php echo $sticky->get('name',$invoiceRow['name']); ?>" />
                                     </td>
                                 </tr>
                                 <tr>
                                     <td> <label>Buyer Email *</label>
-                                        <input type="text" name="email" maxlength="64" value="<?php echo $sticky->get('email'); ?>" />
+                                        <input type="text" name="email" maxlength="64" value="<?php echo $sticky->get('email',$invoiceRow['email']); ?>" />
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>  
                                         <!-- @inpage @hardcoded -->
                                         <span>Quantity *</span>
-                                        <input type="text"  name="quantity" maxlength="4" value="<?php echo $sticky->get('quantity',1); ?>" style="width:30px;" />
+                                        <input type="text"  name="quantity" maxlength="4" value="<?php echo $sticky->get('quantity',$invoiceRow['quantity']); ?>" style="width:30px;" />
                                         
                                         <span>Unit Price *</span>
-                                        <input type="text"  name="unit_price" maxlength="10" value="<?php echo $sticky->get('unit_price'); ?>" style="width:90px;" />
+                                        <input type="text"  name="unit_price" maxlength="10" value="<?php echo $sticky->get('unit_price',$invoiceRow['unit_price']); ?>" style="width:90px;" />
                                         
                                     </td>
                                 </tr>
@@ -103,7 +116,7 @@
                                 <tr>
                                     <td>
                                         <label>Any other info &nbsp;(max 512 chars)</label>
-                                        <textarea  id="seller_info" maxlength="512" name="seller_info" style="height:110px;" cols="50" rows="4" ><?php echo $sticky->get('seller_info'); ?></textarea>
+                                        <textarea  id="seller_info" maxlength="512" name="seller_info" style="height:110px;" cols="50" rows="4" ><?php echo $sticky->get('seller_info',$invoiceRow['seller_info']); ?></textarea>
                                          
                                     </td>
                                 </tr>
@@ -120,7 +133,7 @@
 
                             </table> 
                             
-                            <input type="hidden" name="comment_id" value="<?php echo $commentRow['comment_id']; ?>" /> 
+                            <input type="hidden" name="invoice_id" value="<?php echo $invoiceRow['id']; ?>" /> 
                             <input type="hidden" name="qUrl" value="<?php echo $qUrl; ?>" />
                             <input type="hidden" name="fUrl" value="<?php echo $fUrl; ?>" />
 

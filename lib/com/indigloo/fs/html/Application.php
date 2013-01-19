@@ -198,7 +198,9 @@ namespace com\indigloo\fs\html {
             $template = "/app/fragments/invoice-preview.tmpl" ;
             $view = new \stdClass;
             
-            $params = array("invoice_id" => $invoiceId);
+            $qUrl = Url::createUrl("/app/invoice/preview.php", array("invoice_id" => $invoiceId));
+
+            $params = array("invoice_id" => $invoiceId,"q" => base64_encode($qUrl));
             $view->editUrl = Url::createUrl(AppConstants::EDIT_INVOICE_URL,$params);
             $view->invoiceId = $invoiceId;
             

@@ -10,19 +10,8 @@
                    
                 </a>
             </div>
-            <p>~~$view->post_text~</p>
-            <div> 
-                <div class="btn-group">
-                    <a class="btn btn-small dropdown-toggle" data-toggle="dropdown" href="#">
-                    Action
-                    <span class="caret"></span>
-                  </a>
-                  <ul class="dropdown-menu">
-                    <li> <a href="#"> send invoice </a> </li>
-                    <li> <a href="#"> view order </a> </li>
-                  </ul>
-                </div>
-            </div>
+            <p class="faded-text"> <small> ~~$view->post_text~ </small> </p>
+           
         </div>
 
         <div class="span5">
@@ -45,15 +34,27 @@
                 <dt>Unit price</dt>
                 <dd>~~$view->unitPrice~</dd>
                 
-                <dt>Status</dt>
-                <dd> <span class="label label-warning"> ~~$view->status~ </span> </dd>
-
                 <dt>Created On</dt>
                 <dd>~~$view->createdOn~</dd>
-                
+                <dt> Status </dt>
+                <dd>
+                    <div> 
+                        <div class="btn-group">
+                            <a class="btn btn-small dropdown-toggle" data-toggle="dropdown" href="#">
+                            ~~$view->status~
+                            <span class="caret"></span>
+                          </a>
+                          <ul class="dropdown-menu">
+                            <li> <a href="#"> send invoice </a> </li>
+                            <li> <a href="#"> view order </a> </li>
+                          </ul>
+                        </div>
+                    </div>
+                </dd>
 
             </dl>
 
+           
 
         </div>
 
