@@ -8,15 +8,15 @@
                     <img src="~~$view->picture~" alt="photo" /> 
                 </a>
             </div>
-            <p class="faded-text"><small> ~~$view->post_text~ </small></p>
-            ~~$view->indicator~
+            <p class="faded-text"> <small> ~~$view->post_text~ </small></p>
+
         </div>
 
         <div class="span4">
             <h5> <a href="~~$view->profile~" target="_blank">~~$view->userName~</a> </h5>
             
             <p class="comment-text">  ~~$view->comment~ </p>
-            <span class="faded-text">~~$view->time~</span> 
+            <span class="faded-text">  ~~$view->indicator~ ~~$view->time~</span> 
             
             ~if($view->showInvoiceButton) {~
                 <div class="pt10"> 
