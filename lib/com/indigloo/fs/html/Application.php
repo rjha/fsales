@@ -149,8 +149,14 @@ namespace com\indigloo\fs\html {
                 "q" => base64_encode(Url::current()) , 
                 "comment_id" => $row["comment_id"]);
 
-            $view->hasInvoice = $settings["invoice"];
+            $view->showInvoiceButton = $settings["invoice"];
             $view->invoiceUrl = Url::createUrl(AppConstants::NEW_INVOICE_URL, $params);
+
+            $view->indicator = '' ;
+
+            if($row["has_invoice"] > 0 ) {
+                $view->indicator = '<span> <i class="icon icon-star"> </i></span>' ;
+            }
 
             $html = Template::render($template,$view);
             return $html ;

@@ -51,7 +51,7 @@
 
         
         //success - go to invoices
-        $fwd = Url::createUrl("/app/invoice/all.php", $params);
+        $fwd = Url::createUrl("/app/invoice/all.php");
         header("Location: ".$fwd);
 
     } catch(UIException $ex) {

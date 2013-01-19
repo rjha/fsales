@@ -9,6 +9,7 @@
                 </a>
             </div>
             <p class="faded-text"><small> ~~$view->post_text~ </small></p>
+            ~~$view->indicator~
         </div>
 
         <div class="span4">
@@ -17,7 +18,7 @@
             <p class="comment-text">  ~~$view->comment~ </p>
             <span class="faded-text">~~$view->time~</span> 
             
-            ~if($view->hasInvoice) {~
+            ~if($view->showInvoiceButton) {~
                 <div class="pt10"> 
                     <a href= "~~$view->invoiceUrl~" class="btn btn-small">invoice</a> 
                 </div>
