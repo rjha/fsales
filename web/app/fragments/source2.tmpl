@@ -1,14 +1,22 @@
 
+
 <div class="wrapper">
-	<span class="faded-text b"> page : ~~$view->selectedRow['name']~</span>
-	&nbsp;|&nbsp;
-	<a class="open-panel" rel="filter-comments" href="#">
-		<span class="label label-info">comments filter</span>
-	</a>
-	&nbsp;
-	<a id="comment-popover" href="#" rel="popover" data-placement="right" data-content="To view all comments or those with  buyit word only click on comments filter." data-original-title="About comments filter">&nbsp;</a>
+	<ul class="tools unstyled">
+		<li> <span class="faded-text"> ~~$view->selectedRow['name']~</span> </li>
+		<li> 
+			<a class="open-panel" rel="filter-comments" href="#">
+				filter comments <i class="icon icon-chevron-down"> </i>
+			</a>
+		</li>
+		<li>
+			<a id="comment-popover" href="#" rel="popover" data-placement="right" data-content="To view all comments or those with  buyit word only click on filter comments." data-original-title="About comments filter">&nbsp;</a>
+		</li>
+
+	</ul>
 
 </div> <!-- page actions -->
+
+<div class="clear"> </div>
 
 <div id="page-message" class="hide-me"> </div>
 

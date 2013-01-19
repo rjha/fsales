@@ -991,7 +991,7 @@ img.aligncenter{display:block;margin-left:auto;margin-right:auto}
 .quote{margin-bottom:10px;padding-bottom:10px;border-left:4px solid #eee;padding-left:20px;overflow:hidden}
 .toolbar{margin-top:20px;border-bottom:2px solid #f8d575;border-top:2px solid #f8d575}
 .tools li{float:left;position:relative;padding:5px 10px 5px 20px}
-.tools a{color:#333}
+.tools a{color:#333;font-size:14px}
 .tools a:hover{text-decoration:underline}
 .section{min-height:40px;padding:20px 0 20px 0;border-bottom:1px solid #f1f1f1;overflow:hidden}
 .stack{width:230px;float:left;padding:4px;margin:4px;cursor:pointer}

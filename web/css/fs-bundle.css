@@ -6014,6 +6014,7 @@ a.badge:hover {
 
     .tools a {
         color: #333 ;
+        font-size:14px;
     }
 
     .tools a:hover {
