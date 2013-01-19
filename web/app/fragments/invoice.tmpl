@@ -45,17 +45,20 @@
                             <span class="caret"></span>
                           </a>
                           <ul class="dropdown-menu">
-                            <li> <a href="#"> send invoice </a> </li>
-                            <li> <a href="#"> view order </a> </li>
+                            ~foreach($view->actions as $action){~
+                                <li> <a href="#" id="~~$view->invoiceId~" rel="~~$action['rel']~" class="invoice-action"> ~~$action['name']~ </a> </li> 
+                            ~}~
+                            
                           </ul>
                         </div>
                     </div>
                 </dd>
-
+                <dt>&nbsp; </dt>
+                <dd> 
+                    <div id="invoice-ajax-~~$view->invoiceId~">&nbsp; </div>
+                </dd>
             </dl>
-
            
-
         </div>
 
     </div> <!-- row -->

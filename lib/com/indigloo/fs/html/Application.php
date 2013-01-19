@@ -11,36 +11,30 @@ namespace com\indigloo\fs\html {
     class Application {
 
         static function getInvoiceState($state) {
-            $text = "Unknown" ;
+            // we need to return 
+            // 1. status text
+            // 2. action link + name pairs 
+            
+            $status = array( 1 => "New", 2 => "Pending", 3 => "Paid" , 4 => "Shipped");
+            $text = isset($status[$state]) ? $status[$state] : "Unknown" ;
 
-            switch($state) {
-                case 1 : 
-                    $text = "new" ;
-                    break ;
-                case 2 :
-                    $text = "pending" ;
-                    break ;
-                case 3 :
-                    $text = "paid" ;
-                    break ;
-                case 4 :
-                    $text = "shipped" ;
-                    break ;
-                case 5 :
-                    $text = "cancelled" ;
-                    break ;
-                default :
-                    $text = "unknown" ;
+            $editLink = array("name" => '<i class="icon icon-edit"></i> edit' , "rel" => "edit");
+            $mailLink = array("name" => '<i class="icon icon-envelope"></i> send invoice' , "rel" => "mail");
+            $cancelLink = array("name" => '<i class="icon icon-remove"></i> cancel', "rel" => "cancel");
+            
+            $shippingLink = array("name" => '<i class="icon icon-gift"></i> shipping' , "rel" => "shipping");
+            $reminderLink = array("name" => '<i class="icon icon-bell"></i> remind', "rel" => "reminder");
 
-            }
+            $links = array( 
+                1 => array($editLink,$mailLink),
+                2 => array($cancelLink,$mailLink),
+                3 => array($cancelLink,$shippingLink,$mailLink),
+                4 => array($reminderLink,$mailLink));
 
-            return $text ;
-        }
-
-        static function getInvoiceActions($invoiceId,$state) {
-            //Actions are array of action - link
-            $actions = array() ;
-
+            $actions = isset($links[$state]) ? $links[$state] : array();
+            $data = array("text" => $text, "actions" => $actions);
+            return $data ;
+            
         }
 
         static function messageBox($message) {
@@ -185,7 +179,10 @@ namespace com\indigloo\fs\html {
             $view->totalPrice = $invoiceRow["total_price"];
             $view->unitPrice = $invoiceRow["unit_price"];
             $view->createdOn = $invoiceRow["created_on"];
-            $view->status = self::getInvoiceState($invoiceRow["op_bit"]);
+
+            $stateData = self::getInvoiceState($invoiceRow["op_bit"]);
+            $view->status = $stateData["text"];
+            $view->actions = $stateData["actions"];
 
             $view->picture = $invoiceRow["picture"] ;
             $view->post_text = $invoiceRow["post_text"];
