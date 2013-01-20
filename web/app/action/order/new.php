@@ -13,6 +13,8 @@
     use \com\indigloo\Url as Url ;
     use \com\indigloo\exception\UIException as UIException;
     use \com\indigloo\fs\auth\Login as Login ;
+    use \com\indigloo\fs\Constants as AppConstants;
+
 
     $gWeb = \com\indigloo\core\Web::getInstance(); 
     $fvalues = array();
@@ -24,6 +26,7 @@
 
         
         // Rules
+        // Rule number zero : never trust user input!
         // first name/ last name - min :3 max 30 | alphanumeric
         // first name <> last name
         // email : 64/ valid format
@@ -35,18 +38,29 @@
         
 
         $fhandler->addRule('invoice_id', 'INVOICE ID', array('required' => 1));
-        $fhandler->addRule('first_name', 'First Name', array('required' => 1, 'minlength' =>3, 'maxlength' => 30));
-        $fhandler->addRule('last_name', 'Last Name', array('required' => 1,'minlength' =>3, 'maxlength' => 30));
+        $fhandler->addRule('first_name', 'First name', array('required' => 1, 'minlength' =>3, 'maxlength' => 30));
+        $fhandler->addRule('last_name', 'Last name', array('required' => 1,'minlength' =>3, 'maxlength' => 30));
         
         $fhandler->addRule('email', 'Email', array('required' => 1));
         $fhandler->addRule('phone', 'Phone', array('required' => 1, 'maxlength' => 16));
 
-        $fhandler->addRule('billing_address', 'Address (Billing)', array('required' => 1, 'minlength' =>6, 'maxlength' => 100));
-        $fhandler->addRule('billing_city', 'City (Billing)', array('required' => 1,'minlength' =>3, 'maxlength' => 30));
-        $fhandler->addRule('billing_state', 'State (Billing)', array('required' => 1));
-        $fhandler->addRule('billing_pincode', 'Pincode (Billing)', array('required' => 1,'minlength' =>2, 'maxlength' => 12));
+        $fhandler->addRule('billing_address', 'Address (billing)', array('required' => 1, 'minlength' =>6, 'maxlength' => 100));
+        $fhandler->addRule('billing_city', 'City (billing)', array('required' => 1,'minlength' =>3, 'maxlength' => 30));
+        $fhandler->addRule('billing_state', 'State (billing)', array('required' => 1));
+        $fhandler->addRule('billing_pincode', 'Pincode (billing)', array('required' => 1,'minlength' =>2, 'maxlength' => 12));
 
-        // @todo : add shipping stuff
+
+        $fhandler->addRule('checksum', 'checksum', array('required' => 1, 'rawData' => 1));
+
+        $fhandler->addRule('ship_first_name', 'First name (shipping)', array('required' => 1, 'minlength' =>3, 'maxlength' => 30));
+        $fhandler->addRule('ship_last_name', 'Last name (shipping)', array('required' => 1,'minlength' =>3, 'maxlength' => 30));
+        
+        $fhandler->addRule('ship_address', 'Address (shipping)', array('required' => 1, 'minlength' =>6, 'maxlength' => 100));
+        $fhandler->addRule('ship_city', 'City (shipping)', array('required' => 1,'minlength' =>3, 'maxlength' => 30));
+        $fhandler->addRule('ship_state', 'State (shipping)', array('required' => 1));
+        $fhandler->addRule('ship_pincode', 'Pincode (shipping)', array('required' => 1,'minlength' =>2, 'maxlength' => 12));
+
+
         $fvalues = $fhandler->getValues();
         
         if ($fhandler->hasErrors()) {
@@ -82,11 +96,22 @@
             $message = "first name and last name cannot be same." ;
             throw new UIException(array($message));
         }
-
-        // push this data into fs_orders
         
         $invoiceId = $fvalues["invoice_id"];
         settype($invoiceId, "integer");
+
+        // valid checkout_token and invoice_id ?
+        $checkout_token  =  $gWeb->find("fs:checkout:token",true);
+        $formString =  $invoiceId + ":" + $checkout_token;
+        $checksum = hash_hmac("sha256", $formString , AppConstants::SECRET_KEY);
+
+        // calculated checksum = form.checksum ?
+
+        if(strcmp($checksum,$fvalues["checksum"]) != 0 ) {    
+            $message = "Error: form data has been changed : checksum do not match!" ;
+            throw new UIException(array($message));
+        }
+        
         $invoiceDao = new \com\indigloo\fs\dao\Invoice(); 
         $invoiceRow = $invoiceDao->getOnId2($invoiceId);
     
@@ -94,8 +119,7 @@
             $message = "Error: No invoice found!" ;
             throw new UIException(array($message));
         }
-
-        //@todo : add shipping stuff as well
+        
         $orderDao = new \com\indigloo\fs\dao\Order();
         $orderId = $orderDao->add($invoiceRow,$fvalues);
 

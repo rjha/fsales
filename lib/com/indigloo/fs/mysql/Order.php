@@ -69,13 +69,13 @@ namespace com\indigloo\fs\mysql {
                 $stmt1->bindParam(":pin", $formData["billing_pincode"]);
                 $stmt1->bindParam(":country", $country);
                 
-                // @todo: shipping address can be different from billing address
-                $stmt1->bindParam(":s_first_name", $formData["first_name"]);
-                $stmt1->bindParam(":s_last_name", $formData["last_name"]);
-                $stmt1->bindParam(":s_address", $formData["billing_address"]);
-                $stmt1->bindParam(":s_city", $formData["billing_city"]);
-                $stmt1->bindParam(":s_state", $formData["billing_state"]);
-                $stmt1->bindParam(":s_pin", $formData["billing_pincode"]);
+                // shipping address can be different from billing address
+                $stmt1->bindParam(":s_first_name", $formData["ship_first_name"]);
+                $stmt1->bindParam(":s_last_name", $formData["ship_last_name"]);
+                $stmt1->bindParam(":s_address", $formData["ship_address"]);
+                $stmt1->bindParam(":s_city", $formData["ship_city"]);
+                $stmt1->bindParam(":s_state", $formData["ship_state"]);
+                $stmt1->bindParam(":s_pin", $formData["ship_pincode"]);
                 $stmt1->bindParam(":s_country", $country);
                 
                 $stmt1->execute();

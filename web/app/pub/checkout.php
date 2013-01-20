@@ -10,6 +10,7 @@
     use \com\indigloo\ui\form\Message as FormMessage;
     use \com\indigloo\ui\form\Sticky;
     use \com\indigloo\fs\html\Application as AppHtml ;
+    use \com\indigloo\fs\Constants as AppConstants ;
 
 
     $gWeb = \com\indigloo\core\Web::getInstance();
@@ -42,7 +43,18 @@
     }
 
     $invoiceHtml = AppHtml::getCheckoutInvoice($invoiceRow);
-    //@todo : make the form tampering proof
+    // make the form tampering proof
+    
+    $checkout_token  = Util::getMD5GUID() ;
+    $gWeb->store("fs:checkout:token",$checkout_token);
+
+
+    $formString =  $invoiceId + ":" + $checkout_token;
+    $checksum = hash_hmac("sha256", $formString , AppConstants::SECRET_KEY);
+
+    // @todo rules 
+    // checkout form should not be allowed after
+    // it has been paid for
 ?>
 <!DOCTYPE html>
 <html>
@@ -122,10 +134,10 @@
                                     <td> &nbsp; </td>
                                     <td> 
                                         <span>City*</span>&nbsp;
-                                        <input type="text" name="billing_city" style="width:200px;" maxlength="30" value="<?php echo $sticky->get('billing_city'); ?>" />
+                                        <input type="text" name="billing_city" style="width:150px;" maxlength="30" value="<?php echo $sticky->get('billing_city'); ?>" />
                                     
                                         <span>Pincode*</span>&nbsp;
-                                        <input type="text" style="width:110px;" name="billing_pincode" maxlength="16" value="<?php echo $sticky->get('billing_pincode'); ?>" />
+                                        <input type="text" name="billing_pincode" style="width:80px;" maxlength="16" value="<?php echo $sticky->get('billing_pincode'); ?>" />
                                     </td>
                                 </tr> 
 
@@ -139,28 +151,30 @@
                                     
                                 <!-- shipping -->
 
-                                <tr id="shipping-address">
+                                <tr>
                                     <td> &nbsp; </td>
                                     <td>
-                                        <b> Shipping Address </b> <a href="#shipping-address"> click here to copy billing address </a>
+                                        <b> Shipping Address </b> 
+                                        
+                                        <a id="copy-billing-link" href="#" class="btn btn-small btn-info"> copy billing address </a>
                                     </td>
                                 </tr>
                                  <tr>
                                     <td> <label>First name*</label> </td>
                                     <td>
-                                        <input type="text" name="first_name" maxlength="30" value="<?php echo $sticky->get('first_name'); ?>" />
+                                        <input type="text" name="ship_first_name" maxlength="30" value="<?php echo $sticky->get('ship_first_name'); ?>" />
                                     </td>
                                 </tr>
                                  <tr>
                                     <td> <label>Last name*</label> </td>
                                     <td>
-                                        <input type="text" name="last_name" maxlength="30" value="<?php echo $sticky->get('last_name'); ?>" />
+                                        <input type="text" name="ship_last_name" maxlength="30" value="<?php echo $sticky->get('ship_last_name'); ?>" />
                                     </td>
                                 </tr>
                                 <tr>
                                     <td> <label>Address*</label> </td>
                                     <td>
-                                        <input type="text" name="billing_address" maxlength="100" value="<?php echo $sticky->get('billing_address'); ?>" />
+                                        <input type="text" name="ship_address" maxlength="100" value="<?php echo $sticky->get('ship_address'); ?>" />
                                     </td>
                                 </tr>
                                    
@@ -169,10 +183,10 @@
                                     <td> &nbsp; </td>
                                     <td> 
                                         <span>City*</span>&nbsp;
-                                        <input type="text" name="billing_city" style="width:200px;" maxlength="30" value="<?php echo $sticky->get('billing_city'); ?>" />
+                                        <input type="text" name="ship_city" style="width:150px;" maxlength="30" value="<?php echo $sticky->get('ship_city'); ?>" />
                                     
                                         <span>Pincode*</span>&nbsp;
-                                        <input type="text" style="width:110px;" name="billing_pincode" maxlength="16" value="<?php echo $sticky->get('billing_pincode'); ?>" />
+                                        <input type="text" name="ship_pincode" style="width:80px;" maxlength="16" value="<?php echo $sticky->get('ship_pincode'); ?>" />
                                     </td>
                                 </tr> 
 
@@ -180,7 +194,7 @@
                                     <td> &nbsp; </td>
                                     <td>
                                         <span>State*</span> 
-                                        <?php $gUIStateId = "shipping_state" ; include(APP_WEB_DIR. "/app/inc/data/state.inc"); ?>
+                                        <?php $gUIStateId = "ship_state" ; include(APP_WEB_DIR. "/app/inc/data/state.inc"); ?>
                                     </td>
                                 </tr>
 
@@ -204,6 +218,8 @@
                             </table> 
 
                             <input type="hidden" name="invoice_id" value="<?php echo $invoiceRow['id']; ?>" /> 
+                            <input type="hidden" name="checkout_token" value="<?php echo $checkout_token ?>" />
+                            <input type="hidden" name="checksum" value="<?php echo $checksum ?>" />
                             <input type="hidden" name="qUrl" value="<?php echo $qUrl; ?>" />
                             <input type="hidden" name="fUrl" value="<?php echo $fUrl; ?>" />
 
@@ -220,6 +236,24 @@
         <script type="text/javascript">
 
             $(document).ready(function(){
+
+                
+                $("#copy-billing-link").click( function(event) {
+                    event.preventDefault();
+                    
+                    var frm1 = document.forms["form1"];
+                    frm1.ship_first_name.value = frm1.first_name.value ;
+                    frm1.ship_last_name.value = frm1.last_name.value ;
+
+                    frm1.ship_address.value = frm1.billing_address.value ;
+                    frm1.ship_city.value = frm1.billing_city.value ;
+                    frm1.ship_pincode.value = frm1.billing_pincode.value ;
+                    frm1.ship_state.value = frm1.billing_state.value ;
+
+
+                });
+
+
                 // Rules
                 // first name/ last name - min :3 max 30 | alphanumeric
                 // first name <> last name
@@ -240,17 +274,35 @@
                         billing_address: {required: true , maxlength:100, minlength : 6} ,
                         billing_city: {required: true , maxlength:30, minlength:3} ,
                         billing_state: {required: true} ,
-                        billing_pincode: {required: true , maxlength:12, minlength:2} 
+                        billing_pincode: {required: true , maxlength:12, minlength:2} ,
+
+                        ship_first_name: {required: true, maxlength:30, minlength:3} ,
+                        ship_last_name : { required : true, maxlength : 30, minlength :2},
+                        ship_address: {required: true , maxlength:100, minlength : 6} ,
+                        ship_city: {required: true , maxlength:30, minlength:3} ,
+                        ship_state: {required: true} ,
+                        ship_pincode: {required: true , maxlength:12, minlength:2} 
+
                         
                     },
                     messages: {
                         first_name: {
-                            required: "First Name is required ", 
+                            required: "First name is required ", 
                             maxlength : "Only 30 chars allowed in First Name", 
                             minlength: "At least 3 chars required in First Name"
                         } ,
                         last_name : { 
-                            required : "Last Name is required ",
+                            required : "Last name is required ",
+                            maxlength : "Only 30 chars allowed in Last Name", 
+                            minlength: "At least 2 chars required in Last Name"
+                        },
+                        ship_first_name: {
+                            required: "First name (shipping) is required ", 
+                            maxlength : "Only 30 chars allowed in First Name", 
+                            minlength: "At least 3 chars required in First Name"
+                        } ,
+                        ship_last_name : { 
+                            required : "Last name (shipping) is required ",
                             maxlength : "Only 30 chars allowed in Last Name", 
                             minlength: "At least 2 chars required in Last Name"
                         },
@@ -279,7 +331,26 @@
                             required: "Pincode (billing) is required " , 
                             maxlength:"Only 12 chars allowed in Pincode (billing)",
                             minlength: "Atleast 2 chars required in Pincode (billing)"
-                        } 
+                        },
+
+                        ship_address: {
+                            required: "Address (shipping) is required " , 
+                            maxlength:"Only 100 chars allowed in Address",
+                            minlength: "At least 6 chars required in  Address"
+                        } ,
+                        ship_city: {
+                            required: true , 
+                            maxlength : "Only 30 chars allowed in City (shipping)", 
+                            minlength: "At least 3 chars required in City(shipping)"
+                        } ,
+                        ship_state: {
+                            required: "State (shipping) is required"
+                        } ,
+                        ship_pincode: {
+                            required: "Pincode (shipping) is required " , 
+                            maxlength:"Only 12 chars allowed in Pincode (shipping)",
+                            minlength: "Atleast 2 chars required in Pincode (shipping)"
+                        }
                     }
                 }); 
 

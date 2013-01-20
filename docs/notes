@@ -449,4 +449,6 @@ Questions
 + what mails should be sent at each state change?
 
 + one invoice will have precisely one order
-
++ Do not allow checkout after it has been paid for 
+ or what happens when people keep pressing the checkout button
+ 
