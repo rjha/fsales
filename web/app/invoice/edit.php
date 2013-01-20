@@ -37,6 +37,9 @@
         throw new UIException(array($message)) ;
     }
 
+    // @todo invoice action edit should not be allowed
+    // after a certain stage!
+
     //owner check
     if($invoiceRow["login_id"] != $loginId ) {
         $message = " Error: you do not own this invoice!";

@@ -1041,8 +1041,8 @@ img.aligncenter{display:block;margin-left:auto;margin-right:auto}
 .panel-form input{width:75%}
 .panel-form textarea{width:75%;height:80px}
 .form-table{padding-top:30px}
-.form-table input{word-spacing:1px;line-height:1.8em;color:#333;border:1px solid #bbb;width:460px;height:22px;padding-top:4px}
-.form-table textarea{word-spacing:1px;line-height:1.8em;color:#333;border:1px solid #ccc;width:460px;height:110px;padding-top:10px}
+.form-table input{word-spacing:1px;line-height:1.8em;color:#333;border:1px solid #bbb;width:400px;height:22px;padding-top:4px}
+.form-table textarea{word-spacing:1px;line-height:1.8em;color:#333;border:1px solid #ccc;width:400px;height:110px;padding-top:10px}
 #footer{padding-top:60px;font-size:12px;text-align:center;line-height:18px}
 .beta{font-size:11px;vertical-align:sub}
 .navbar-inner{border:0;border-radius:0;border-bottom:1px solid #d5d5d5}

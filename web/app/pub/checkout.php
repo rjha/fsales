@@ -56,34 +56,22 @@
     </head>
 
     <body>
-        <style>
-            /* @inpage @hardcoded */
-            #invoice-item img {
-                width: auto;
-                height: auto;
-                max-width: 320px ;
-                border: 5px solid #f5f5f5;
-                
-            }
-
-        </style>
+        
         <?php include(APP_WEB_DIR . '/app/inc/toolbar/default.inc'); ?>
         
         <div class="container mh600">
             
             <div class="row">
-                <div class="span5 offset1">
+                <div class="span8 offset1">
+                    <h3> Invoice for <?php echo $invoiceRow["name"]; ?> </h3>
                     <?php echo $invoiceHtml;  ?>
                 </div>
-                <div class="span6">
+            </div> <!-- row:1 -->
 
-                    <div class="page-header">
-                        <h3> Invoice for <?php echo $invoiceRow["name"]; ?> </h3>
-                    </div>
-                    <div class="row">
-                        <?php FormMessage::render() ?>
-                    </div>
-
+            <div class="row">
+                <div class="span8 offset1">
+                    <?php FormMessage::render() ?>
+                    
                     <!-- zaakpay specific form -->
                     <div class="form-wrapper">
                         <div id="form-message"> </div>
@@ -91,50 +79,114 @@
                             <table class="form-table">
                                 
                                 <tr>
-                                    <td> <label>First Name *</label>
+                                    <td> <label>First name*</label> </td>
+                                    <td>
                                         <input type="text" name="first_name" maxlength="30" value="<?php echo $sticky->get('first_name'); ?>" />
                                     </td>
                                 </tr>
                                  <tr>
-                                    <td> <label>Last Name *</label>
+                                    <td> <label>Last name*</label> </td>
+                                    <td>
                                         <input type="text" name="last_name" maxlength="30" value="<?php echo $sticky->get('last_name'); ?>" />
                                     </td>
                                 </tr>
 
                                 <tr>
-                                    <td> <label>Email *</label>
+                                    <td> <label>Email*</label> </td>
+                                    <td>
                                         <input type="text" name="email" maxlength="64" value="<?php echo $sticky->get('email'); ?>" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td> <label>Phone*</label>
-                                    <input type="text" name="phone" maxlength="16" value="<?php echo $sticky->get('phone'); ?>" />
+                                    <td> <label>Phone*</label> </td>
+                                    <td>
+                                        <input type="text" name="phone" maxlength="16" value="<?php echo $sticky->get('phone'); ?>" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td> <label>Billing Address *</label>
-                                    <input type="text" name="billing_address" maxlength="100" value="<?php echo $sticky->get('billing_address'); ?>" />
+                                    <td> &nbsp; </td>
+                                    <td>
+                                        <b> Billing Address </b>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td> <label>Address*</label> </td>
+                                    <td>
+                                        <input type="text" name="billing_address" maxlength="100" value="<?php echo $sticky->get('billing_address'); ?>" />
                                     </td>
                                 </tr>
                                    
 
                                 <tr>
-                                    <td> <span>City*</span>&nbsp;
-                                    <input type="text" name="billing_city" style="width:200px;" maxlength="30" value="<?php echo $sticky->get('billing_city'); ?>" />
-
-                                     <span>Pincode*</span>&nbsp;
+                                    <td> &nbsp; </td>
+                                    <td> 
+                                        <span>City*</span>&nbsp;
+                                        <input type="text" name="billing_city" style="width:200px;" maxlength="30" value="<?php echo $sticky->get('billing_city'); ?>" />
+                                    
+                                        <span>Pincode*</span>&nbsp;
                                         <input type="text" style="width:110px;" name="billing_pincode" maxlength="16" value="<?php echo $sticky->get('billing_pincode'); ?>" />
                                     </td>
                                 </tr> 
 
                                 <tr>
-                                    <td> 
-                                        <span>State*</span>
+                                    <td> &nbsp; </td>
+                                    <td>
+                                        <span>State*</span> 
                                         <?php $gUIStateId = "billing_state" ; include(APP_WEB_DIR. "/app/inc/data/state.inc"); ?>
                                     </td>
                                 </tr>
-       
+                                    
+                                <!-- shipping -->
+
+                                <tr id="shipping-address">
+                                    <td> &nbsp; </td>
+                                    <td>
+                                        <b> Shipping Address </b> <a href="#shipping-address"> click here to copy billing address </a>
+                                    </td>
+                                </tr>
+                                 <tr>
+                                    <td> <label>First name*</label> </td>
+                                    <td>
+                                        <input type="text" name="first_name" maxlength="30" value="<?php echo $sticky->get('first_name'); ?>" />
+                                    </td>
+                                </tr>
+                                 <tr>
+                                    <td> <label>Last name*</label> </td>
+                                    <td>
+                                        <input type="text" name="last_name" maxlength="30" value="<?php echo $sticky->get('last_name'); ?>" />
+                                    </td>
+                                </tr>
                                 <tr>
+                                    <td> <label>Address*</label> </td>
+                                    <td>
+                                        <input type="text" name="billing_address" maxlength="100" value="<?php echo $sticky->get('billing_address'); ?>" />
+                                    </td>
+                                </tr>
+                                   
+
+                                <tr>
+                                    <td> &nbsp; </td>
+                                    <td> 
+                                        <span>City*</span>&nbsp;
+                                        <input type="text" name="billing_city" style="width:200px;" maxlength="30" value="<?php echo $sticky->get('billing_city'); ?>" />
+                                    
+                                        <span>Pincode*</span>&nbsp;
+                                        <input type="text" style="width:110px;" name="billing_pincode" maxlength="16" value="<?php echo $sticky->get('billing_pincode'); ?>" />
+                                    </td>
+                                </tr> 
+
+                                <tr>
+                                    <td> &nbsp; </td>
+                                    <td>
+                                        <span>State*</span> 
+                                        <?php $gUIStateId = "shipping_state" ; include(APP_WEB_DIR. "/app/inc/data/state.inc"); ?>
+                                    </td>
+                                </tr>
+
+
+                                <tr>
+                                    <td> &nbsp;</td>
                                     <td>
                                         <div class="form-actions">
                                             <button class="btn btn-success btn-large" type="submit" name="save" value="Save">Proceed to pay</button>
@@ -160,7 +212,7 @@
 
                 </div>
              
-            </div>
+            </div> <!-- row:2 -->
         </div> <!-- container -->
 
         <?php echo \com\indigloo\fs\util\Asset::version("/js/fs-bundle.js"); ?>

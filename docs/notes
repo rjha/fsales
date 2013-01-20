@@ -435,8 +435,18 @@ checksum
 Workflow
 ----------------
 
-+ what invoices have been generated from a comment
-+ How can I edit an invoice
-+ How can I create a brand new invoice?
+Questions
 
-+ 
++ states are 
+  - New(1) 
+  - Pending (2) 
+  - Paid (3) 
+  - Shipped (4) 
+  - Cancelled (5)
+
++ At what state should be stop editing the invoice?
++ Allow to generate a new invoice w/o a comment?
++ what mails should be sent at each state change?
+
++ one invoice will have precisely one order
+

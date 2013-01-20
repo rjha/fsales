@@ -1,23 +1,29 @@
 
-<div id="invoice-item">
-    <div class="photo">
-        <a href="~~$view->link~" target="_blank"> 
-            <img src="~~$view->picture~"  alt="photo" />  
-        </a>
-    </div>
-    <div class="clear"> </div>
-    <p class="muted">~~$view->post_text~ </p>
-     <ul>
-        <li> <span class="b">~~$view->quantity~ </span> Qty </li>
-        <li> <span class="b"> created on </span> ~~$view->createdOn~</li>
-        <li> <span class="b"> Merchant </span> ~~$view->sourceName~</li>
+<div class="widget">
+    <div class="row">
+        <div class="span3">
+            <div>
+                 <a href="~~$view->link~" target="_blank"> 
+                    <img src="~~$view->picture~" alt="photo" /> 
+                </a>
+            </div>
+            <p class="faded-text"> <small> ~~$view->post_text~ </small> </p>
+            <div>
+                <span class="huge-text">Total: &nbsp; ~~$view->price~ </span>
+            </div>
+        </div> <!-- col:1 -->
 
-    </ul>
-</div>
+        <div class="span5">
+            <ul>
+                <li> <span class="b">~~$view->quantity~ </span> Qty </li>
+                <li> <span class="b"> created on </span> ~~$view->createdOn~</li>
+                <li> <span class="b"> Merchant </span> ~~$view->sourceName~</li>
+            </ul>
+           
+        </div> <!-- col:2 -->
 
-<div class="hr-red"> </div>
-<div class="floatl">
-    <span class="huge-text">Total: &nbsp; ~~$view->price~ </span>
-</div>
+    </div> <!-- row -->
+    
+</div> <!-- widget -->
 
- 
+<div class="clear"> </div>

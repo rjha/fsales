@@ -36,7 +36,8 @@
     $invoiceDao = new \com\indigloo\fs\dao\Invoice();   
     $invoiceRow = $invoiceDao->getOnId2($invoiceId);
     $code = AppMail::send_invoice($invoiceRow);
-    
+    $message = NULL ;
+
     if($code > 0 ) {
         // mail error 
         $code = 500 ;
@@ -45,10 +46,8 @@
          
     } else {
         $invoiceDao->setOpBit($invoiceId,AppConstants::INVOICE_MAIL_SENT_BIT) ; 
-        $gWeb = \com\indigloo\core\Web::getInstance(); 
-        $message = sprintf("invoice # %d sent to buyer!",$invoiceId);
-        $gWeb->store(Constants::FORM_MESSAGES, array($message));
-        
+        $message = sprintf("invoice # %d sent to buyer",$invoiceId) ;
+
     }
 
     $response = array("code" => 200, "message" => $message);
