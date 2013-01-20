@@ -279,6 +279,8 @@
                 
                 $("#form1").validate({
                     errorLabelContainer: $("#form-message"),
+                    onkeyup:false,
+                    
                     rules: {
                         first_name: {required: true, maxlength:30, minlength:3} ,
                         last_name : { required : true, maxlength : 30, minlength :2},
