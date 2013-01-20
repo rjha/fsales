@@ -31,6 +31,9 @@
     }
 
     $pageHtml = AppHtml::getTxReceipt($orderId,$code,$response);
+    // @todo response code = 100 => update fs_order state
+    // response code 100 orders cannot be tried again.
+    
 
 ?>
 
