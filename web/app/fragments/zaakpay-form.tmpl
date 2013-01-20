@@ -1,7 +1,7 @@
 
 ~foreach($view->data as $key => $value ) {~
-	<input type="hidden" name="~~$key~" value="~~$value~" />
+	<input type="hidden" name="'~~$key~'" value="'~~$value~'" />
 
 ~}~
 
-<input type="hidden" name="checksum" value="~~$view->checksum~" />
+<input type="hidden" name="checksum" value="'~~$view->checksum~'" />
