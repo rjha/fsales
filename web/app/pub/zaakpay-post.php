@@ -127,7 +127,7 @@
 
                     <div class="form-wrapper">
                     	<form action="https://api.zaakpay.com/transact" method="post">
-							<?php echo AppHtml::getZaakpayForm($data,$checksum); ?>
+							<?php \com\indigloo\fs\zaakpay\Helper::outputForm($data,$checksum); ?>
 						</form>
                     </div>
                     

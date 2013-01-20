@@ -507,6 +507,9 @@ make corrections and try my card again? )
 what should we do? If he would like to try a new card the next day then we have to 
 allow that.
 
+PG Response
+----------------
 
+Array ( [orderId] => 5 [responseCode] => 100 [responseDescription] => The transaction was completed successfully. [checksum] => cacefb31f04be1497c8a273513f7e619b4b0da7aab5fa8caa5a632bbf8db163e )
 
 

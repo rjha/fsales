@@ -61,7 +61,10 @@ namespace com\indigloo\fs\html {
             return $html ;
         }
         
+        /*
+         * @todo figure out the checksum calculation first
         static function getZaakpayForm($data,$checksum) {
+
             $html = NULL ;
             foreach($data as $key => $value) {
 
@@ -77,7 +80,7 @@ namespace com\indigloo\fs\html {
 
             }
 
-        }
+        } */
 
         /**
          * @param qparams request query parameters
