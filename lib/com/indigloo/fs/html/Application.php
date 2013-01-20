@@ -61,6 +61,34 @@ namespace com\indigloo\fs\html {
             return $html ;
         }
         
+        static function getTxReceipt($orderId,$code,$response) {
+
+            $html = NULL ;
+            $template = "/app/fragments/tx-receipt.tmpl" ;
+            $view = new \stdClass;
+
+            $view->orderId = $orderId ;
+            $view->code = $code ;
+            $view->message = $response ;
+
+            if($code == AppConstants::ZAAKPAY_TX_OK) {
+                $view->link = "http://www.favsales.com" ;
+                $view->linkName = "Go to favsales.com" ;
+
+            } else {
+                
+                $params = array("order_id" => $orderId);
+                $roLink = Url::createUrl("/app/pub/ro.php",$params);
+                $view->link = $roLink ;
+                $view->linkName = "Try payment for your order again." ;
+            }
+
+            $html = Template::render($template,$view);
+            return $html ;
+
+        }
+
+
         /*
          * @todo figure out the checksum calculation first
         static function getZaakpayForm($data,$checksum) {

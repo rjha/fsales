@@ -43,26 +43,41 @@
     }
 
     $p_order_id = $invoiceRow["p_order_id"];
+    $p_order_id = empty($p_order_id) ? 0 : $p_order_id ;
     settype($p_order_id, "integer");
 
-    if(!empty($p_order_id) && ($p_order_id >= 1)) {
-        // @todo  what to do?
-        
+    $op_bit = $invoiceRow["op_bit"];
+    settype($op_bit,"integer");
+
+    // route to retry order page if op_bit = 3 (processing )
+    // and p_order_id is not empty
+
+
+    if(($p_order_id > 0) && ($op_bit == AppConstants::INVOICE_PROCESSING_STATE)) {
+        $params = array("order_id" => $p_order_id);
+        $fwd = Url::createUrl("/app/pub/ro.php",$params) ;
+        header("location :".$fwd);
+        exit ;
     }
 
+    // error if op_bit != 2
+    if($op_bit != AppConstants::INVOICE_PENDING_STATE) {
+        $message = "This invoice has already been processed." ;
+        echo AppHtml::messageBox($message);
+        exit ;
+    }
+
+    // op_bit = 2 | show screen
     $invoiceHtml = AppHtml::getCheckoutInvoice($invoiceRow);
     // make the form tampering proof
     
     $checkout_token  = Util::getMD5GUID() ;
     $gWeb->store("fs:checkout:token",$checkout_token);
 
-
     $formString =  $invoiceId + ":" + $checkout_token;
     $checksum = hash_hmac("sha256", $formString , AppConstants::SECRET_KEY);
 
-    // @todo rules 
-    // checkout form should not be allowed after
-    // it has been paid for
+
 ?>
 <!DOCTYPE html>
 <html>

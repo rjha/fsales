@@ -89,10 +89,12 @@ namespace com\indigloo\fs\mysql {
                 settype($orderId, "integer");
 
                 // update fs_invoice.op_bit to processing state (3)
+                // processing state means : user tried to create an order
+                // whether that order went through or not - we do not know.
                 // update fs_invoice.p_order_id
 
                 $sql2 = " update fs_invoice set op_bit = %d , p_order_id = %d where id = %d ";
-                $sql2 = sprintf($sql2,AppConstants::INVOICE_PENDING_STATE,$orderId,$invoiceRow["id"]);
+                $sql2 = sprintf($sql2,AppConstants::INVOICE_PROCESSING_STATE,$orderId,$invoiceRow["id"]);
                 $dbh->exec($sql2);
 
                 //Tx end

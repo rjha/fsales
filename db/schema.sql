@@ -119,7 +119,7 @@ DROP TABLE IF EXISTS  fs_invoice ;
 CREATE TABLE  fs_invoice  (
   login_id int not null,
   id  int(11) NOT NULL AUTO_INCREMENT,
-  p_order_id int,
+  p_order_id int default 0,
   comment_id varchar(64) not null,
   source_id varchar(64) not null,
   source_name varchar(64) not null,
@@ -195,12 +195,6 @@ CREATE TABLE  fs_mail_queue  (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
-
---
--- patch 20 Jan 2012
--- 
--- alter table fs_order add column  shipping_phone varchar(16) not null ;
---
 
 
 

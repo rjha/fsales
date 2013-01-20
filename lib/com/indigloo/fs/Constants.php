@@ -30,6 +30,8 @@ namespace com\indigloo\fs  {
         const FACEBOOK_PROFILE_URL = "http://www.facebook.com/profile.php?id=%s" ;
         const WWW_CHECKOUT_URL = "http://www.favsales.com/app/pub/checkout.php";
 
+        const ZAAKPAY_TX_OK = 100 ;
+
 
     }
 
