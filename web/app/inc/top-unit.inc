@@ -6,7 +6,7 @@
     if(!empty($loginId)) {
         include(APP_WEB_DIR.'/app/inc/top/user.inc') ;
     }else {
-    	include(APP_WEB_DIR.'/app/inc/top/user.inc') ;
+        include(APP_WEB_DIR.'/app/inc/top/user.inc') ;
     }
 
 ?>

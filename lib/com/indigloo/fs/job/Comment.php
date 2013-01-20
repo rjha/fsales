@@ -12,22 +12,22 @@ namespace com\indigloo\fs\job {
     class Comment {
 
         static function execute() {
-        	
-        	$streamDao = new Dao\Stream();
+            
+            $streamDao = new Dao\Stream();
             // @todo - paginate on posts
-        	$limit = 25 ;
-    		$streams = $streamDao->get($limit);
+            $limit = 25 ;
+            $streams = $streamDao->get($limit);
 
-    		foreach($streams as $stream) {
-    			self::process($stream);
-    		}
+            foreach($streams as $stream) {
+                self::process($stream);
+            }
 
         }
 
         static function process($stream) {
 
-        	$postId = $stream["post_id"];
-        	$sourceId = $stream["source_id"];
+            $postId = $stream["post_id"];
+            $sourceId = $stream["source_id"];
             $last_ts = $stream["last_stream_ts"];
             $version = $stream["version"] ;
 
@@ -45,15 +45,15 @@ namespace com\indigloo\fs\job {
                     Logger::getInstance()->debug($message);
                 }
             }
-        	
-        	self::pull_comments($sourceId,$postId,$last_ts,$version,$token);
-        	
+            
+            self::pull_comments($sourceId,$postId,$last_ts,$version,$token);
+            
         }
         
         static function pull_comments($sourceId,$postId,$last_ts,$version,$token) {
-        	// pull N comments using FQL sorted by created_time
-        	$limit = 20 ;
-        	$fbComments = GraphAPI::getComments($postId,$last_ts,$limit,$token);
+            // pull N comments using FQL sorted by created_time
+            $limit = 20 ;
+            $fbComments = GraphAPI::getComments($postId,$last_ts,$limit,$token);
 
             if(Config::getInstance()->is_debug()) {
                 $message = " fs_stream :: post %s , last_ts = %s , version = %d, no_comments =  %d ";
@@ -62,7 +62,7 @@ namespace com\indigloo\fs\job {
             }
 
             $commentDao = new Dao\Comment();
-        	$commentDao->add($sourceId,$postId,$last_ts,$version,$limit,$fbComments);
+            $commentDao->add($sourceId,$postId,$last_ts,$version,$limit,$fbComments);
 
         }
     }

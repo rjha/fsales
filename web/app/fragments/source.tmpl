@@ -1,31 +1,31 @@
 
 
 <div class="wrapper">
-	<ul class="tools unstyled">
-		<li> <span class="faded-text"> ~~$view->selectedRow['name']~</span> </li>
+    <ul class="tools unstyled">
+        <li> <span class="faded-text"> ~~$view->selectedRow['name']~</span> </li>
 
-		<li> 
-			<a class="open-panel" rel="default-source" href="#">
-				set default page <i class="icon icon-chevron-down"> </i>
-			</a>
-		</li>
+        <li> 
+            <a class="open-panel" rel="default-source" href="#">
+                set default page <i class="icon icon-chevron-down"> </i>
+            </a>
+        </li>
 
-		<li> 
-			<a class="open-panel" rel="all-sources" href="#">
-				change page <i class="icon icon-chevron-down"> </i>
-			</a>
-		</li>
+        <li> 
+            <a class="open-panel" rel="all-sources" href="#">
+                change page <i class="icon icon-chevron-down"> </i>
+            </a>
+        </li>
 
-		<li> 
-			<a class="open-panel" rel="filter-comments" href="#">
-				filter comments <i class="icon icon-chevron-down"> </i>
-			</a>
-		</li>
-		<li>
-			<a id="comment-popover" href="#" rel="popover" data-placement="right" data-content="To view all comments or those with  buyit word only click on filter comments." data-original-title="About comments filter">&nbsp;</a>
-		</li>
+        <li> 
+            <a class="open-panel" rel="filter-comments" href="#">
+                filter comments <i class="icon icon-chevron-down"> </i>
+            </a>
+        </li>
+        <li>
+            <a id="comment-popover" href="#" rel="popover" data-placement="right" data-content="To view all comments or those with  buyit word only click on filter comments." data-original-title="About comments filter">&nbsp;</a>
+        </li>
 
-	</ul>
+    </ul>
 
 </div> <!-- page actions -->
 
@@ -33,15 +33,15 @@
 <div id="page-message" class="hide-me"> </div>
 
 <div id="all-sources" class="panel panel-form">
-	<ul class="unstyled">
-		~foreach($view->sourceData as $row){~
-		<li> <a href="~~$row['link']~"> + ~~$row['name']~</a></li>
-		~}~
-	</ul>
+    <ul class="unstyled">
+        ~foreach($view->sourceData as $row){~
+        <li> <a href="~~$row['link']~"> + ~~$row['name']~</a></li>
+        ~}~
+    </ul>
 
-	<div class="pt10">
-		<a class="btn btn-small close-panel" rel="all-sources">Close</a>
-	</div>
+    <div class="pt10">
+        <a class="btn btn-small close-panel" rel="all-sources">Close</a>
+    </div>
 
 </div> <!-- panel:1 -->
 
@@ -63,14 +63,14 @@
 
 
 <div id="filter-comments" class="panel panel-form">
-	<ol>
-		~foreach($view->commentData as $row){~
-		<li> <a href="~~$row['link']~"> + ~~$row['name']~</a></li>
-		~}~
-	</ol>
+    <ol>
+        ~foreach($view->commentData as $row){~
+        <li> <a href="~~$row['link']~"> + ~~$row['name']~</a></li>
+        ~}~
+    </ol>
 
-	<div class="pt10">
-		<a class="btn btn-small close-panel" rel="filter-comments">Close</a>
-	</div>
+    <div class="pt10">
+        <a class="btn btn-small close-panel" rel="filter-comments">Close</a>
+    </div>
 
 </div> <!-- panel:3 -->

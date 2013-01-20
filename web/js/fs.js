@@ -57,8 +57,8 @@ webgloo.fs.message.SPINNER = '<div> <img src="/css/asset/fs/fb_loader.gif" alt="
 
 
 webgloo.fs.Ajax = {
-	 
-	addSpinner : function(messageDivId) {
+     
+    addSpinner : function(messageDivId) {
         $(messageDivId).html('');
         var content = webgloo.fs.message.SPINNER ;
         $(messageDivId).html(content);
@@ -66,7 +66,7 @@ webgloo.fs.Ajax = {
     },
 
     show: function (messageDivId,content) {
-    	$(messageDivId).html(content);
+        $(messageDivId).html(content);
     },
 
     post:function (dataObj,options) {

@@ -15,7 +15,7 @@
     use \com\indigloo\Logger as Logger;
     
     use \com\indigloo\fs\auth\Login as Login;
-   	use \com\indigloo\fs\mysql as mysql ;
+    use \com\indigloo\fs\mysql as mysql ;
 
     function raiseUIError() {
         $uimessage = "something went wrong with the signin process. please try again" ;
@@ -97,26 +97,26 @@
      */
 
     function process_user($access_token,$expires) {
-    	
-	    $graph_url = "https://graph.facebook.com/me?access_token=".$access_token;
-	    $user = json_decode(file_get_contents($graph_url));
+        
+        $graph_url = "https://graph.facebook.com/me?access_token=".$access_token;
+        $user = json_decode(file_get_contents($graph_url));
 
-	    if(!property_exists($user,'id')) {
-	        $message = "No facebook_id in graph API response" ;
-	        Logger::getInstance()->error($message);
-	        raiseUIError();
-	    }
+        if(!property_exists($user,'id')) {
+            $message = "No facebook_id in graph API response" ;
+            Logger::getInstance()->error($message);
+            raiseUIError();
+        }
 
-	    
-	    $facebookId = $user->id;
-	    // these properties can be missing
-	    $email = property_exists($user,'email') ? $user->email : '';
-	    $name = property_exists($user,'name') ? $user->name : '';
-	    $firstName = property_exists($user,'first_name') ? $user->first_name : '';
-	    $lastName = property_exists($user,'last_name') ? $user->last_name : '';
-	    
-	    $firstName = empty($firstName) ? "Anonymous" : $firstName ;
-	    $name = empty($name) ? $firstName : $name ;
+        
+        $facebookId = $user->id;
+        // these properties can be missing
+        $email = property_exists($user,'email') ? $user->email : '';
+        $name = property_exists($user,'name') ? $user->name : '';
+        $firstName = property_exists($user,'first_name') ? $user->first_name : '';
+        $lastName = property_exists($user,'last_name') ? $user->last_name : '';
+        
+        $firstName = empty($firstName) ? "Anonymous" : $firstName ;
+        $name = empty($name) ? $firstName : $name ;
 
         $message = sprintf("favsales app login :: fb_id %d ,email %s ",$facebookId,$email);
         Logger::getInstance()->info($message);
@@ -162,7 +162,7 @@
         $location = ($select_page) ? "/select-page" : "/dashboard" ;
         $location = $rootUrl.$location ;
         header("Location: ".$location);
-	   
+       
     }
 
 

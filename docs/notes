@@ -513,3 +513,12 @@ PG Response
 Array ( [orderId] => 5 [responseCode] => 100 [responseDescription] => The transaction was completed successfully. [checksum] => cacefb31f04be1497c8a273513f7e619b4b0da7aab5fa8caa5a632bbf8db163e )
 
 
+PG integration
+----------------
+Logo Required
+Header text/ Brand Name
+PG mail :- turn OFF - yes
+AUTO CAPTURE - ?
+RETRY - Yes
+
+
