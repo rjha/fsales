@@ -4,10 +4,12 @@ namespace com\indigloo\fs\mysql {
     use \com\indigloo\Util as Util ;
     use \com\indigloo\Url as Url ;
     use \com\indigloo\mysql as MySQL;
-    use \com\indigloo\Logger ;
 
+    use \com\indigloo\Logger ;
     use \com\indigloo\mysql\PDOWrapper;
     use \com\indigloo\exception\DBException as DBException;
+
+    use \com\indigloo\fs\Constants as AppConstants;
 
     class Order {
 
@@ -37,11 +39,11 @@ namespace com\indigloo\fs\mysql {
                     " insert into fs_order (invoice_id, first_name, last_name, email,phone, ".
                     " total_price, currency, item_description, ip_address, billing_address, ".
                     " billing_city, billing_state, billing_pincode, billing_country, ".
-                    " shipping_first_name, shipping_last_name, shipping_address, shipping_city, ".
+                    " shipping_first_name, shipping_last_name, shipping_phone, shipping_address, shipping_city, ".
                     " shipping_state, shipping_pincode, shipping_country, tx_date, created_on,op_bit) ".
                     " values(:invoice_id, :first_name, :last_name, :email, :phone,".
                     " :amount, :currency, :item_desc, :ip, :address, ".
-                    " :city, :state, :pin, :country, :s_first_name, :s_last_name, :s_address,:s_city, ".
+                    " :city, :state, :pin, :country, :s_first_name, :s_last_name, :s_phone,:s_address,:s_city, ".
                     " :s_state, :s_pin, :s_country, now(), now(),1) " ;
 
                 
@@ -72,6 +74,8 @@ namespace com\indigloo\fs\mysql {
                 // shipping address can be different from billing address
                 $stmt1->bindParam(":s_first_name", $formData["ship_first_name"]);
                 $stmt1->bindParam(":s_last_name", $formData["ship_last_name"]);
+                $stmt1->bindParam(":s_phone", $formData["ship_phone"]);
+               
                 $stmt1->bindParam(":s_address", $formData["ship_address"]);
                 $stmt1->bindParam(":s_city", $formData["ship_city"]);
                 $stmt1->bindParam(":s_state", $formData["ship_state"]);
@@ -83,6 +87,14 @@ namespace com\indigloo\fs\mysql {
 
                 $orderId = $dbh->lastInsertId();
                 settype($orderId, "integer");
+
+                // update fs_invoice.op_bit to processing state (3)
+                // update fs_invoice.p_order_id
+
+                $sql2 = " update fs_invoice set op_bit = %d , p_order_id = %d where id = %d ";
+                $sql2 = sprintf($sql2,AppConstants::INVOICE_PENDING_STATE,$orderId,$invoiceRow["id"]);
+                $dbh->exec($sql2);
+
                 //Tx end
                 $dbh->commit();
                 $dbh = null;

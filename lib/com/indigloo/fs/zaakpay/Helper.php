@@ -10,34 +10,23 @@ namespace com\indigloo\fs\zaakpay  {
 		static function calculateChecksum($data) {
 
 			$all = '';
+
+			if(isset($data["checksum"])) { unset($data["checksum"]); }
+
 			foreach($data as $key => $value){
-				if($key != 'checksum') {
-					$all .= "'";
-					if ($key == 'returnUrl') {
-						$all .= self::sanitizedURL($value);
-					} else {
-						$all .= self::sanitizedParam($value);
-					}
-					$all .= "'";
+				$all .= "'";
+				if ($key == 'returnUrl') {
+					$all .= self::sanitizedURL($value);
+				} else {
+					$all .= self::sanitizedParam($value);
 				}
+				$all .= "'";
+				 
 			}
 
 			$hash = hash_hmac('sha256', $all , self::SECRET_KEY);
 			$checksum = $hash;
 			return $checksum;
-		}
-
-		static function outputForm($data,$checksum) {
-			 
-			foreach($data as $key => $value) {
-				if ($key == 'returnUrl') {
-					echo '<input type="hidden" name="'.$key.'" value="'.self::sanitizedURL($value).'" />'."\n";
-				} else {
-					echo '<input type="hidden" name="'.$key.'" value="'.self::sanitizedParam($value).'" />'."\n";
-				}
-			}
-
-			echo '<input type="hidden" name="checksum" value="'.$checksum.'" />'."\n";
 		}
 
 		static function sanitizedParam($param) {

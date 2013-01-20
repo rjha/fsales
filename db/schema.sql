@@ -171,6 +171,7 @@ CREATE TABLE  fs_order  (
   shipping_state varchar(50) not null,
   shipping_pincode varchar(12) not null,
   shipping_country varchar(16) not null,
+  shipping_phone varchar(16) not null,
 
   op_bit int default 1,
   tx_date timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -195,10 +196,11 @@ CREATE TABLE  fs_mail_queue  (
 
 
 
-
-
-
-
+--
+-- patch 20 Jan 2012
+-- 
+-- alter table fs_order add column  shipping_phone varchar(16) not null ;
+--
 
 
 

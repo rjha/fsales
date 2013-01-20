@@ -42,6 +42,14 @@
         exit;
     }
 
+    $p_order_id = $invoiceRow["p_order_id"];
+    settype($p_order_id, "integer");
+
+    if(!empty($p_order_id) && ($p_order_id >= 1)) {
+        // @todo  what to do?
+        
+    }
+
     $invoiceHtml = AppHtml::getCheckoutInvoice($invoiceRow);
     // make the form tampering proof
     
@@ -129,7 +137,6 @@
                                     </td>
                                 </tr>
                                    
-
                                 <tr>
                                     <td> &nbsp; </td>
                                     <td> 
@@ -169,6 +176,12 @@
                                     <td> <label>Last name*</label> </td>
                                     <td>
                                         <input type="text" name="ship_last_name" maxlength="30" value="<?php echo $sticky->get('ship_last_name'); ?>" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td> <label>Phone*</label> </td>
+                                    <td>
+                                        <input type="text" name="ship_phone" maxlength="16" value="<?php echo $sticky->get('phone'); ?>" />
                                     </td>
                                 </tr>
                                 <tr>
@@ -249,7 +262,7 @@
                     frm1.ship_city.value = frm1.billing_city.value ;
                     frm1.ship_pincode.value = frm1.billing_pincode.value ;
                     frm1.ship_state.value = frm1.billing_state.value ;
-
+                    frm1.ship_phone.value = frm1.phone.value ;
 
                 });
 
@@ -281,8 +294,8 @@
                         ship_address: {required: true , maxlength:100, minlength : 6} ,
                         ship_city: {required: true , maxlength:30, minlength:3} ,
                         ship_state: {required: true} ,
-                        ship_pincode: {required: true , maxlength:12, minlength:2} 
-
+                        ship_pincode: {required: true , maxlength:12, minlength:2}, 
+                        ship_phone : {required : true, digits : true}
                         
                     },
                     messages: {
@@ -350,6 +363,10 @@
                             required: "Pincode (shipping) is required " , 
                             maxlength:"Only 12 chars allowed in Pincode (shipping)",
                             minlength: "Atleast 2 chars required in Pincode (shipping)"
+                        },
+                        ship_phone : {
+                            required : "Phone (shipping) is required", 
+                            digits : "Only numbers are allowed in Phone (shipping)"
                         }
                     }
                 }); 

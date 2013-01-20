@@ -9,7 +9,13 @@ namespace com\indigloo\fs  {
         const ALL_COMMENT_FILTER = "all";
         const VERB_COMMENT_FILTER = "verb";
         
-    	const INVOICE_MAIL_SENT_BIT = 2 ;
+        const INVOICE_NEW_STATE = 1 ;
+    	const INVOICE_PENDING_STATE = 2 ;
+        const INVOICE_PROCESSING_STATE = 3 ;
+        const INVOICE_PAID_STATE = 4 ;
+        const INVOICE_SHIPPED_STATE = 5 ;
+
+
 
     	const DASHBOARD_URL = "/ghost/canvas/dashboard";
     	const ROUTER_URL = "/app/router.php";

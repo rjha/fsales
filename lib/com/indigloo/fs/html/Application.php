@@ -7,6 +7,7 @@ namespace com\indigloo\fs\html {
     use \com\indigloo\Util ;
 
     use \com\indigloo\fs\Constants as AppConstants;
+    use \com\indigloo\fs\zaakpay\Helper as ZaakpayHelper ;
     
     class Application {
 
@@ -14,8 +15,19 @@ namespace com\indigloo\fs\html {
             // we need to return 
             // 1. status text
             // 2. action link + name pairs 
+            // explanation of states
+            // 1- newly created 
+            // 2 - pending : email sent - user response awaited
+            // 3- user created order out of invoice by providing data
+            // 4- check with PG - payment went through
+            // 5- item shipped
+            // 6 - closed
             
-            $status = array( 1 => "New", 2 => "Pending", 3 => "Paid" , 4 => "Shipped");
+            $status = array(1 => "New", 
+                2 => "Pending", 
+                3 => "Processing" , 
+                4 => "Paid",
+                5 => "Shipped");
             $text = isset($status[$state]) ? $status[$state] : "Unknown" ;
 
             $editLink = array("name" => '<i class="icon icon-edit"></i> edit' , "rel" => "edit");
@@ -28,8 +40,9 @@ namespace com\indigloo\fs\html {
             $links = array( 
                 1 => array($editLink,$mailLink),
                 2 => array($cancelLink,$mailLink),
-                3 => array($cancelLink,$shippingLink,$mailLink),
-                4 => array($reminderLink,$mailLink));
+                3 => array($cancelLink,$mailLink),
+                4 => array($cancelLink,$shippingLink,$mailLink),
+                5 => array($reminderLink,$mailLink));
 
             $actions = isset($links[$state]) ? $links[$state] : array();
             $data = array("text" => $text, "actions" => $actions);
@@ -48,6 +61,24 @@ namespace com\indigloo\fs\html {
             return $html ;
         }
         
+        static function getZaakpayForm($data,$checksum) {
+            $html = NULL ;
+            foreach($data as $key => $value) {
+
+                $data[$key] = ($key == 'returnUrl') ? 
+                    ZaakpayHelper::sanitizedURL($value) : ZaakpayHelper::sanitizedParam($value) ;
+                
+                $template = "/app/fragments/zaakpay-form.tmpl" ;
+                $view = new \stdClass;
+                $view->data = $data ;
+                $view->checksum = $checksum;
+                $html = Template::render($template,$view);
+                return $html ;
+
+            }
+
+        }
+
         /**
          * @param qparams request query parameters
          *

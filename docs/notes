@@ -452,3 +452,12 @@ Questions
 + Do not allow checkout after it has been paid for 
  or what happens when people keep pressing the checkout button
  
++ what if user tries to create another order from same invoice in same
+session? 
++ Retry order in same session? what is order-retry logic? 
+what if I made an error in entry and now I want to make corrections and post it again?
++ what if user tries to load an invoice after order has been paid?
+
+
+
+

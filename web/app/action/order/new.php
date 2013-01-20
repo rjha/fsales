@@ -54,7 +54,8 @@
 
         $fhandler->addRule('ship_first_name', 'First name (shipping)', array('required' => 1, 'minlength' =>3, 'maxlength' => 30));
         $fhandler->addRule('ship_last_name', 'Last name (shipping)', array('required' => 1,'minlength' =>3, 'maxlength' => 30));
-        
+        $fhandler->addRule('ship_phone', 'Phone (shipping)', array('required' => 1, 'maxlength' => 16));
+
         $fhandler->addRule('ship_address', 'Address (shipping)', array('required' => 1, 'minlength' =>6, 'maxlength' => 100));
         $fhandler->addRule('ship_city', 'City (shipping)', array('required' => 1,'minlength' =>3, 'maxlength' => 30));
         $fhandler->addRule('ship_state', 'State (shipping)', array('required' => 1));
@@ -67,26 +68,32 @@
             throw new UIException($fhandler->getErrors());
         }
 
-        // email check
+        // valid email check
         if(!Util::contains($fvalues["email"], '@')) {
             $message = "email is not in valid format" ;
             throw new UIException(array($message));
         }
 
-        // phone check
-        if(!ctype_digit($fvalues["phone"])) {
-            $message = "only numbers are allowed in a phone number" ;
+        // phone digits check
+        if(!ctype_digit($fvalues["phone"]) 
+            || !ctype_digit($fvalues["ship_phone"])) {
+            $message = "only numbers are allowed in phone " ;
             throw new UIException(array($message));
         }
 
-        // pincode check
-        if(!ctype_digit($fvalues["billing_pincode"])) {
+        // pincode numbers check
+        if(!ctype_digit($fvalues["billing_pincode"]) 
+            || !ctype_digit($fvalues["ship_pincode"])) {
             $message = "only numbers are allowed in a Pincode(billing)" ;
             throw new UIException(array($message));
         }
 
         //first name /last name can be alphanumeric only
-        if(!ctype_alnum($fvalues["first_name"]) || !ctype_alnum($fvalues["last_name"])) {
+        if(!ctype_alnum($fvalues["first_name"]) 
+            || !ctype_alnum($fvalues["last_name"])
+            || !ctype_alnum($fvalues["ship_first_name"])
+            || !ctype_alnum($fvalues["ship_last_name"])) {
+
             $message = "Name can be composed of letters and numbers only." ;
             throw new UIException(array($message));
         }
@@ -97,6 +104,11 @@
             throw new UIException(array($message));
         }
         
+        if(strcmp($fvalues["ship_first_name"],$fvalues["ship_last_name"]) == 0) {
+            $message = "first name and last name (shipping) cannot be same." ;
+            throw new UIException(array($message));
+        }
+
         $invoiceId = $fvalues["invoice_id"];
         settype($invoiceId, "integer");
 
@@ -111,7 +123,7 @@
             $message = "Error: form data has been changed : checksum do not match!" ;
             throw new UIException(array($message));
         }
-        
+
         $invoiceDao = new \com\indigloo\fs\dao\Invoice(); 
         $invoiceRow = $invoiceDao->getOnId2($invoiceId);
     

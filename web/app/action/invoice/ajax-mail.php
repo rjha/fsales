@@ -45,7 +45,7 @@
         send_error($code,$message);
          
     } else {
-        $invoiceDao->setOpBit($invoiceId,AppConstants::INVOICE_MAIL_SENT_BIT) ; 
+        $invoiceDao->setOpBit($invoiceId,AppConstants::INVOICE_PENDING_STATE) ; 
         $message = sprintf("invoice # %d sent to buyer",$invoiceId) ;
 
     }

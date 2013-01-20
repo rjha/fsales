@@ -1,4 +1,11 @@
 
+20 Jan 2012
+----------------
+
+fs_config.ini
+fs.zaakpay.mode="development"
+
+
 14 Jan 2013
 -------------
 - Add nginx regex rule to match asset files with timestamp 
