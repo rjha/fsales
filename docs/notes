@@ -454,9 +454,58 @@ Questions
  
 + what if user tries to create another order from same invoice in same
 session? 
+
+
+
+
+Step 1 : Invoice created but not send
+  State : New
+  Merchant : He can send it to User (Mail) or edit it 
+
+Step 2: Inoice send to the user by merchant
+
+        State : Pending (user has not opened the invoice)
+        System Action : No edit after #1. Wait for user action.
+        Merchant : can still send invoice in mail (in case user has misplaced it)
+
+Step 3: Buyer pays the amount
+  State : Processing
+
+  Now here is the twist - when you swipe your card on a PG - money does not 
+  hit the A/c immediately or at least you should not assume it. Rigth way is to 
+  check Tx status - and then only update your system to paid.
+
+  This may take some time. So the fact that user has paid => that "processing of order"
+  has been started by PG. @see https://www.zaakpay.com/developers/guide and see the Tx states tab.
+  very useful information. in fact the PG reponse after card swipe does not even contain the order ID
+  You are supposed to check that separately!
+
+  Merchant : Can cancel the order? + Mail invoice
+
+Step 4: payment confirmation from PG
+
+
+  Merchant Action : He can manually change the state to Shipping from
+  Paid. He has to supply the shipping address + mail invoice
+
+
+Note :
+
+1) Merchant can change the status only once manually from Paid to Shipping.
+2)Once the state is changed to Shipping , there can not be any action
+on invoice. Shipping is final state.
+3) Merchant should be able to "remind favsales" ?
+
+
+More Questions
+----------------------
 + Retry order in same session? what is order-retry logic? 
-what if I made an error in entry and now I want to make corrections and post it again?
-+ what if user tries to load an invoice after order has been paid?
+what if I made an error in data entry (e.g. wrong pincode and now I want to 
+make corrections and try my card again? )
+
++ what if user tries to load an invoice after order has been paid/ processing?
+what should we do? If he would like to try a new card the next day then we have to 
+allow that.
 
 
 
