@@ -100,8 +100,10 @@ namespace com\indigloo\fs\mysql {
                 
                 //Tx start
                 $dbh->beginTransaction();
-                $sql = " update fs_invoice set op_bit = %d where id = %d " ;
-                $sql = sprintf($sql,$bit,$invoiceId);
+                // @imp state can be changed in one direction only
+                // 1->2->3 always increasing.
+                $sql = " update fs_invoice set op_bit = %d where id = %d and op_bit <= %d " ;
+                $sql = sprintf($sql,$bit,$invoiceId,$bit);
                 $dbh->exec($sql);
 
                 //Tx end

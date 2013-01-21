@@ -12823,9 +12823,13 @@ webgloo.fs.Ajax = {
         });
 
         xmlRequest.done(function(response) {
-            webgloo.fs.Ajax.show(settings.messageDivId,response.message);
+            
+            if(settings.dataType == 'json') {
+                webgloo.fs.Ajax.show(settings.messageDivId,response.message);
+            }
+
             if(typeof settings.onDoneHandler !== "undefined") {
-                settings.onDoneHandler(response);
+                settings.onDoneHandler(dataObj,response);
             }
         }) ;
         
@@ -12947,7 +12951,7 @@ webgloo.fs.OrderValidator =
 
 webgloo.fs.invoice = {
 
-    mail : function(invoiceId) {
+    mail : function(invoiceId,callback) {
         var dataObj = {} ;
         dataObj.params = {} ;
         dataObj.params.invoiceId  = invoiceId;
@@ -12956,41 +12960,49 @@ webgloo.fs.invoice = {
         var options = {
             "dataType" : "json", 
             "timeout" : 9000,
-            "messageDivId" : "#invoice-ajax-" + invoiceId
+            "messageDivId" : "#invoice-ajax-" + invoiceId ,
+            onDoneHandler : callback.mail
         };
         
         webgloo.fs.Ajax.post(dataObj,options) ;
     },
 
-    edit : function (invoiceId) {
-        alert('invoice edited');
+    edit : function (invoiceId,callback) {
+        // nothing to do online
+        var dataObj = {} ;
+        var response = {} ;
+        dataObj.params = {} ;
+        dataObj.params.invoiceId = invoiceId ;
+        callback.edit(dataObj,response);
     },
 
-    remind : function(invoiceId) {
-        alert('reminder sent');
+    cancel : function(invoiceId,callback) {
+        $("#invoice-ajax-" + invoiceId).html("Not implemented yet");
     },
 
-    cancel : function(invoiceId) {
+    shipping : function (invoiceId,callback) {
+        
         var dataObj = {} ;
         dataObj.params = {} ;
         dataObj.params.invoiceId  = invoiceId;
-        dataObj.params.action  =  "cancel";
-        dataObj.endPoint = "/app/action/invoice/ajax-command.php";
+        dataObj.endPoint = "/app/invoice/get-shipping.php";
         
         var options = {
-            "dataType" : "json", 
+            "dataType" : "text", 
             "timeout" : 9000,
-            "messageDivId" : "#invoice-ajax-" + invoiceId
+            "messageDivId" : "#invoice-ajax-" + invoiceId ,
+            onDoneHandler : callback.shipping
         };
         
         webgloo.fs.Ajax.post(dataObj,options) ;
     },
 
-    ship : function (invoiceId) {
-        alert('invoice shipped');
+    remind : function(invoiceId,callback) {
+        $("#invoice-ajax-" + invoiceId).html("Not implemented yet");
     },
 
-    initActions : function() {
+    initActions : function(callback) {
+        this.callback = callback ;
 
         $("a.invoice-action").live("click",function(event){
             event.preventDefault();
@@ -12999,20 +13011,21 @@ webgloo.fs.invoice = {
 
             switch(action) {
                 case 'mail' :
-                    webgloo.fs.invoice.mail(invoiceId);
+                    webgloo.fs.invoice.mail(invoiceId,callback);
                     break ;
                 case 'edit' :
-                    webgloo.fs.invoice.edit(invoiceId);
+                    webgloo.fs.invoice.edit(invoiceId,callback);
                     break ;
                 case 'cancel' :
-                    webgloo.fs.invoice.cancel(invoiceId);
+                    webgloo.fs.invoice.cancel(invoiceId,callback);
                     break ;
                 case 'shipping' :
-                    webgloo.fs.invoice.ship(invoiceId);
+                    webgloo.fs.invoice.shipping(invoiceId,callback);
                     break ;
-                case 'reminder' :
-                    webgloo.fs.invoice.remind(invoiceId);
+                case 'remind' :
+                    webgloo.fs.invoice.remind(invoiceId,callback);
                     break ;
+                
                 default :
                     break ;
 

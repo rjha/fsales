@@ -100,11 +100,12 @@
                         "dataType" : "json", 
                         "timeout" : 9000,
                         "messageDivId" : "#mail-message",
-                        onDoneHandler : function (response) {
+                        onDoneHandler : function (dataObj,response) {
+                            
                             if(response.code == 200 ) {
                                 var redirectUrl = '<?php echo $invoiceAllUrl; ?>' ;
                                 window.location.replace(redirectUrl);
-                            }    
+                            }
                         
                         }
                     };

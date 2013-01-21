@@ -395,5 +395,7 @@ Next steps
 + All invoice actions : should also check for invoice state
 + How to update the invoice action : status results?
 + Graph API : better error handling? (look for @DB required columns)
++ Invoice : filter by state
+
 
 

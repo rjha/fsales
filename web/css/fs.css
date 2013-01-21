@@ -326,7 +326,7 @@
         position: fixed;
         z-index: 1009;
         width: 600px;
-        max-width:810px;
+        max-width:760px;
         max-height:380px;
         overflow: auto;
         overflow-x: auto;
@@ -349,8 +349,8 @@
     #popup-mask {
         position:absolute;
         z-index:900;
-        /* background-color:#F7F7F7; */
-        background: url(/css/asset/fancybox/2.1.2/fancybox_overlay.png);
+        background-color:#F7F7F7; 
+        /* background: url(/css/asset/fancybox/2.1.2/fancybox_overlay.png); */
         display:none;
         top : 0px;
         left:0px;

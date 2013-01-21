@@ -39,10 +39,10 @@ namespace com\indigloo\fs\html {
 
             $links = array( 
                 1 => array($editLink,$mailLink),
-                2 => array($cancelLink,$mailLink),
-                3 => array($cancelLink,$mailLink),
-                4 => array($cancelLink,$shippingLink,$mailLink),
-                5 => array($reminderLink,$mailLink));
+                2 => array($mailLink),
+                3 => array($mailLink),
+                4 => array($shippingLink,$mailLink),
+                5 => array($reminderLink));
 
             $actions = isset($links[$state]) ? $links[$state] : array();
             $data = array("text" => $text, "actions" => $actions);
