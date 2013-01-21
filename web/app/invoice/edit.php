@@ -15,6 +15,7 @@
 
     use \com\indigloo\fs\auth\Login as Login ;
     use \com\indigloo\fs\html\Application as AppHtml ;
+    use \com\indigloo\fs\Constants as AppConstants;
 
 
     $gWeb = \com\indigloo\core\Web::getInstance();
@@ -44,6 +45,16 @@
     if($invoiceRow["login_id"] != $loginId ) {
         $message = " Error: you do not own this invoice!";
         throw new UIException(array($message)) ;
+    }
+
+    $op_bit = $invoiceRow["op_bit"];
+    settype($op_bit,"integer");
+
+    // error if op_bit != 1
+    if($op_bit != AppConstants::INVOICE_NEW_STATE) {
+        $message = "This invoice has already been sent." ;
+        echo AppHtml::messageBox($message);
+        exit ;
     }
 
     $commentDao = new \com\indigloo\fs\dao\Comment();

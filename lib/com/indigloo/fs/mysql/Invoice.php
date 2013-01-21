@@ -88,7 +88,7 @@ namespace com\indigloo\fs\mysql {
             return $rows;
         }
 
-        static function setOpBit($invoiceId,$bit) {
+        static function setState($invoiceId,$bit) {
             $dbh = NULL ;
             
             try {

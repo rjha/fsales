@@ -38,8 +38,8 @@ namespace com\indigloo\fs\dao {
             return $rows ;
         }
 
-        function  setOpBit($invoiceId,$bit) {
-            mysql\Invoice::setOpBit($invoiceId,$bit);
+        function  setState($invoiceId,$bit) {
+            mysql\Invoice::setState($invoiceId,$bit);
         }
 
         function create($loginId,

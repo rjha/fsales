@@ -17,6 +17,10 @@ namespace com\indigloo\fs\dao {
             $orderId = mysql\Order::add($invoiceRow,$formData);
             return $orderId;
         }
+
+        function  setState($orderId,$bit) {
+            mysql\Order::setState($orderId,$bit);
+        }
                                   
     }
 }

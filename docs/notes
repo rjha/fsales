@@ -503,6 +503,9 @@ More Questions
 what if I made an error in data entry (e.g. wrong pincode and now I want to 
 make corrections and try my card again? )
 
+Response code = 100 => Order cannot be retried again.
+One invoice => One Order rule.
+
 + what if user tries to load an invoice after order has been paid/ processing?
 what should we do? If he would like to try a new card the next day then we have to 
 allow that.
@@ -521,4 +524,16 @@ PG mail :- turn OFF - yes
 AUTO CAPTURE - ?
 RETRY - Yes
 
+
+------------------
+
+edit invoice - check
+checkout invoice/ order  - check
+retry order - check
+Activity mails - when some actions happens -> Notification should be sent
+
+PG response code 100 - we fail to register as op_bit = 2  in our DB
+That we have to check separately!
+
+re-order page : op_bit = 1 orders only
 

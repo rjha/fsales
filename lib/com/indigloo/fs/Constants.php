@@ -15,7 +15,8 @@ namespace com\indigloo\fs  {
         const INVOICE_PAID_STATE = 4 ;
         const INVOICE_SHIPPED_STATE = 5 ;
 
-
+        const ORDER_NEW_STATE = 1 ;
+        const ORDER_TX_OK_STATE = 2 ;
 
         const DASHBOARD_URL = "/ghost/canvas/dashboard";
         const ROUTER_URL = "/app/router.php";

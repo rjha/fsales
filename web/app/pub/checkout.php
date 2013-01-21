@@ -19,18 +19,18 @@
     // transfer encoded - decode to use!
     $qUrl = Url::tryBase64QueryParam("q", "/");
     $fUrl = base64_encode(Url::current());
-    $invoiceId = Url::tryQueryParam("invoice_id");
     
+    $invoiceId = Url::tryQueryParam("invoice_id");
+    $invoiceId = empty($invoiceId) ? 0 : $invoiceId ;
+    settype($invoiceId, "integer");
+
     if(empty($invoiceId)) {
         // show 400 bad request
         $controller = new \com\indigloo\fs\controller\Http400();
         $controller->process();
         exit;
     }
-
-    $invoiceId = urldecode($invoiceId);
-    settype($invoiceId, "integer");
-
+    
     $invoiceDao = new \com\indigloo\fs\dao\Invoice(); 
     // get invoice + post details
     $invoiceRow = $invoiceDao->getOnId2($invoiceId);
@@ -54,9 +54,11 @@
 
 
     if(($p_order_id > 0) && ($op_bit == AppConstants::INVOICE_PROCESSING_STATE)) {
+        
         $params = array("order_id" => $p_order_id);
         $fwd = Url::createUrl("/app/pub/ro.php",$params) ;
-        header("location :".$fwd);
+        //Location:<space>
+        header("Location: ".$fwd); 
         exit ;
     }
 

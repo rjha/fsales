@@ -40,10 +40,37 @@
         exit;
     }
 
-    // @todo business rule 
-    // orders with response code 100 cannot be tried again.
-    // get invoice 
-    
+    $op_bit = $orderRow["op_bit"];
+    settype($op_bit,"integer");
+
+    if($op_bit != AppConstants::ORDER_NEW_STATE) {
+        // you cannot edit this order now!
+        $message = "This order has already been processed." ;
+        echo AppHtml::messageBox($message);
+        exit ;
+    }
+
+    // get Invoice Html
+    $invoiceId = $orderRow["invoice_id"];
+    $invoiceDao = new \com\indigloo\fs\dao\Invoice(); 
+    // get invoice + post details
+    $invoiceRow = $invoiceDao->getOnId2($invoiceId);
+    if(empty($invoiceRow)) {
+        $message = "Error: no invoice found for this order!" ;
+        echo AppHtml::messageBox($message);
+        exit ;
+    }
+
+    $invoiceHtml = AppHtml::getCheckoutInvoice($invoiceRow);
+
+    // tamper-proof our form
+    $checkout_token  = Util::getMD5GUID() ;
+    $gWeb->store("fs:reorder:token",$checkout_token);
+
+    $formString =  $orderId + ":" + $checkout_token;
+    $checksum = hash_hmac("sha256", $formString , AppConstants::SECRET_KEY);
+
+
     
 
 ?>
@@ -51,7 +78,7 @@
 <html>
 
     <head>
-        <title> Invoice for <?php echo $invoiceRow["name"]; ?> </title>
+        <title> Retry order # <?php echo $orderId ?> </title>
         <?php include(APP_WEB_DIR . '/app/inc/meta.inc'); ?>
         <?php echo \com\indigloo\fs\util\Asset::version("/css/fs-bundle.css"); ?>
          
@@ -66,7 +93,7 @@
             
             <div class="row">
                 <div class="span8 offset1">
-                    <h3> Invoice for <?php echo $invoiceRow["name"]; ?> </h3>
+                    <h3>Retry order # <?php echo $orderId; ?> </h3>
                     <?php echo $invoiceHtml;  ?>
                 </div>
             </div> <!-- row:1 -->
@@ -78,32 +105,32 @@
                     <!-- zaakpay specific form -->
                     <div class="form-wrapper">
                         <div id="form-message"> </div>
-                        <form  id="form1"  name="form1" action="/app/action/order/new.php"  method="POST">
+                        <form  id="form1"  name="form1" action="/app/action/order/retry.php"  method="POST">
                             <table class="form-table">
                                 
                                 <tr>
                                     <td> <label>First name*</label> </td>
                                     <td>
-                                        <input type="text" name="first_name" maxlength="30" value="<?php echo $sticky->get('first_name'); ?>" />
+                                        <input type="text" name="first_name" maxlength="30" value="<?php echo $sticky->get('first_name',$orderRow['first_name']); ?>" />
                                     </td>
                                 </tr>
                                  <tr>
                                     <td> <label>Last name*</label> </td>
                                     <td>
-                                        <input type="text" name="last_name" maxlength="30" value="<?php echo $sticky->get('last_name'); ?>" />
+                                        <input type="text" name="last_name" maxlength="30" value="<?php echo $sticky->get('last_name',$orderRow['last_name']); ?>" />
                                     </td>
                                 </tr>
 
                                 <tr>
                                     <td> <label>Email*</label> </td>
                                     <td>
-                                        <input type="text" name="email" maxlength="64" value="<?php echo $sticky->get('email'); ?>" />
+                                        <input type="text" name="email" maxlength="64" value="<?php echo $sticky->get('email',$orderRow['email']); ?>" />
                                     </td>
                                 </tr>
                                 <tr>
                                     <td> <label>Phone*</label> </td>
                                     <td>
-                                        <input type="text" name="phone" maxlength="16" value="<?php echo $sticky->get('phone'); ?>" />
+                                        <input type="text" name="phone" maxlength="16" value="<?php echo $sticky->get('phone',$orderRow['phone']); ?>" />
                                     </td>
                                 </tr>
                                 <tr>
@@ -116,7 +143,7 @@
                                 <tr>
                                     <td> <label>Address*</label> </td>
                                     <td>
-                                        <input type="text" name="billing_address" maxlength="100" value="<?php echo $sticky->get('billing_address'); ?>" />
+                                        <input type="text" name="billing_address" maxlength="100" value="<?php echo $sticky->get('billing_address',$orderRow['billing_address']); ?>" />
                                     </td>
                                 </tr>
                                    
@@ -124,10 +151,10 @@
                                     <td> &nbsp; </td>
                                     <td> 
                                         <span>City*</span>&nbsp;
-                                        <input type="text" name="billing_city" style="width:150px;" maxlength="30" value="<?php echo $sticky->get('billing_city'); ?>" />
+                                        <input type="text" name="billing_city" style="width:150px;" maxlength="30" value="<?php echo $sticky->get('billing_city',$orderRow['billing_city']); ?>" />
                                     
                                         <span>Pincode*</span>&nbsp;
-                                        <input type="text" name="billing_pincode" style="width:80px;" maxlength="16" value="<?php echo $sticky->get('billing_pincode'); ?>" />
+                                        <input type="text" name="billing_pincode" style="width:80px;" maxlength="16" value="<?php echo $sticky->get('billing_pincode',$orderRow['billing_pincode']); ?>" />
                                     </td>
                                 </tr> 
 
@@ -152,25 +179,25 @@
                                  <tr>
                                     <td> <label>First name*</label> </td>
                                     <td>
-                                        <input type="text" name="ship_first_name" maxlength="30" value="<?php echo $sticky->get('ship_first_name'); ?>" />
+                                        <input type="text" name="ship_first_name" maxlength="30" value="<?php echo $sticky->get('ship_first_name',$orderRow['shipping_first_name']); ?>" />
                                     </td>
                                 </tr>
                                  <tr>
                                     <td> <label>Last name*</label> </td>
                                     <td>
-                                        <input type="text" name="ship_last_name" maxlength="30" value="<?php echo $sticky->get('ship_last_name'); ?>" />
+                                        <input type="text" name="ship_last_name" maxlength="30" value="<?php echo $sticky->get('ship_last_name',$orderRow['shipping_last_name']); ?>" />
                                     </td>
                                 </tr>
                                 <tr>
                                     <td> <label>Phone*</label> </td>
                                     <td>
-                                        <input type="text" name="ship_phone" maxlength="16" value="<?php echo $sticky->get('phone'); ?>" />
+                                        <input type="text" name="ship_phone" maxlength="16" value="<?php echo $sticky->get('ship_phone',$orderRow['shipping_phone']); ?>" />
                                     </td>
                                 </tr>
                                 <tr>
                                     <td> <label>Address*</label> </td>
                                     <td>
-                                        <input type="text" name="ship_address" maxlength="100" value="<?php echo $sticky->get('ship_address'); ?>" />
+                                        <input type="text" name="ship_address" maxlength="100" value="<?php echo $sticky->get('ship_address',$orderRow['shipping_address']); ?>" />
                                     </td>
                                 </tr>
                                    
@@ -179,10 +206,10 @@
                                     <td> &nbsp; </td>
                                     <td> 
                                         <span>City*</span>&nbsp;
-                                        <input type="text" name="ship_city" style="width:150px;" maxlength="30" value="<?php echo $sticky->get('ship_city'); ?>" />
+                                        <input type="text" name="ship_city" style="width:150px;" maxlength="30" value="<?php echo $sticky->get('ship_city',$orderRow['shipping_city']); ?>" />
                                     
                                         <span>Pincode*</span>&nbsp;
-                                        <input type="text" name="ship_pincode" style="width:80px;" maxlength="16" value="<?php echo $sticky->get('ship_pincode'); ?>" />
+                                        <input type="text" name="ship_pincode" style="width:80px;" maxlength="16" value="<?php echo $sticky->get('ship_pincode',$orderRow['shipping_pincode']); ?>" />
                                     </td>
                                 </tr> 
 
@@ -213,7 +240,7 @@
 
                             </table> 
 
-                            <input type="hidden" name="invoice_id" value="<?php echo $invoiceRow['id']; ?>" /> 
+                            <input type="hidden" name="order_id" value="<?php echo $orderId; ?>" /> 
                             <input type="hidden" name="checkout_token" value="<?php echo $checkout_token ?>" />
                             <input type="hidden" name="checksum" value="<?php echo $checksum ?>" />
                             <input type="hidden" name="qUrl" value="<?php echo $qUrl; ?>" />

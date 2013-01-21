@@ -30,11 +30,15 @@
         $response = "Error: something went wrong. Please try again.";
     }
 
-    $pageHtml = AppHtml::getTxReceipt($orderId,$code,$response);
-    // @todo response code = 100 => update fs_order state
-    // response code 100 orders cannot be tried again.
-    
+    if($code = AppConstants::ZAAKPAY_TX_OK) {
+        // @todo handle DAO layer error condition 
+        // response code 100 orders cannot be tried again.
+        $orderDao = new \com\indigloo\fs\dao\Order();
+        $orderDao->setState($orderId,AppConstants::ORDER_TX_OK_STATE);
+    }
 
+    $pageHtml = AppHtml::getTxReceipt($orderId,$code,$response);
+    
 ?>
 
 <!DOCTYPE html>
