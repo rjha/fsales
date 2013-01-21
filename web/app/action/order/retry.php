@@ -24,20 +24,7 @@
         
         $fhandler = new Form\Handler('form1', $_POST);
 
-        
-        // Rules
-        // Rule number zero : never trust user input!
-        // first name/ last name - min :3 max 30 | alphanumeric
-        // first name <> last name
-        // email : 64/ valid format
-        // phone : digits only / max 16
-        // address : 100 / min 6 
-        // city : 3-30 chars
-        // state : required
-        // pincode 2-12 : numbers only
-        
-
-        $fhandler->addRule('invoice_id', 'INVOICE ID', array('required' => 1));
+        $fhandler->addRule('order_id', 'ORDER_ID', array('required' => 1));
         $fhandler->addRule('first_name', 'First name', array('required' => 1, 'minlength' =>3, 'maxlength' => 30));
         $fhandler->addRule('last_name', 'Last name', array('required' => 1,'minlength' =>3, 'maxlength' => 30));
         
@@ -68,34 +55,26 @@
             throw new UIException($fhandler->getErrors());
         }
 
-        $invoiceDao = new \com\indigloo\fs\dao\Invoice();
+        $orderId = $fvalues["order_id"];
         $orderDao = new \com\indigloo\fs\dao\Order();
         $orderDao->validateForm($fvalues);
 
-        $invoiceId = $fvalues["invoice_id"];
-        settype($invoiceId, "integer");
+        settype($orderId, "integer");
 
-        // valid checkout_token and invoice_id ?
-        $checkout_token  =  $gWeb->find("fs:checkout:token",true);
-        $formString =  sprintf("%d:%s",$invoiceId,$checkout_token ) ;
+        // valid checkout_token and order_id ?
+        $checkout_token  =  $gWeb->find("fs:reorder:token",true);
+        $formString =  sprintf("%d:%s",$orderId,$checkout_token ) ;
         $checksum = hash_hmac("sha256", $formString , AppConstants::SECRET_KEY);
 
         // calculated checksum = form.checksum ?
-
         if(strcmp($checksum,$fvalues["checksum"]) != 0 ) {    
             $message = "Error: form data has been changed : checksum do not match!" ;
             throw new UIException(array($message));
         }
+      
+        $orderDao->update($orderId,$fvalues);
 
-        $invoiceRow = $invoiceDao->getOnId2($invoiceId);
-        if(empty($invoiceRow)) {
-            $message = "Error: No invoice found!" ;
-            throw new UIException(array($message));
-        }
-        
-        $orderId = $orderDao->add($invoiceRow,$fvalues);
-
-        // get order id and show redirect-to-zaakpay screen
+        // show redirect-to-zaakpay screen
         // make sure you have the right data before fwd-ing to 
         // zaakpay
         $params = array("order_id" => $orderId);

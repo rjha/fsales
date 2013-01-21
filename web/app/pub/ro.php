@@ -67,7 +67,7 @@
     $checkout_token  = Util::getMD5GUID() ;
     $gWeb->store("fs:reorder:token",$checkout_token);
 
-    $formString =  $orderId + ":" + $checkout_token;
+    $formString =  sprintf("%d:%s",$orderId,$checkout_token ) ;
     $checksum = hash_hmac("sha256", $formString , AppConstants::SECRET_KEY);
 
 
@@ -275,113 +275,8 @@
                     frm1.ship_phone.value = frm1.phone.value ;
 
                 });
-
-
-                // Rules
-                // first name/ last name - min :3 max 30 | alphanumeric
-                // first name <> last name
-                // email : 64/ valid format
-                // phone : digits only / max 16
-                // address : 100 / min 6
-                // city : 3-30 chars | alphabets only
-                // state : required
-                // pincode 2-12 : numbers only
                 
-                $("#form1").validate({
-                    errorLabelContainer: $("#form-message"),
-                    onkeyup:false,
-                    
-                    rules: {
-                        first_name: {required: true, maxlength:30, minlength:3} ,
-                        last_name : { required : true, maxlength : 30, minlength :2},
-                        email: {required: true, email:true } ,
-                        phone : {required : true, digits : true},
-                        billing_address: {required: true , maxlength:100, minlength : 6} ,
-                        billing_city: {required: true , maxlength:30, minlength:3} ,
-                        billing_state: {required: true} ,
-                        billing_pincode: {required: true , maxlength:12, minlength:2} ,
-
-                        ship_first_name: {required: true, maxlength:30, minlength:3} ,
-                        ship_last_name : { required : true, maxlength : 30, minlength :2},
-                        ship_address: {required: true , maxlength:100, minlength : 6} ,
-                        ship_city: {required: true , maxlength:30, minlength:3} ,
-                        ship_state: {required: true} ,
-                        ship_pincode: {required: true , maxlength:12, minlength:2}, 
-                        ship_phone : {required : true, digits : true}
-                        
-                    },
-                    messages: {
-                        first_name: {
-                            required: "First name is required ", 
-                            maxlength : "Only 30 chars allowed in First Name", 
-                            minlength: "At least 3 chars required in First Name"
-                        } ,
-                        last_name : { 
-                            required : "Last name is required ",
-                            maxlength : "Only 30 chars allowed in Last Name", 
-                            minlength: "At least 2 chars required in Last Name"
-                        },
-                        ship_first_name: {
-                            required: "First name (shipping) is required ", 
-                            maxlength : "Only 30 chars allowed in First Name", 
-                            minlength: "At least 3 chars required in First Name"
-                        } ,
-                        ship_last_name : { 
-                            required : "Last name (shipping) is required ",
-                            maxlength : "Only 30 chars allowed in Last Name", 
-                            minlength: "At least 2 chars required in Last Name"
-                        },
-                        email: {
-                            required: "Email is required", 
-                            email : "Email is not in valid format" ,
-                        } ,
-                        phone : {
-                            required : "Phone is required", 
-                            digits : "Only numbers are allowed in Phone"
-                        },
-                        billing_address: {
-                            required: "Address (billing) is required " , 
-                            maxlength:"Only 100 chars allowed in Address",
-                            minlength: "At least 6 chars required in  Address"
-                        } ,
-                        billing_city: {
-                            required: true , 
-                            maxlength : "Only 30 chars allowed in City (billing)", 
-                            minlength: "At least 3 chars required in City(billing)"
-                        } ,
-                        billing_state: {
-                            required: "State (billing) is required"
-                        } ,
-                        billing_pincode: {
-                            required: "Pincode (billing) is required " , 
-                            maxlength:"Only 12 chars allowed in Pincode (billing)",
-                            minlength: "Atleast 2 chars required in Pincode (billing)"
-                        },
-
-                        ship_address: {
-                            required: "Address (shipping) is required " , 
-                            maxlength:"Only 100 chars allowed in Address",
-                            minlength: "At least 6 chars required in  Address"
-                        } ,
-                        ship_city: {
-                            required: true , 
-                            maxlength : "Only 30 chars allowed in City (shipping)", 
-                            minlength: "At least 3 chars required in City(shipping)"
-                        } ,
-                        ship_state: {
-                            required: "State (shipping) is required"
-                        } ,
-                        ship_pincode: {
-                            required: "Pincode (shipping) is required " , 
-                            maxlength:"Only 12 chars allowed in Pincode (shipping)",
-                            minlength: "Atleast 2 chars required in Pincode (shipping)"
-                        },
-                        ship_phone : {
-                            required : "Phone (shipping) is required", 
-                            digits : "Only numbers are allowed in Phone (shipping)"
-                        }
-                    }
-                }); 
+                $("#form1").validate(webgloo.fs.OrderValidator); 
 
             });
         
