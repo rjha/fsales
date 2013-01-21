@@ -64,7 +64,7 @@
 
     // error if op_bit != 2
     if($op_bit != AppConstants::INVOICE_PENDING_STATE) {
-        $message = "This invoice has already been processed." ;
+        $message = "This invoice is under processing and cannot be changed." ;
         echo AppHtml::messageBox($message);
         exit ;
     }

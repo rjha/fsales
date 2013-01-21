@@ -167,6 +167,7 @@
 
                 $("#form1").validate({
                     errorLabelContainer: $("#form-message"),
+                    onkeyup : false,
                     rules: {
                         name: {required: true } ,
                         email: {required: true, email: true } ,

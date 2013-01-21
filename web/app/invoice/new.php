@@ -27,6 +27,7 @@
     $qUrl = Url::tryBase64QueryParam("q", "/");
     $fUrl = base64_encode(Url::current());
 
+    // comment_id is varchar(64) string
     $commentId = Url::tryQueryParam("comment_id");
     $commentDao = new \com\indigloo\fs\dao\Comment();
     $commentRow = $commentDao->getOnId($commentId);
@@ -140,6 +141,7 @@
 
                 $("#form1").validate({
                     errorLabelContainer: $("#form-message"),
+                    onkeyup : false,
                     rules: {
                         name: {required: true } ,
                         email: {required: true, email: true } ,

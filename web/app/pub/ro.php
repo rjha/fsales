@@ -45,7 +45,7 @@
 
     if($op_bit != AppConstants::ORDER_NEW_STATE) {
         // you cannot edit this order now!
-        $message = "This order has already been processed." ;
+        $message = "This order is under processing and cannot be changed." ;
         echo AppHtml::messageBox($message);
         exit ;
     }

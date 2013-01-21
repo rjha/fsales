@@ -12945,6 +12945,85 @@ webgloo.fs.OrderValidator =
 }
 
 
+webgloo.fs.invoice = {
+
+    mail : function(invoiceId) {
+        var dataObj = {} ;
+        dataObj.params = {} ;
+        dataObj.params.invoiceId  = invoiceId;
+        dataObj.endPoint = "/app/action/invoice/ajax-mail.php";
+        
+        var options = {
+            "dataType" : "json", 
+            "timeout" : 9000,
+            "messageDivId" : "#invoice-ajax-" + invoiceId
+        };
+        
+        webgloo.fs.Ajax.post(dataObj,options) ;
+    },
+
+    edit : function (invoiceId) {
+        alert('invoice edited');
+    },
+
+    remind : function(invoiceId) {
+        alert('reminder sent');
+    },
+
+    cancel : function(invoiceId) {
+        var dataObj = {} ;
+        dataObj.params = {} ;
+        dataObj.params.invoiceId  = invoiceId;
+        dataObj.params.action  =  "cancel";
+        dataObj.endPoint = "/app/action/invoice/ajax-command.php";
+        
+        var options = {
+            "dataType" : "json", 
+            "timeout" : 9000,
+            "messageDivId" : "#invoice-ajax-" + invoiceId
+        };
+        
+        webgloo.fs.Ajax.post(dataObj,options) ;
+    },
+
+    ship : function (invoiceId) {
+        alert('invoice shipped');
+    },
+
+    initActions : function() {
+
+        $("a.invoice-action").live("click",function(event){
+            event.preventDefault();
+            var invoiceId = $(this).attr("id");
+            var action =  $(this).attr("rel") ;
+
+            switch(action) {
+                case 'mail' :
+                    webgloo.fs.invoice.mail(invoiceId);
+                    break ;
+                case 'edit' :
+                    webgloo.fs.invoice.edit(invoiceId);
+                    break ;
+                case 'cancel' :
+                    webgloo.fs.invoice.cancel(invoiceId);
+                    break ;
+                case 'shipping' :
+                    webgloo.fs.invoice.ship(invoiceId);
+                    break ;
+                case 'reminder' :
+                    webgloo.fs.invoice.remind(invoiceId);
+                    break ;
+                default :
+                    break ;
+
+            }
+ 
+        }) ;
+    }
+
+}
+
+
 
 
  /* cat:sc:file:1:js/fs.js */ 

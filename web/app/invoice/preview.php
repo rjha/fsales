@@ -85,16 +85,14 @@
         <script type="text/javascript">
 
             $(document).ready(function(){
-
-
-                $("a.invoice-mail").live("click",function(event){
+                
+                $("a.invoice-mail").click(function(event){
                     
                     event.preventDefault();
 
                     var dataObj = {} ;
                     dataObj.params = {} ;
                     dataObj.params.invoiceId  = $(this).attr("id");
-                    dataObj.params.action = "mail";
                     dataObj.endPoint = "/app/action/invoice/ajax-mail.php";
                     
 
@@ -108,7 +106,6 @@
                                 window.location.replace(redirectUrl);
                             }    
                         
-
                         }
                     };
                     

@@ -88,102 +88,12 @@
         </div>
         
         <?php $paginator->render($pageBaseURI,$startId,$endId,$gNumRecords);  ?>
-
         <?php echo \com\indigloo\fs\util\Asset::version("/js/fs-bundle.js"); ?>
         
         <script type="text/javascript">
 
-
-            function mail_invoice(invoiceId) {
-                var dataObj = {} ;
-                dataObj.params = {} ;
-                dataObj.params.invoiceId  = invoiceId;
-                dataObj.endPoint = "/app/action/invoice/ajax-mail.php";
-                
-                var options = {
-                    "dataType" : "json", 
-                    "timeout" : 9000,
-                    "messageDivId" : "#invoice-ajax-" + invoiceId,
-                    onDoneHandler : function (response) {
-                        $("#invoice-ajax-"+invoiceId).html(response.message);
-                    }
-                };
-                
-                webgloo.fs.Ajax.post(dataObj,options) ;
-            }
-
-            function edit_invoice (invoiceId) {
-                // self URL is q URL
-                alert('invoice edited');
-            }
-
-            function cancel_invoice (invoiceId) {
-                var dataObj = {} ;
-                dataObj.params = {} ;
-                dataObj.params.invoiceId  = invoiceId;
-                dataObj.params.action  =  "cancel";
-                dataObj.endPoint = "/app/action/invoice/ajax-command.php";
-                
-                var options = {
-                    "dataType" : "json", 
-                    "timeout" : 9000,
-                    "messageDivId" : "#invoice-ajax-" + invoiceId
-                };
-                
-                webgloo.fs.Ajax.post(dataObj,options) ;
-            }
-
-            function ship_invoice (invoiceId) {
-                alert('invoice shipped');
-            }
-
-            function remind_invoice (invoiceId) {
-                var dataObj = {} ;
-                dataObj.params = {} ;
-                dataObj.params.invoiceId  = invoiceId;
-                dataObj.params.action  =  "remind";
-                dataObj.endPoint = "/app/action/invoice/ajax-command.php";
-                
-                var options = {
-                    "dataType" : "json", 
-                    "timeout" : 9000,
-                    "messageDivId" : "#invoice-ajax-" + invoiceId
-                };
-                
-                webgloo.fs.Ajax.post(dataObj,options) ;
-            }
-
             $(document).ready(function(){
-                
-                $("a.invoice-action").live("click",function(event){
-                    
-                    event.preventDefault();
-                    
-                    var invoiceId = $(this).attr("id");
-                    var action =  $(this).attr("rel") ;
-
-                     switch(action) {
-                        case 'mail' :
-                            mail_invoice(invoiceId);
-                            break ;
-                        case 'edit' :
-                            edit_invoice(invoiceId);
-                            break ;
-                        case 'cancel' :
-                            cancel_invoice(invoiceId);
-                            break ;
-                        case 'shipping' :
-                            ship_invoice(invoiceId);
-                            break ;
-                        case 'reminder' :
-                            remind_invoice(invoiceId);
-                            break ;
-                        default :
-                            break ;
-
-                    }
- 
-                }) ;
+               webgloo.fs.invoice.initActions();
             }) ;
 
         </script>

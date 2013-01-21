@@ -50,10 +50,10 @@
                             $fvalues["seller_info"]);
 
         
-        //success - go to invoices
-        $params = array();
-        $fwd = Url::createUrl("/app/invoice/all.php",$params);
-        header("Location: ".$fwd);
+        //success - go new invoice page
+        $fwd = base64_decode($fvalues["qUrl"]);
+        header("Location: " . $fwd);
+        
 
     } catch(UIException $ex) {
         $gWeb->store(Constants::STICKY_MAP, $fvalues);

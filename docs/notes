@@ -485,8 +485,8 @@ Step 3: Buyer pays the amount
 Step 4: payment confirmation from PG
 
 
-  Merchant Action : He can manually change the state to Shipping from
-  Paid. He has to supply the shipping address + mail invoice
+Merchant Action : He can manually change the state to Shipping from
+Paid. He has to supply the shipping address + mail invoice
 
 
 Note :
@@ -522,7 +522,11 @@ Logo Required
 Header text/ Brand Name
 PG mail :- turn OFF - yes
 AUTO CAPTURE - ?
-RETRY - Yes
+RETRY - NO. The problem is it may not be working due to some stupid 
+error on form (wrong pincode and we must return the user to their form)
+The number of retries should atleast be limited! (2 and not more)
+
+
 
 
 ------------------
@@ -536,4 +540,12 @@ PG response code 100 - we fail to register as op_bit = 2  in our DB
 That we have to check separately!
 
 re-order page : op_bit = 1 orders only
+
+Next steps
+---------------
+
++ All invoice actions : should also check for invoice state
++ How to update the invoice action : status results?
++ Graph API : better error handling? (look for @DB required columns)
+
 
