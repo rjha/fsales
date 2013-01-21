@@ -4,9 +4,23 @@
 
     use \com\indigloo\Util ;
     use \com\indigloo\Url ;
+    use \com\indigloo\Constants ;
+    use \com\indigloo\Logger ;
 
     use \com\indigloo\fs\html\Application as AppHtml ;
     use \com\indigloo\fs\Constants as AppConstants ;
+
+    function show_error_page($orderId,$response) {
+
+        $params = array("order_id" => $orderId);
+        $fwd = Url::createUrl("/app/pub/ro.php",$params) ;
+        $gWeb = \com\indigloo\core\Web::getInstance();
+        $errors = array($response);
+        array_push($errors," Please check the data entered on forms.");
+
+        $gWeb->store(Constants::FORM_ERRORS, $errors);
+        header("Location: ".$fwd);
+    }
 
     // response code = 100 print receipt
     // response code != 100 : show error message and ro.php;
@@ -14,6 +28,8 @@
     $orderId = Util::tryArrayKey($_POST,"orderId");
     $orderId = empty($orderId) ? 0 : $orderId; 
     settype($orderId, "integer");
+
+    $pageHtml = "" ;
 
     if(empty($orderId)) {
         // no clue as to what happened!
@@ -24,20 +40,29 @@
 
     $code = Util::tryArrayKey($_POST,"responseCode");
     $code = empty($code) ? 1001 : $code; 
+    settype($code,"integer");
 
     $response = Util::tryArrayKey($_POST,"responseDescription");
-    if(empty($response)) {
-        $response = "Error: something went wrong. Please try again.";
+    if(Util::tryEmpty($response)) {
+        $response = "Warning: No status message received from Payment gateway.";
     }
+    
+    if($code == AppConstants::ZAAKPAY_TX_OK) {
+        try{
 
-    if($code = AppConstants::ZAAKPAY_TX_OK) {
-        // @todo handle DAO layer error condition 
-        // response code 100 orders cannot be tried again.
-        $orderDao = new \com\indigloo\fs\dao\Order();
-        $orderDao->setState($orderId,AppConstants::ORDER_TX_OK_STATE);
+            $orderDao = new \com\indigloo\fs\dao\Order();
+            $orderDao->setState($orderId,AppConstants::ORDER_TX_OK_STATE);
+            $pageHtml = AppHtml::getTxReceipt($orderId,$code,$response);
+
+        } catch(\Exception $ex) {
+            Logger::getInstance()->error($ex->getMessage());
+            Logger::getInstance()->backtrace($ex->getTrace());
+            show_error_page($orderId,$response);
+        }
+
+    }else {
+        show_error_page($orderId,$response);
     }
-
-    $pageHtml = AppHtml::getTxReceipt($orderId,$code,$response);
     
 ?>
 

@@ -1,1 +1,118 @@
 
+invoice checkout 
+-------------------
+
+// Rules
+1. first name/ last name - min:3 max 30 | alphanumeric only
+2. first name cannot be same as last name
+3. email : should be valid email 
+4. phone : numbers only, no dashes and no spaces  
+address : max 100 chars / min 6
+city : 3-30 chars | alphabets only
+state : required
+pincode minlength 2 - maxlength 12 : numbers only
+
+we accept cards from India only.
+
+Invoice states
+-----------------
+
+1 - new 
+2 - pending (mail sent / user response awaited)
+3 - processing payment (PG has returned 100 for card/ money has not hit the bank)
+4 - paid (check API or bank a/c verification)
+5 - shipped
+6 - cancel
+7 - refund
+
+Invoice editing
+----------------
++ should only be possible for "new" (state == 1) invoices
+once an invoice has been sent :- we cannot allow it to be edited.
+
+
+Invoice actions 
+------------------
+
+Actions shown for an invoice on merchant dashboard
+
++ state == NEW
+    - EDIT 
+    - MAIL
++ state == PENDING
+    - MAIL (user has lost invoice copy)
+    - CANCEL 
+    (block invoice_id/ checkout should stop)
+    ( if already paid - refund payment) 
+    (Mail buyer)
+
++ state == PROCESSING
+    - MAIL
+    - CANCEL 
+    (if already paid - REFUND) 
+    (mail Buyer)
+    
++ state == PAID
+    - MAIL
+    - SHIPPING
+    - CANCEL 
+    (if already paid - REFUND buyer) 
+    (mail Buyer)
+
++ state = SHIPPED
+    - REFUND
+    (if already paid - REFUND buyer) 
+    (mail Buyer)
+
++ state = CANCEL / REFUND
+ - NO changes after that.
+     
+
+Invoice checkout 
+----------------
++ invoice checkout should create an order
++ only one order can be created for one invoice
++ if user tries to checkout an-already-paid-invoice 
+(e.g. opening the invoice mail from merchant and trying the workflow again)
+we should show error : "invoice is under processing"
+
++ PG returned error : show error message and let user retry his order
+Question : how many retries per session should be allowed? 
+
+Order states
+--------------
+1- NEW 
+2 - PG has returned code 100
+3 - Money has hit merchant's Bank
+
+Zaakpay PG settings
+------------------------
+
+AUTO_CAPTURE - ?
+RETRY - NO (users should retry through our interface)
+MAIL - NO (we should send customized emails on success)
+
+
+Order retry
+-------------
++ order retry is only possible for new orders (state == 1)
++ Once a PG has returned code == 100 : order cannot be paid again
+we should show an error "order is under processing"
+
+
+Notifications
+---------------
+
+invoice mailed => to buyer
+invoice paid for at PG => To favsales/ Buyer
+invoice payment received in Bank => merchant/Favsales
+order shipped => Buyer
+Order cancelled => Buyer
+
+
+
+
+
+
+
+

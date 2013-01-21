@@ -366,154 +366,16 @@ FQL is undoubtely clear(unless you can figure out a way to sort on comment.time)
 + input check for mysql DB columns
 
 
-# Multiple invoices
-when an invoice has been created for a comment
-show invoice_no? + status  link to edit invoice ?
-on invoice form - show status?
+Meaning of PG response code == 100
+------------------------------------
 
-Or simply use the invoice screen for that?
-we need an invoice screen
+Now here is the twist - when you swipe your card on a PG - money does not 
+hit the A/c immediately or at least you should not assume it. Rigth way is to 
+check Tx status - and then only update your system to paid.
 
+This may take some time. So the fact that user has paid => that "processing of order"
+has been started by PG. @see https://www.zaakpay.com/developers/guide and see the Tx states tab.
 
-zaakpay API requirements
-----------------------------
-
-first_name
-last_name
-email
-address
-city
-state
-country
-pincode
-phone
-amount
-
-
-
-
-merchantIdentifier (merchant identifier)
-checksum
-orderId
-returnUrl 
-buyerEmail (valid email address)
-buyerFirstName (<> last Name)
-buyerLastName (max 30 no special char dash etc.)
-buyerAddress (100 max)
-
-buyerCity ( min 3 max 30)
-buyerState (combo box)
-
-buyerCountry
-buyerPincode (2 to 12 digits)
-
-
-buyerPhoneNumber (09886124428 / 08032906693)
-txnType (1 - credit cards / debit cards)  
-zpPayOption  (3 - API )
-
-mode (0/1 - 0 for development)
-currency INR  
-amount (paisa)
-merchantIpAddress ( buyer IP address)
-
-
-txnDate (yyyy-MM-DD)
-purpose (1 Goods 3 - Others)
-productDescription (M  100 max)
-checksum
-
-https://api.zaakpay.com/transact
-checksum
-
-
-
-
-
-
-
-Workflow
-----------------
-
-Questions
-
-+ states are 
-  - New(1) 
-  - Pending (2) 
-  - Paid (3) 
-  - Shipped (4) 
-  - Cancelled (5)
-
-+ At what state should be stop editing the invoice?
-+ Allow to generate a new invoice w/o a comment?
-+ what mails should be sent at each state change?
-
-+ one invoice will have precisely one order
-+ Do not allow checkout after it has been paid for 
- or what happens when people keep pressing the checkout button
- 
-+ what if user tries to create another order from same invoice in same
-session? 
-
-
-
-
-Step 1 : Invoice created but not send
-  State : New
-  Merchant : He can send it to User (Mail) or edit it 
-
-Step 2: Inoice send to the user by merchant
-
-        State : Pending (user has not opened the invoice)
-        System Action : No edit after #1. Wait for user action.
-        Merchant : can still send invoice in mail (in case user has misplaced it)
-
-Step 3: Buyer pays the amount
-  State : Processing
-
-  Now here is the twist - when you swipe your card on a PG - money does not 
-  hit the A/c immediately or at least you should not assume it. Rigth way is to 
-  check Tx status - and then only update your system to paid.
-
-  This may take some time. So the fact that user has paid => that "processing of order"
-  has been started by PG. @see https://www.zaakpay.com/developers/guide and see the Tx states tab.
-  very useful information. in fact the PG reponse after card swipe does not even contain the order ID
-  You are supposed to check that separately!
-
-  Merchant : Can cancel the order? + Mail invoice
-
-Step 4: payment confirmation from PG
-
-
-Merchant Action : He can manually change the state to Shipping from
-Paid. He has to supply the shipping address + mail invoice
-
-
-Note :
-
-1) Merchant can change the status only once manually from Paid to Shipping.
-2)Once the state is changed to Shipping , there can not be any action
-on invoice. Shipping is final state.
-3) Merchant should be able to "remind favsales" ?
-
-
-More Questions
-----------------------
-+ Retry order in same session? what is order-retry logic? 
-what if I made an error in data entry (e.g. wrong pincode and now I want to 
-make corrections and try my card again? )
-
-Response code = 100 => Order cannot be retried again.
-One invoice => One Order rule.
-
-+ what if user tries to load an invoice after order has been paid/ processing?
-what should we do? If he would like to try a new card the next day then we have to 
-allow that.
-
-PG Response
-----------------
-
-Array ( [orderId] => 5 [responseCode] => 100 [responseDescription] => The transaction was completed successfully. [checksum] => cacefb31f04be1497c8a273513f7e619b4b0da7aab5fa8caa5a632bbf8db163e )
 
 
 PG integration
@@ -521,25 +383,11 @@ PG integration
 Logo Required
 Header text/ Brand Name
 PG mail :- turn OFF - yes
-AUTO CAPTURE - ?
+AUTO CAPTURE - what is that?
 RETRY - NO. The problem is it may not be working due to some stupid 
 error on form (wrong pincode and we must return the user to their form)
 The number of retries should atleast be limited! (2 and not more)
 
-
-
-
-------------------
-
-edit invoice - check
-checkout invoice/ order  - check
-retry order - check
-Activity mails - when some actions happens -> Notification should be sent
-
-PG response code 100 - we fail to register as op_bit = 2  in our DB
-That we have to check separately!
-
-re-order page : op_bit = 1 orders only
 
 Next steps
 ---------------

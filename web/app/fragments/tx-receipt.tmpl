@@ -1,10 +1,14 @@
 
-<div class="widget">
-		<p> <strong> ( code </strong> ~~$view->code~ )  </p>
-		<p class="lead"> order # ~~$view->orderId~  </p>
-		<p class="lead"> ~~$view->message~ </p>
-		<div class="p20">
-			<a class="btn btn-large btn-success" href="~~$view->link~"> ~~$view->linkName~ </a>
+<div class="mt20">
+		<p class="faded-text"> code : ~~$view->code~ </p>
+		
+		<p class="lead"> 
+			~~$view->message~ .
+			For any further queries please note down your order number 
+		</p>
+		<div style="width:480px; border:1px solid #ccc; padding:20px;">
+			<h3> order # ~~$view->orderId~ </h3>
 		</div>
+		
 </div>
 
