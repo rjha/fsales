@@ -8,6 +8,8 @@ namespace com\indigloo\fs\job {
 
     use \com\indigloo\fs\dao as Dao ;
     use \com\indigloo\fs\api\Graph as GraphAPI;
+    use \com\indigloo\fs\Constants as AppConstants ;
+
 
     class Comment {
 
@@ -37,7 +39,14 @@ namespace com\indigloo\fs\job {
             $postDao = new Dao\Post();
 
             if(!$postDao->exists($postId)) {
-                $fbPost = GraphAPI::getPost($postId,$token);
+                $fbResponse = GraphAPI::getPost($postId,$token);
+                $fbCode = $fbResponse["code"];
+                settype($fbCode, "integer");
+                if($fbCode == AppConstants::SERVER_ERROR_CODE) {
+                    return ;
+                }
+
+                $fbPost = $fbResponse["data"];
                 $postDao->add($sourceId,$postId,$fbPost);
 
                 if(Config::getInstance()->is_debug()) {

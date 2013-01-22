@@ -155,7 +155,15 @@ namespace com\indigloo\fs\controller{
                     exit ;
                 }
 
-                $fbPages = GraphAPI::getPages($access_token);
+                $fbResponse = GraphAPI::getPages($access_token);
+                $fbCode= $fbResponse["code"];
+                settype($fbCode, "integer") ;
+
+                if($fbCode == AppConstants::SERVER_ERROR_CODE) {
+                    throw new \Exception("Graph API returned error");
+                }
+
+                $fbPages = $fbResponse["data"];
                 $num_pages = sizeof($fbPages);
 
                 if($num_pages == 0 ) {

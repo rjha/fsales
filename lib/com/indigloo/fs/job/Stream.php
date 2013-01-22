@@ -8,6 +8,7 @@ namespace com\indigloo\fs\job {
 
     use \com\indigloo\fs\dao as Dao ;
     use \com\indigloo\fs\api\Graph as GraphAPI;
+    use \com\indigloo\fs\Constants as AppConstants ;
 
     class Stream {
 
@@ -41,7 +42,15 @@ namespace com\indigloo\fs\job {
             // token is page token and should not expire
 
             $token = $source["token"];
-            $fbPosts = GraphAPI::getStreamViaFQL($sourceId,$last_ts,$token);
+            $fbResponse = GraphAPI::getStreamViaFQL($sourceId,$last_ts,$token);
+            $fbCode = $fbResponse["code"];
+            settype($fbCode, "integer") ;
+
+            if($fbCode == AppConstants::SERVER_ERROR_CODE) {
+                return ;
+            }
+
+            $fbPosts = $fbResponse["data"];
 
             if(Config::getInstance()->is_debug()) {
                 $message = "\n poke stream :: source = %s, ts = %s, new posts = %d" ;

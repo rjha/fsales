@@ -7,11 +7,8 @@ namespace com\indigloo\fs\api {
     use \com\indigloo\Logger as Logger;
     use \com\indigloo\Url ;
     use \com\indigloo\Configuration as Config ;
+    use \com\indigloo\fs\Constants as AppConstants ;
 
-    // @todo Graph API should return error codes for callers
-    // Graph API should always check for existence of properties
-    // to avoid E_NOTICE 
-    
     class Graph {
 
         static function isValidResponse($graphUrl,$fbObject,$attributes=NULL) {
@@ -21,20 +18,17 @@ namespace com\indigloo\fs\api {
             // php json_decode can return TRUE | FALSE | NULL
            
             if($fbObject === FALSE || $fbObject ===  TRUE || $fbObject == NULL ) {
-                //@todo more instrumentation
                 $graphUrl = urldecode($graphUrl);
                 $message = sprintf("Graph URL [%s] returned true/false/null ",$graphUrl) ;
                 Logger::getInstance()->error($message);
-                $flag = false ;
-                return $flag ;
+                return false ;
             }
 
             if(is_object($fbObject) && property_exists($fbObject, "error")) { 
                 $message = sprintf("Graph URL [%s] returned error ",$graphUrl) ;
                 Logger::getInstance()->error($message);
                 Logger::getInstance()->error($fbObject->error);
-                $flag = false ;
-                return $flag ;
+                return false ;
             }
 
             if(is_object($fbObject) && !empty($attributes)) {
@@ -85,8 +79,9 @@ namespace com\indigloo\fs\api {
         }
 
         static function getPages($token) {
-
-            $pages = array();
+                                          
+            $response["code"] = AppConstants::SERVER_ERROR_CODE ;
+            $response["data"] = array() ;
 
             CoreUtil::isEmpty("Access token", $token);
             $params = array("access_token" => $token);
@@ -99,26 +94,50 @@ namespace com\indigloo\fs\api {
             $fbObject = json_decode($response);
            
             $attributes = array("data");
-            if(!self::isValidResponse($graphUrl,$fbObject,$attributes)) {
-                return $pages ;
-            }
-            
-            $accounts = $fbObject->data ;
-            foreach($accounts as $account) {
-                $page = array();
-                $page["id"] = $account->id ;
-                $page["access_token"] = $account->access_token ;
-                $page["name"] = $account->name ;
-                $pages[] = $page ;
-                 
+            // error returned by graph API  
+            if(!self::isValidResponse($graphUrl,$fbObject,$attributes)) { 
+                return $response ; 
             }
 
-            return $pages ;
+            try{
+                $pages = array();
+                $accounts = $fbObject->data ;
+
+                foreach($accounts as $account) {
+                    
+                    // property check
+                    // facebook can return any weird thing 
+                    // so lets guard against 1. E_NOTICE
+                    // 2. required DB COLUMN
+
+                    if(property_exists($account, "id")
+                        && property_exists($account, "access_token")
+                        && property_exists($account, "name")) {
+
+                        $page = array();
+                        $page["id"] = $account->id ;
+                        $page["access_token"] = $account->access_token ;
+                        $page["name"] = $account->name ;
+                        $pages[] = $page ;
+                    }
+                    
+                }
+
+                $response["code"] = AppConstants::SERVER_OK_CODE ;
+                $response["data"] = $pages ;
+
+            } catch(\Exception $ex) {
+                Logger::getInstance()->error($ex->getMessage());
+            }
+
+            return $response ;
         }
 
         static function getStreamViaFQL($sourceId,$ts,$token) {
 
-            $photos = array();
+            $response["code"] = AppConstants::SERVER_ERROR_CODE ;
+            $response["data"] = array() ;
+
 
             // @todo check type = 247 for photos 
             // for some photos returned type was NULL
@@ -145,39 +164,52 @@ namespace com\indigloo\fs\api {
             $graphAPI = "https://graph.facebook.com/fql" ;
             $params = array("q" => urlencode($fql), "access_token" => $token);
             $graphUrl = Url::createUrl($graphAPI,$params);
-            
+
             $response = @file_get_contents($graphUrl);
-            
             $fbObject = json_decode($response);
             
             $attributes = array("data");
             if(!self::isValidResponse($graphUrl,$fbObject,$attributes)) {
-                return $photos ;
+                return $response ;
             }
 
-            $posts = $fbObject->data ;
-            $last_stream_ts = (int) $ts ;
-            
-            foreach($posts as $post) {
-                $photo_ts =  (int) $post->updated_time; 
-                if($photo_ts <= $last_stream_ts) {
-                    break ;
+            try{
+                $photos = array() ;
+                $posts = $fbObject->data ;
+                $last_stream_ts = (int) $ts ;
+                
+                foreach($posts as $post) {
+                    if(property_exists($post, "post_id")
+                        && property_exists($post, "updated_time")) {
+
+                        $photo_ts =  (int) $post->updated_time; 
+                        if($photo_ts <= $last_stream_ts) {
+                            break ;
+                        }
+
+                        $photo = array();
+                        $photo["post_id"] = $post->post_id ;
+                        $photo["updated_time"] = $post->updated_time;
+                        $photos[] = $photo ;
+                    }
                 }
 
-                $photo = array();
-                $photo["post_id"] = $post->post_id ;
-                $photo["updated_time"] = $post->updated_time;
+                $response["code"] = AppConstants::SERVER_OK_CODE ;
+                $response["data"] = $photos ;
 
-                $photos[] = $photo ;
+
+            } catch(\Exception $ex) {
+                Logger::getInstance()->error($ex->getMessage());
             }
 
-            return $photos ;
+            return $response ;
 
         }
 
         static function getPost($postId,$token) {
-            
-            $post = array();
+
+            $response["code"] = AppConstants::SERVER_ERROR_CODE ;
+            $response["data"] = array() ;
 
             CoreUtil::isEmpty("Access token", $token);
             $params = array("access_token" => $token, "fields" => "picture,link,object_id,message");
@@ -192,20 +224,37 @@ namespace com\indigloo\fs\api {
            
              
             if(!self::isValidResponse($graphUrl,$fbObject)) {
-                return $post ;
+                return $response ;
             }
-            
-            $post["picture"] = $fbObject->picture ;
-            $post["link"] = $fbObject->link ;
-            $post["object_id"] = $fbObject->object_id ;
-            $post["message"] = $fbObject->message ;
-            $post["from_id"] = $fbObject->from->id ;
-            return $post ;
+
+            if(property_exists($fbObject, "object_id")
+                && property_exists($fbObject, "message")) {
+
+                $post = array();
+                // @todo : placeholder pic /link
+                $post["picture"] = property_exists($fbObject,"picture") ? $fbObject->picture : "";
+                $post["link"] = property_exists($fbObject,"link") ? $fbObject->link : "";
+
+                $post["object_id"] = $fbObject->object_id ;
+                $post["message"] = $fbObject->message ;
+
+                if(property_exists($fbObject, "from")) {
+                    $post["from_id"] = $fbObject->from->id ;
+                } else {
+                    $post["from_id"] = "" ;
+                }
+
+                $response["code"] = AppConstants::SERVER_OK_CODE ;
+                $response["data"] = $post ;
+            }
+
+            return $response ;
            
         }
 
         static function getCommentsViaFQL($objectId,$ts1,$limit,$token) {
-            $comments = array();
+            $response["code"] = AppConstants::SERVER_ERROR_CODE ;
+            $response["data"] = array() ;
 
             $fql = " select fromid, text, username, time from comment ".
                 " where object_id = %s ".
@@ -224,26 +273,43 @@ namespace com\indigloo\fs\api {
             
             $attributes = array("data");
             if(!self::isValidResponse($graphUrl,$fbObject,$attributes)) {
-                return $comments ;
+                return $response ;
             }
 
-            $fbComments = $fbObject->data ;
-            
-            foreach($fbComments as $fbComment) {
-                $comment = array();
-                $comment["user_name"] = $fbComment->username ;
-                $comment["from_id"] = $fbComment->fromid ;
-                $comment["message"] = $fbComment->text ;
-                $comment["created_time"] = $fbComment->time ;
-                $comments[] = $comment ;
-            } 
+            try {
+                $fbComments = $fbObject->data ;
+                $comments = array();
 
-            return $comments ;
+                foreach($fbComments as $fbComment) {
+                    if(property_exists($fbComment, "fromid")
+                        && property_exists($fbComment, "text")
+                        && property_exists($fbComment, "time")){
+                        
+
+                        $comment = array();
+                        $comment["user_name"] = property_exists($fbComment,"username") ? 
+                                                    $fbComment->username : "Anonymous";
+                        $comment["from_id"] = $fbComment->fromid ;
+                        $comment["message"] = $fbComment->text ;
+                        $comment["created_time"] = $fbComment->time ;
+                        $comments[] = $comment ;
+                    }
+                }
+
+                $response["code"] = AppConstants::SERVER_OK_CODE ;
+                $response["data"] = $comments ;
+
+            } catch(\Exception $ex) {
+                Logger::getInstance()->error($ex->getMessage());
+            }
+
+            return $response ;
            
         }
 
         static function getComments($postId,$ts1,$limit,$token) {
-            $comments = array();
+            $response["code"] = AppConstants::SERVER_ERROR_CODE ;
+            $response["data"] = array() ;
 
             $graphAPI = "https://graph.facebook.com/%s/comments" ;
             $graphAPI = sprintf($graphAPI,$postId);
@@ -259,24 +325,44 @@ namespace com\indigloo\fs\api {
             
             $attributes = array("data");
             if(!self::isValidResponse($graphUrl,$fbObject,$attributes)) {
-                return $comments ;
+                return $response ;
             }
 
-            $fbComments = $fbObject->data ;
-            
-            foreach($fbComments as $fbComment) {
-                $comment = array();
-                
-                $comment["comment_id"] = $fbComment->id ;
-                $comment["user_name"] = $fbComment->from->name ;
-                $comment["from_id"] = $fbComment->from->id ;
-                $comment["message"] = $fbComment->message ;
-                $comment["created_time"] = $fbComment->created_time ;
 
-                $comments[] = $comment ;
-            } 
+            try {
+                $fbComments = $fbObject->data ;
+                $comments = array() ;
 
-            return $comments ;
+                foreach($fbComments as $fbComment) {
+                    if(property_exists($fbComment, "id")
+                        && property_exists($fbComment, "message")
+                        && property_exists($fbComment, "created_time")){
+                        
+                        $comment = array();
+                        $comment["comment_id"] = $fbComment->id ;
+                        $comment["message"] = $fbComment->message ;
+                        $comment["created_time"] = $fbComment->created_time ;
+
+                        if(property_exists(fbComment, "from")) {
+                            $comment["user_name"] = $fbComment->from->name ;
+                            $comment["from_id"] = $fbComment->from->id ;
+                        } else {
+                            $comment["user_name"] = "Anonymous"
+                            $comment["from_id"] = "" ;
+                        }
+                           
+                        $comments[] = $comment ;
+                    }
+                }
+
+                $response["code"] = AppConstants::SERVER_OK_CODE ;
+                $response["data"] = $comments ;
+
+            } catch(\Exception $ex) {
+                Logger::getInstance()->error($ex->getMessage());
+            }
+
+            return $response ;
            
         }
 

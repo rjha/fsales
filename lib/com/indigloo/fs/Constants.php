@@ -33,6 +33,9 @@ namespace com\indigloo\fs  {
 
         const ZAAKPAY_TX_OK = 100 ;
 
+        const SERVER_ERROR_CODE = 500 ;
+        const SERVER_OK_CODE = 200 ;
+
 
     }
 

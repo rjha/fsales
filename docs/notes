@@ -397,6 +397,9 @@ Next steps
 + Graph API : better error handling? (look for @DB required columns)
 + Invoice : filter by state
 + check my order status please!
++ Notifications
++ Error messages
+
 
 
 

@@ -100,7 +100,7 @@ CREATE TABLE  fs_comment  (
   id  int NOT NULL AUTO_INCREMENT,
   source_id  varchar(64) NOT NULL ,
   post_id  varchar(64) NOT NULL ,
-  from_id varchar(64) not null,
+  from_id varchar(64) ,
   comment_id varchar(64) not null,
   user_name varchar(64) not null,
   message varchar(256),
@@ -205,6 +205,5 @@ CREATE TABLE  fs_mail_queue  (
 -- 
 -- 
 
-alter table fs_order add column courier_info varchar(512) ;
-alter table fs_order add column courier_link varchar(512) ;
+alter table fs_comment modify column from_id varchar(64) ;
 
