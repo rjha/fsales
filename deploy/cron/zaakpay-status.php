@@ -11,12 +11,13 @@
 
 	
     $data = array(
-            "merchantIdentifier" => "'90efd5c603c3427f93f7b9de57f60195'" ,
-            "orderId" => "'8'",
-            "mode" => "'0'");
+            "merchantIdentifier" => "90efd5c603c3427f93f7b9de57f60195" ,
+            "orderId" => "8",
+            "mode" => "0");
 
+    
     $checksum = Zaakpay::calculateChecksum($data);
-    $data["checksum"] = "'".$checksum."'";
+    $data["checksum"] = $checksum;
 
     $postdata = http_build_query($data);
     $length = strlen($postdata);
