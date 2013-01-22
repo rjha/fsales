@@ -197,13 +197,3 @@ CREATE TABLE  fs_mail_queue  (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 
-
-
---
--- Patch : 22 Jan 2013
--- Added courier info to order
--- 
--- 
-
-alter table fs_comment modify column from_id varchar(64) ;
-

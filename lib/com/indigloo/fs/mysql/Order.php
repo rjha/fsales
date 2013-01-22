@@ -161,8 +161,8 @@ namespace com\indigloo\fs\mysql {
                 $dbh->beginTransaction();
 
                 $sql1 = 
-                " update fs_order set first_name = :first_name,last_name = : last_name, ".
-                " email = :email,phone = :phone, ip_address = :ip, billing_address = :b_address, ".
+                " update fs_order set first_name = :first_name,last_name = :last_name, ".
+                " email = :email, phone = :phone, ip_address = :ip, billing_address = :b_address, ".
                 " billing_city = :b_city, billing_state = :b_state, billing_pincode = :b_pin, ".
                 " shipping_first_name = :s_first_name, shipping_last_name = :s_last_name, ".
                 " shipping_phone = :s_phone, shipping_address = :s_address, shipping_city = :s_city, ".
