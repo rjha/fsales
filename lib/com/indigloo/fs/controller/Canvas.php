@@ -65,6 +65,17 @@ namespace com\indigloo\fs\controller{
             $qparams = Url::getRequestQueryParams();
             $loginId = Login::getLoginIdInSession();
 
+            //pagination variables
+            $pageSize = 10 ;
+            $paginator = new \com\indigloo\ui\Pagination($qparams,$pageSize);
+            $paginator->setBaseConvert(false);
+
+            $startId = NULL;
+            $endId = NULL;
+            $gNumRecords = 0 ;
+            $pageBaseURI ="/ghost/canvas/dashboard" ;
+
+
             $sourceDao = new \com\indigloo\fs\dao\Source();
             $sources = $sourceDao->getAll($loginId);
             $default_source_id = $sourceDao->getDefault($loginId) ;
@@ -79,7 +90,6 @@ namespace com\indigloo\fs\controller{
             $commentHtml = "" ;
 
             $sourceRow = $sourceDao->getOnId($sourceId);
-
             if(empty($sourceRow)) {
                 $sourceHtml = AppHtml::getNoSource();
                 include(APP_WEB_DIR."/app/view/dashboard.tmpl");
@@ -90,17 +100,6 @@ namespace com\indigloo\fs\controller{
             // by default show only comments with verb
             $ft = (isset($qparams["ft"])) ? $qparams["ft"] : AppConstants::ALL_COMMENT_FILTER;
 
-            //pagination variables
-            
-            $pageSize = 10 ;
-            $paginator = new \com\indigloo\ui\Pagination($qparams,$pageSize);
-            $paginator->setBaseConvert(false);
-
-            $startId = NULL;
-            $endId = NULL;
-            $gNumRecords = 0 ;
-            $pageBaseURI ="/ghost/canvas/dashboard" ;
-            
             $commentDao = new \com\indigloo\fs\dao\Comment();
             $commentRows = $commentDao->getPaged($sourceId,$ft,$paginator);
             $sourceHtml = AppHtml::getSource($sourceRow,$sources,$qparams);
@@ -156,6 +155,7 @@ namespace com\indigloo\fs\controller{
                 }
 
                 $fbResponse = GraphAPI::getPages($access_token);
+                
                 $fbCode= $fbResponse["code"];
                 settype($fbCode, "integer") ;
 

@@ -62,8 +62,8 @@ namespace com\indigloo\fs\api {
             );
 
             $context  = stream_context_create($opts);
-            $response = @file_get_contents($graphAPI,false,$context);
-            $fbObject = json_decode($response);
+            $apiResponse = @file_get_contents($graphAPI,false,$context);
+            $fbObject = json_decode($apiResponse);
 
             // The API actually returns true| false so we cannot run this 
             // through our usual error checker!
@@ -79,7 +79,7 @@ namespace com\indigloo\fs\api {
         }
 
         static function getPages($token) {
-                                          
+            $response = array();                
             $response["code"] = AppConstants::SERVER_ERROR_CODE ;
             $response["data"] = array() ;
 
@@ -90,8 +90,8 @@ namespace com\indigloo\fs\api {
             $graphAPI = "https://graph.facebook.com/me/accounts" ;
             $graphUrl = Url::createUrl($graphAPI,$params);
             
-            $response = @file_get_contents($graphUrl);
-            $fbObject = json_decode($response);
+            $apiResponse = @file_get_contents($graphUrl);
+            $fbObject = json_decode($apiResponse);
            
             $attributes = array("data");
             // error returned by graph API  
@@ -134,7 +134,7 @@ namespace com\indigloo\fs\api {
         }
 
         static function getStreamViaFQL($sourceId,$ts,$token) {
-
+            $response = array();
             $response["code"] = AppConstants::SERVER_ERROR_CODE ;
             $response["data"] = array() ;
 
@@ -165,8 +165,8 @@ namespace com\indigloo\fs\api {
             $params = array("q" => urlencode($fql), "access_token" => $token);
             $graphUrl = Url::createUrl($graphAPI,$params);
 
-            $response = @file_get_contents($graphUrl);
-            $fbObject = json_decode($response);
+            $apiResponse = @file_get_contents($graphUrl);
+            $fbObject = json_decode($apiResponse);
             
             $attributes = array("data");
             if(!self::isValidResponse($graphUrl,$fbObject,$attributes)) {
@@ -207,7 +207,7 @@ namespace com\indigloo\fs\api {
         }
 
         static function getPost($postId,$token) {
-
+            $response = array();
             $response["code"] = AppConstants::SERVER_ERROR_CODE ;
             $response["data"] = array() ;
 
@@ -219,8 +219,8 @@ namespace com\indigloo\fs\api {
             $graphAPI = sprintf($graphAPI,$postId);
 
             $graphUrl = Url::createUrl($graphAPI,$params);
-            $response = @file_get_contents($graphUrl);
-            $fbObject = json_decode($response);
+            $apiResponse = @file_get_contents($graphUrl);
+            $fbObject = json_decode($apiResponse);
            
              
             if(!self::isValidResponse($graphUrl,$fbObject)) {
@@ -253,6 +253,7 @@ namespace com\indigloo\fs\api {
         }
 
         static function getCommentsViaFQL($objectId,$ts1,$limit,$token) {
+            $response = array();
             $response["code"] = AppConstants::SERVER_ERROR_CODE ;
             $response["data"] = array() ;
 
@@ -268,8 +269,8 @@ namespace com\indigloo\fs\api {
             $params = array("q" => urlencode($fql), "access_token" => $token);
             $graphUrl = Url::createUrl($graphAPI,$params);
             
-            $response = @file_get_contents($graphUrl);
-            $fbObject = json_decode($response);
+            $apiResponse = @file_get_contents($graphUrl);
+            $fbObject = json_decode($apiResponse);
             
             $attributes = array("data");
             if(!self::isValidResponse($graphUrl,$fbObject,$attributes)) {
@@ -308,6 +309,7 @@ namespace com\indigloo\fs\api {
         }
 
         static function getComments($postId,$ts1,$limit,$token) {
+            $response = array();
             $response["code"] = AppConstants::SERVER_ERROR_CODE ;
             $response["data"] = array() ;
 
@@ -320,8 +322,8 @@ namespace com\indigloo\fs\api {
                             "access_token" => $token);
             $graphUrl = Url::createUrl($graphAPI,$params);
             
-            $response = @file_get_contents($graphUrl);
-            $fbObject = json_decode($response);
+            $apiResponse = @file_get_contents($graphUrl);
+            $fbObject = json_decode($apiResponse);
             
             $attributes = array("data");
             if(!self::isValidResponse($graphUrl,$fbObject,$attributes)) {
@@ -343,11 +345,11 @@ namespace com\indigloo\fs\api {
                         $comment["message"] = $fbComment->message ;
                         $comment["created_time"] = $fbComment->created_time ;
 
-                        if(property_exists(fbComment, "from")) {
+                        if(property_exists($fbComment, "from")) {
                             $comment["user_name"] = $fbComment->from->name ;
                             $comment["from_id"] = $fbComment->from->id ;
                         } else {
-                            $comment["user_name"] = "Anonymous"
+                            $comment["user_name"] = "Anonymous";
                             $comment["from_id"] = "" ;
                         }
                            

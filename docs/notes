@@ -392,13 +392,14 @@ The number of retries should atleast be limited! (2 and not more)
 Next steps
 ---------------
 
-+ All invoice actions : should also check for invoice state
-+ How to update the invoice action : status results?
-+ Graph API : better error handling? (look for @DB required columns)
-+ Invoice : filter by state
-+ check my order status please!
++ Zaakpay check Tx API JOB
 + Notifications
-+ Error messages
++ Use facebook ping data to schedule comments pull.
+
++ Invoice : filter by state
++ Order status please!
++ Error messages?
+
 
 
 

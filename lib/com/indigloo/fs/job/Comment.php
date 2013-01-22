@@ -62,7 +62,17 @@ namespace com\indigloo\fs\job {
         static function pull_comments($sourceId,$postId,$last_ts,$version,$token) {
             // pull N comments using FQL sorted by created_time
             $limit = 20 ;
-            $fbComments = GraphAPI::getComments($postId,$last_ts,$limit,$token);
+            $fbResponse =  GraphAPI::getComments($postId,$last_ts,$limit,$token);
+            $fbCode = $fbResponse["code"];
+            settype($fbCode, "integer");
+            if($fbCode == AppConstants::SERVER_ERROR_CODE) {
+                return ;
+            }
+
+            $fbComments = $fbResponse["data"];
+            if(empty($fbComments)) {
+                return ;
+            }
 
             if(Config::getInstance()->is_debug()) {
                 $message = " fs_stream :: post %s , last_ts = %s , version = %d, no_comments =  %d ";
