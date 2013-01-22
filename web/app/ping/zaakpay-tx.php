@@ -10,13 +10,14 @@
     use \com\indigloo\fs\html\Application as AppHtml ;
     use \com\indigloo\fs\Constants as AppConstants ;
 
-    function show_error_page($orderId,$response) {
-
+    function show_error_page($orderId) {
+        $response = " Error: There was a problem processing your transaction.";
         $params = array("order_id" => $orderId);
         $fwd = Url::createUrl("/app/pub/ro.php",$params) ;
         $gWeb = \com\indigloo\core\Web::getInstance();
+
         $errors = array($response);
-        array_push($errors," Please check the data entered on forms.");
+        array_push($errors," Please check the information below and try again.");
 
         $gWeb->store(Constants::FORM_ERRORS, $errors);
         header("Location: ".$fwd);
@@ -41,27 +42,24 @@
     $code = Util::tryArrayKey($_POST,"responseCode");
     $code = empty($code) ? 1001 : $code; 
     settype($code,"integer");
-
-    $response = Util::tryArrayKey($_POST,"responseDescription");
-    if(Util::tryEmpty($response)) {
-        $response = "Warning: No status message received from Payment gateway.";
-    }
+    
     
     if($code == AppConstants::ZAAKPAY_TX_OK) {
         try{
 
             $orderDao = new \com\indigloo\fs\dao\Order();
             $orderDao->setState($orderId,AppConstants::ORDER_TX_OK_STATE);
+            $response = "Your transaction was successful.";
             $pageHtml = AppHtml::getTxReceipt($orderId,$code,$response);
 
         } catch(\Exception $ex) {
             Logger::getInstance()->error($ex->getMessage());
             Logger::getInstance()->backtrace($ex->getTrace());
-            show_error_page($orderId,$response);
+            show_error_page($orderId);
         }
 
     }else {
-        show_error_page($orderId,$response);
+        show_error_page($orderId);
     }
     
 ?>
