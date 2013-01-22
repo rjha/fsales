@@ -1,0 +1,34 @@
+
+<div>
+	<address>
+	  <strong> ~~$view->row['shipping_first_name']~ ~~$view->row['shipping_last_name']~ </strong> 
+	   <a href="mailto:~~$view->row['email']~">~~$view->row['email']~</a> <br>
+
+	  ~~$view->row['shipping_address']~ <br>
+	  ~~$view->row['shipping_city']~ , ~~$view->row['shipping_state']~  ~~$view->row['shipping_pincode']~ <br>
+	  <abbr title="Phone">P:</abbr> ~~$view->row['shipping_phone']~
+	</address>
+</div>
+
+<div id="add-courier-message" class="faded-text">&nbsp; </div>
+
+<table  class="form-table">
+	<tr>
+    	<td> 
+    		<label>Courier information*</label>
+    		<input type="text" id="courier-info" name="courier_info" maxlength="512" value="~~$view->row['courier_info']~" />
+    	</td>
+    </tr>
+    <tr>
+    	<td>
+    		<label>Tracking link</label>
+    		<input type="text" id="courier-link" name="courier_link" maxlength="512" value="~~$view->row['courier_link']~" />
+    	</td>
+	</tr>
+</table>
+
+<a id="add-courier-link" rel="~~$view->row['invoice_id']~" class="btn btn-success" href="#">Add shipping information</a>
+
+
+
+ 

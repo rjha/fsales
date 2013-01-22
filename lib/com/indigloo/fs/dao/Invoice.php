@@ -17,7 +17,12 @@ namespace com\indigloo\fs\dao {
             $row = mysql\Invoice::getonId2($invoiceId);
             return $row ;
         }
-    
+        
+        function getOrderOnId($invoiceId) {
+            $row = mysql\Invoice::getOrderOnId($invoiceId);
+            return $row ;
+        }
+
         function getPaged($loginId,$paginator) {
             $limit = $paginator->getPageSize();
             
@@ -76,7 +81,13 @@ namespace com\indigloo\fs\dao {
                                 $quantity,
                                 $seller_info);
         }
-                                  
+        
+        function addCourierInfo($invoiceId,$courierInfo,$courierLink) {
+            // Add courier info to fs_order
+            // change fs_invoice.op_bit
+            mysql\Invoice::addCourierInfo($invoiceId,$courierInfo,$courierLink);
+
+        }                     
     }
 }
 

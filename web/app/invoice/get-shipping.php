@@ -8,16 +8,17 @@
 
     use \com\indigloo\fs\auth\Login as Login;
     use \com\indigloo\fs\Constants as AppConstants ;
+    use \com\indigloo\fs\html\Application as AppHtml;
+
 
     set_exception_handler('webgloo_ajax_exception_handler');
     $message = NULL ;
     $invoiceId = Util::getArrayKey($_POST, "invoiceId");
     
-    // @todo
-    // $orderDao = new \com\indigloo\fs\dao\Order();
-    // $orderDao->getShippingOnInvoiceId($invoiceId);
+ 
+    $invoiceDao = new \com\indigloo\fs\dao\Invoice();
+    $orderRow = $invoiceDao->getOrderOnId($invoiceId);
 
-
-    $html = " <h3> This is shipping information </h3> " ;
+    $html = AppHtml::getShipping($orderRow);
     echo $html;
 ?>

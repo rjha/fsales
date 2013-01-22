@@ -145,6 +145,52 @@
                     $("#popup-mask").hide();
                 });
 
+                // @todo live is deprecated in jquery 1.7+
+                $("#add-courier-link").live("click", function(event){
+                    event.preventDefault();
+                    
+                    // we need courier info
+                    var courier_info = $("#courier-info").val();
+                    courier_info = jQuery.trim(courier_info);
+                    if(courier_info == '') {
+                        //show error
+                        
+                        $("#add-courier-message").html(webgloo.fs.message.COURIER_REQUIRED);
+                        $("#courier-info").focus();
+                        return ;
+                    }
+
+                    // post this information
+                    var courier_link = $("#courier-link").val();
+
+                    var dataObj = {} ;
+                    dataObj.params = {} ;
+                    dataObj.params.invoiceId  = $(this).attr("rel");
+                    dataObj.params.courierInfo = courier_info ;
+                    dataObj.params.courierLink = courier_link ;
+
+                    dataObj.endPoint = "/app/action/invoice/ajax/courier.php";
+                    
+                    var options = {
+                        "dataType" : "json", 
+                        "timeout" : 9000,
+                        "messageDivId" : "#add-courier-message",
+                        onDoneHandler : function (dataObj,response) {
+                            if(response.code == 200 ) {
+                                // reload page
+                                window.location.reload(true);
+                            }
+                        
+                        }
+                    };
+                    
+                    webgloo.fs.Ajax.post(dataObj,options) ;
+
+                
+                });
+
+
+
             }) ;
 
         </script>

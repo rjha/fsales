@@ -35,14 +35,14 @@ namespace com\indigloo\fs\html {
             $cancelLink = array("name" => '<i class="icon icon-remove"></i> cancel', "rel" => "cancel");
             
             $shippingLink = array("name" => '<i class="icon icon-gift"></i> shipping' , "rel" => "shipping");
-            $reminderLink = array("name" => '<i class="icon icon-bell"></i> remind', "rel" => "reminder");
+            $reminderLink = array("name" => '<i class="icon icon-bell"></i> remind', "rel" => "remind");
 
             $links = array( 
                 1 => array($editLink,$mailLink),
                 2 => array($mailLink),
                 3 => array($mailLink),
                 4 => array($shippingLink,$mailLink),
-                5 => array($reminderLink));
+                5 => array($shippingLink,$reminderLink));
 
             $actions = isset($links[$state]) ? $links[$state] : array();
             $data = array("text" => $text, "actions" => $actions);
@@ -75,28 +75,6 @@ namespace com\indigloo\fs\html {
             return $html ;
 
         }
-
-
-        /*
-         * @todo figure out the checksum calculation first
-        static function getZaakpayForm($data,$checksum) {
-
-            $html = NULL ;
-            foreach($data as $key => $value) {
-
-                $data[$key] = ($key == 'returnUrl') ? 
-                    ZaakpayHelper::sanitizedURL($value) : ZaakpayHelper::sanitizedParam($value) ;
-                
-                $template = "/app/fragments/zaakpay-form.tmpl" ;
-                $view = new \stdClass;
-                $view->data = $data ;
-                $view->checksum = $checksum;
-                $html = Template::render($template,$view);
-                return $html ;
-
-            }
-
-        } */
 
         /**
          * @param qparams request query parameters
@@ -312,6 +290,21 @@ namespace com\indigloo\fs\html {
             return $mail_body ;
         }
 
+        static function getShipping($orderRow) {
+            if(empty($orderRow)) {
+                $message = "Error : No order found for invoice" ;
+                return $message ;
+            }
+            
+            $html = NULL ;
+
+            $template = "/app/fragments/shipping.tmpl" ;
+            $view = new \stdClass;
+            $view->row = $orderRow ;
+            
+            $html = Template::render($template,$view);
+            return $html ;
+        }
     
     }
 }

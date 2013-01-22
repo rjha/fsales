@@ -172,6 +172,8 @@ CREATE TABLE  fs_order  (
   shipping_pincode varchar(12) not null,
   shipping_country varchar(16) not null,
   shipping_phone varchar(16) not null,
+  courier_info varchar(512) ,
+  courier_link varchar(512),
 
   op_bit int default 1,
   tx_date timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -197,5 +199,12 @@ CREATE TABLE  fs_mail_queue  (
 
 
 
+--
+-- Patch : 22 Jan 2013
+-- Added courier info to order
+-- 
+-- 
 
+alter table fs_order add column courier_info varchar(512) ;
+alter table fs_order add column courier_link varchar(512) ;
 

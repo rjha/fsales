@@ -54,7 +54,8 @@ webgloo.fs.message = {
 } 
 
 webgloo.fs.message.SPINNER = '<div> <img src="/css/asset/fs/fb_loader.gif" alt="spinner"/></div>' ;
-
+webgloo.fs.message.IS_REQUIRED = 'This is required!' ;
+webgloo.fs.message.COURIER_REQUIRED = '<span class="error">courier information is required! </span>' ;
 
 webgloo.fs.Ajax = {
      
@@ -229,7 +230,7 @@ webgloo.fs.invoice = {
         var dataObj = {} ;
         dataObj.params = {} ;
         dataObj.params.invoiceId  = invoiceId;
-        dataObj.endPoint = "/app/action/invoice/ajax-mail.php";
+        dataObj.endPoint = "/app/action/invoice/ajax/mail.php";
         
         var options = {
             "dataType" : "json", 

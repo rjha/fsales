@@ -7,6 +7,7 @@ namespace com\indigloo\fs\mysql {
 
     use \com\indigloo\mysql\PDOWrapper;
     use \com\indigloo\exception\DBException as DBException;
+    use \com\indigloo\fs\Constants as AppConstants ;
 
     class Invoice {
 
@@ -39,6 +40,22 @@ namespace com\indigloo\fs\mysql {
             return $row;
         }
         
+        static function getOrderOnId($invoiceId) {
+            
+            $mysqli = MySQL\Connection::getInstance()->getHandle();
+            // input
+            settype($invoiceId, "integer");
+
+            $sql = 
+            " select o.* from fs_invoice inv, fs_order o " .
+            " where o.id = inv.p_order_id and inv.id = %d  " ;
+            $sql = sprintf($sql,$invoiceId);
+
+            $row = MySQL\Helper::fetchRow($mysqli, $sql);
+            return $row;
+
+        }
+
         static function getLatest($loginId,$limit) {
 
             $mysqli = MySQL\Connection::getInstance()->getHandle();
@@ -242,6 +259,46 @@ namespace com\indigloo\fs\mysql {
                 throw new DBException($message);
             }
               
+        }
+
+        static function addCourierInfo($invoiceId,$courierInfo,$courierLink) {
+            $dbh = NULL ;
+            
+            try {
+
+                $dbh =  PDOWrapper::getHandle();
+                //Tx start
+                $dbh->beginTransaction();
+
+                $sql1 = 
+                " update fs_order set courier_info = :courier_info, courier_link = :courier_link ".
+                " where invoice_id = :invoice_id " ;
+
+                $stmt1 = $dbh->prepare($sql1);
+                $stmt1->bindParam(":invoice_id", $invoiceId);
+                $stmt1->bindParam(":courier_info", $courierInfo);
+                $stmt1->bindParam(":courier_link", $courierLink);
+
+                $stmt1->execute();
+                $stmt1 = NULL ;
+
+                $sql2 = " update fs_invoice set op_bit = %d where id = %d and op_bit <= %d " ;
+                $bit = AppConstants::INVOICE_SHIPPED_STATE ;
+                $sql2 = sprintf($sql2,$bit,$invoiceId,$bit) ;
+                
+                $dbh->exec($sql2);
+
+                //Tx end
+                $dbh->commit();
+                $dbh = null;
+
+            }catch(\Exception $ex) {
+                $dbh->rollBack();
+                $dbh = null;
+                $message = $ex->getMessage();
+                throw new DBException($message);
+            }
+
         }
     }
 }

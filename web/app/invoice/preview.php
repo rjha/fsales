@@ -93,7 +93,7 @@
                     var dataObj = {} ;
                     dataObj.params = {} ;
                     dataObj.params.invoiceId  = $(this).attr("id");
-                    dataObj.endPoint = "/app/action/invoice/ajax-mail.php";
+                    dataObj.endPoint = "/app/action/invoice/ajax/mail.php";
                     
 
                     var options = {
