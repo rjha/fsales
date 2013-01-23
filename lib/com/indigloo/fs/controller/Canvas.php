@@ -12,6 +12,8 @@ namespace com\indigloo\fs\controller{
     use \com\indigloo\fs\api\Graph as GraphAPI ;
     use \com\indigloo\fs\Constants as AppConstants ;
 
+    use \com\indigloo\fs\util\Nest ;
+
     class Canvas {
 
         
@@ -65,8 +67,51 @@ namespace com\indigloo\fs\controller{
             $qparams = Url::getRequestQueryParams();
             $loginId = Login::getLoginIdInSession();
 
+            $nest_ft_key = Nest::comment_filter();
+
+            // ft coming in request
+            // user wants to change the filter
+            if(isset($qparams["ft"]) && !Util::tryEmpty($qparams["ft"])) {
+                $filter = $qparams["ft"] ;
+                if($filter == AppConstants::ALL_COMMENT_FILTER 
+                    || $filter == AppConstants::VERB_COMMENT_FILTER) {
+                
+                    $gWeb->store($nest_ft_key,$filter);
+                }
+
+            }
+
+            // keep comment filter in session
+            $ft = $gWeb->find($nest_ft_key,false);
+            $ft = empty($ft) ? AppConstants::ALL_COMMENT_FILTER : $ft ;
+            // unset ft in request params
+            unset($qparams["ft"]);
+
+            $nest_source_key = Nest::source_filter();
+            $sourceDao = new \com\indigloo\fs\dao\Source();
+            $sources = $sourceDao->getAll($loginId);
+            $default_source_id = $sourceDao->getDefault($loginId) ;
+
+            // set default source in session
+            if(!Util::tryEmpty($default_source_id)) {
+                $gWeb->store($nest_source_key,$default_source_id);
+            }
+
+            // override default source with one in request
+            if(isset($qparams["source_id"]) && !Util::tryEmpty($qparams["source_id"])) {
+                $gWeb->store($nest_source_key,$qparams["source_id"]);
+            }
+
+            $sourceId = $gWeb->find($nest_source_key,false);
+            if(!empty($sources) && empty($sourceId)) {
+                $sourceId = $sources[0]["source_id"];
+            }
+
+            // unset source_id in request params
+            unset($qparams["source_id"]);
+
             //pagination variables
-            $pageSize = 10 ;
+            $pageSize = 11;
             $paginator = new \com\indigloo\ui\Pagination($qparams,$pageSize);
             $paginator->setBaseConvert(false);
 
@@ -75,30 +120,16 @@ namespace com\indigloo\fs\controller{
             $gNumRecords = 0 ;
             $pageBaseURI ="/ghost/canvas/dashboard" ;
 
-
-            $sourceDao = new \com\indigloo\fs\dao\Source();
-            $sources = $sourceDao->getAll($loginId);
-            $default_source_id = $sourceDao->getDefault($loginId) ;
-            $sourceId = (isset($qparams["source_id"])) ? $qparams["source_id"] : $default_source_id;
-             
-            //nothing in query and default not set.
-            if(!empty($sources) && empty($sourceId)) {
-                $sourceId = $sources[0]["source_id"];
-            }
-
             $sourceHtml = "" ;
             $commentHtml = "" ;
 
+            settype($sourceId, "integer");
             $sourceRow = $sourceDao->getOnId($sourceId);
             if(empty($sourceRow)) {
                 $sourceHtml = AppHtml::getNoSource();
                 include(APP_WEB_DIR."/app/view/dashboard.tmpl");
                 return ;
             }
-
-            // ft := [verb | all]
-            // by default show only comments with verb
-            $ft = (isset($qparams["ft"])) ? $qparams["ft"] : AppConstants::ALL_COMMENT_FILTER;
 
             $commentDao = new \com\indigloo\fs\dao\Comment();
             $commentRows = $commentDao->getPaged($sourceId,$ft,$paginator);
@@ -116,12 +147,11 @@ namespace com\indigloo\fs\controller{
             }
 
             if(empty($commentRows)) {
-                $commentHtml =  AppHtml::getNoComment($sourceRow);
+                $commentHtml =  AppHtml::getNoComment($sourceRow,$qparams);
             }
 
             include(APP_WEB_DIR."/app/view/dashboard.tmpl");
             return ;
-        
     
         }
 

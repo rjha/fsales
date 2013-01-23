@@ -134,9 +134,16 @@ namespace com\indigloo\fs\html {
             return $html ;
         }
 
-        static function getNoComment($sourceRow) {
+        static function getNoComment($sourceRow,$qparams) {
             $html = NULL ;
-            $template = "/app/fragments/no-comment.tmpl" ;
+            $gpage = 1 ;
+            
+            if(isset($qparams["gpage"])) {
+                $gpage = $qparams["gpage"] ;
+                settype($gpage,"integer");
+            }
+
+            $template = ($gpage > 1 ) ? "/app/fragments/no-comment2.tmpl" : "/app/fragments/no-comment.tmpl" ;
             $view = new \stdClass;
             $view->lastTime = date("d-M h:i A",$sourceRow["last_stream_ts"]);
             

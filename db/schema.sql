@@ -184,16 +184,19 @@ CREATE TABLE  fs_order  (
 
 
 
-DROP TABLE IF EXISTS  fs_mail_queue ;
-CREATE TABLE  fs_mail_queue  (
-  id  int(11) NOT NULL AUTO_INCREMENT,
-  op_bit  int DEFAULT 1,
-  source int default 1 ,
-  source_id int not null,
-  created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  expired_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  PRIMARY KEY (id)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+DROP TABLE IF EXISTS  fs_hash_table ;
 
+CREATE TABLE  fs_hash_table (
+  t_key varchar(64) not null,
+  t_value text not null,
+  PRIMARY KEY (t_key)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+
+
+--
+-- Patch 23 Jan 2013
+-- drop table fs_mail_queue ;
+-- 
 
