@@ -6,8 +6,11 @@ namespace com\indigloo\fs\zaakpay  {
 
         const SECRET_KEY = "d409bd01a7114a5186bf82b9d466c741" ;
         const IDENTIFIER = "90efd5c603c3427f93f7b9de57f60195" ;
+        const MOBIKWIK_MID = "MBK9002" ;
+        const MOBIKWIK_SECRET_KEY = "0xfgrt55y744fge4etr56ghj7uy6" ;
+        
 
-        static function calculateChecksum($data) {
+        static function calculateChecksum($data,$secretKey) {
 
             $all = '';
             foreach($data as $key => $value){
@@ -22,7 +25,7 @@ namespace com\indigloo\fs\zaakpay  {
                 }
             }
 
-            $hash = hash_hmac('sha256', $all , self::SECRET_KEY);
+            $hash = hash_hmac('sha256', $all , secretKey);
             $checksum = $hash;
             return $checksum;
         }

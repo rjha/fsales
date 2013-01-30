@@ -23,10 +23,11 @@
         header("Location: ".$fwd);
     }
 
-    // response code = 100 print receipt
+    // for mobikwik
+    // statuscode = 0  is success - print receipt
     // response code != 100 : show error message and ro.php;
 
-    $orderId = Util::tryArrayKey($_POST,"orderId");
+    $orderId = Util::tryArrayKey($_REQUEST,"orderid");
     $orderId = empty($orderId) ? 0 : $orderId; 
     settype($orderId, "integer");
 
@@ -39,12 +40,14 @@
         exit ;
     }
 
-    $code = Util::tryArrayKey($_POST,"responseCode");
-    $code = empty($code) ? 1001 : $code; 
+    $code = Util::tryArrayKey($_REQUEST,"statuscode");
+    // code == 0 will fall in empty check 
+    // is_null check is needed for code zero.
+    $code = Util::tryEmpty($code) ? 1001 : $code; 
     settype($code,"integer");
     
     
-    if($code == AppConstants::ZAAKPAY_TX_OK) {
+    if($code == 0) {
         try{
 
             $orderDao = new \com\indigloo\fs\dao\Order();
@@ -59,10 +62,9 @@
         }
 
     }else {
-        
-        // log message from zaakpay
-        $tx_message = Util::tryArrayKey($_REQUEST, "responseDescription"); 
-        $tx_message = Util::tryEmpty($tx_message) ? "No message from zaakpay" : $tx_message ;
+        // log message from mobikwik
+        $tx_message = Util::tryArrayKey($_REQUEST, "statusmessage"); 
+        $tx_message = Util::tryEmpty($tx_message) ? "No message from mobikwik" : $tx_message ;
         Logger::getInstance()->error($tx_message);
 
         show_error_page($orderId);
@@ -74,7 +76,7 @@
 <html>
 
     <head>
-        <title> Zaakpay PG response</title>
+        <title> Mobikwik wallet response</title>
         <?php include(APP_WEB_DIR . '/app/inc/meta.inc'); ?>
         <?php echo \com\indigloo\fs\util\Asset::version("/css/fs-bundle.css"); ?>
 
@@ -89,7 +91,7 @@
             <div class="row">
                 <div class="span8 offset1">
                     <div class="page-header">
-                        <h3>Payment gateway response</h3>
+                        <h3>Mobikwik wallet response</h3>
                     </div>
                     
                     <?php echo $pageHtml ?>

@@ -16,7 +16,7 @@
             "mode" => "0");
 
     
-    $checksum = Zaakpay::calculateChecksum($data);
+    $checksum = Zaakpay::calculateChecksum($data,Zaakpay::SECRET_KEY);
     $data["checksum"] = $checksum;
 
     $postdata = http_build_query($data);

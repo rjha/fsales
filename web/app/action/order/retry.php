@@ -74,11 +74,11 @@
       
         $orderDao->update($orderId,$fvalues);
 
-        // show redirect-to-zaakpay screen
+        // show redirect-to-mobikwik screen
         // make sure you have the right data before fwd-ing to 
-        // zaakpay
+        // mobikwik
         $params = array("order_id" => $orderId);
-        $fwd = Url::createUrl("/app/pub/zaakpay-post.php", $params);
+        $fwd = Url::createUrl("/app/pub/mobikwik-post.php", $params);
         header("Location: ".$fwd);
 
     } catch(UIException $ex) {
