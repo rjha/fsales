@@ -233,12 +233,7 @@
                                     <td> &nbsp;</td>
                                     <td>
                                         <div class="form-actions">
-                                            <button class="btn btn-success btn-large" type="submit" name="save" value="Save">Proceed to pay</button>
-                                            <div>
-                                                <span>secure with</span>
-                                                <img src="http://www.zaakpay.com/images/paybtn-blk.gif" alt="" align="absmiddle" /> zaakpay
-                                            </div>
-                                           
+                                             <input type="submit" class="btn-mobikwik-wallet" value=""/>
                                         </div>
 
                                     </td>

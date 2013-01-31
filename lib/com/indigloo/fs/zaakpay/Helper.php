@@ -6,8 +6,8 @@ namespace com\indigloo\fs\zaakpay  {
 
         const SECRET_KEY = "d409bd01a7114a5186bf82b9d466c741" ;
         const IDENTIFIER = "90efd5c603c3427f93f7b9de57f60195" ;
-        const MOBIKWIK_MID = "MBK9002" ;
-        const MOBIKWIK_SECRET_KEY = "0xfgrt55y744fge4etr56ghj7uy6" ;
+        const MOBIKWIK_MID = "MBK7039" ;
+        const MOBIKWIK_SECRET_KEY = "5HoRyCqCquAvcoQZKNCtqfDUhzhS" ;
         
 
         static function calculateChecksum($data,$secretKey) {

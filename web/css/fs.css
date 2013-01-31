@@ -598,6 +598,15 @@
 
     }
 
+    .btn-mobikwik-wallet {
+
+        background: url('http://merchant.mobikwik.com/static/paywith.png') no-repeat center center;
+        width: 260px;
+        height: 73px;
+        color: transparent;
+        background-color: #DDD;
+    }
+    
 
     /* @imp : last section - override 3rd party libraries */
     /* bootstrap css */

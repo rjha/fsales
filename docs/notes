@@ -376,7 +376,7 @@ check Tx status - and then only update your system to paid.
 This may take some time. So the fact that user has paid => that "processing of order"
 has been started by PG. @see https://www.zaakpay.com/developers/guide and see the Tx states tab.
 
-
+git
 
 PG integration
 ----------------

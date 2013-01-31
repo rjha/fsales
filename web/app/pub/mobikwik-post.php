@@ -51,7 +51,7 @@
 <html>
 
     <head>
-        <title> MObikiwk wallet</title>
+        <title> Mobikiwk wallet redirect </title>
         <?php include(APP_WEB_DIR . '/app/inc/meta.inc'); ?>
         <?php echo \com\indigloo\fs\util\Asset::version("/css/fs-bundle.css"); ?>
         <script type="text/javascript">
@@ -79,10 +79,8 @@
                    
                     <div class="mt20">
                         <p class="lead"> 
-                            Do Not Refresh or Press Back button in browser <br/> 
-                            Redirecting to Mobikwik wallet ...
-                            
-
+                            Redirecting to Mobikwik wallet ... <br>
+                            Do Not Refresh or Press Back button in browser <br/>
                         </p>
                          <div class="p20">
                             <img src="/css/asset/fs/fb_loader.gif" alt="ajax loader" />
@@ -90,7 +88,7 @@
                     </div>
 
                     <div class="form-wrapper">
-                        <form action="where do I post?" method="post">
+                        <form action="http://www.mobikwik.com/views/proceedtowalletpayment.jsp" method="post">
                             <?php \com\indigloo\fs\zaakpay\Helper::outputForm($data,$checksum); ?>
                         </form>
                     </div>
