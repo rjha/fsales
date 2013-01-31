@@ -226,7 +226,7 @@
                                     <td> &nbsp;</td>
                                     <td>
                                         <div class="form-actions">
-                                            <input type="submit" class="btn-mobikwik-wallet" value=""/>
+                                            <input type="submit" class="btn-mobikwik-wallet" style="height:73px;" value=""/>
                                         </div>
 
                                     </td>
