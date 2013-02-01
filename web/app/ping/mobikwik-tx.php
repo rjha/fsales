@@ -11,6 +11,7 @@
     use \com\indigloo\fs\Constants as AppConstants ;
 
     function show_error_page($orderId) {
+        
         $response = " Error: There was a problem processing your transaction.";
         $params = array("order_id" => $orderId);
         $fwd = Url::createUrl("/app/pub/ro.php",$params) ;
@@ -21,11 +22,12 @@
 
         $gWeb->store(Constants::FORM_ERRORS, $errors);
         header("Location: ".$fwd);
+
     }
 
     // for mobikwik
     // statuscode = 0  is success - print receipt
-    // response code != 100 : show error message and ro.php;
+    // statuscode != 0 : show error message and ro.php;
 
     $orderId = Util::tryArrayKey($_REQUEST,"orderid");
     $orderId = empty($orderId) ? 0 : $orderId; 
@@ -35,21 +37,26 @@
 
     if(empty($orderId)) {
         // no clue as to what happened!
+        
         $message = "Error: something went wrong. Please try again.";
         echo AppHtml::messageBox($message);
         exit ;
     }
 
     $code = Util::tryArrayKey($_REQUEST,"statuscode");
+    // PHP pitfalls
+    // 1) settype($code, "integer") will also set 
+    // non numeric garbage values like $#@ to 0
+    // 2) $code == 0 will return TRUE for code = $# also
+    // 3) $code == 0 : empty($code) will return TRUE
+
     // code == 0 will fall in empty check 
     // is_null check is needed for code zero.
     $code = Util::tryEmpty($code) ? 1001 : $code; 
-    settype($code,"integer");
-    
-    
-    if($code == 0) {
-        try{
 
+    if(ctype_digit($code) && ($code === 0)) {
+        try{
+            
             $orderDao = new \com\indigloo\fs\dao\Order();
             $orderDao->setState($orderId,AppConstants::ORDER_TX_OK_STATE);
             $response = "Your transaction was successful.";

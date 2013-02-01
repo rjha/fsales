@@ -31,24 +31,24 @@
                     <div class="form-wrapper">
                         
                         <div id="form-message"> </div>
-                        <form  id="form1"  name="form1" action="/app/ping/zaakpay-tx.php"  method="POST">
+                        <form  id="form1"  name="form1" action="/app/ping/mobikwik-tx.php"  method="POST">
                           
                             <table class="form-table">
                                 
                                 <tr>
                                     <td> <label>orderId*</label>
-                                        <input type="text" name="orderId" maxlength="64" value="" />
+                                        <input type="text" name="orderid" maxlength="64" value="" />
                                     </td>
                                 </tr>
                                  <tr>
                                     <td> <label>responseCode*</label>
-                                        <input type="text" name="responseCode" maxlength="3" value="" />
+                                        <input type="text" name="statuscode" maxlength="3" value="" />
                                     </td>
                                 </tr>
 
                                 <tr>
                                     <td> <label>responseDescription*</label>
-                                        <input type="text" name="responseDescription" maxlength="64" value="" />
+                                        <input type="text" name="statusmessage" maxlength="64" value="" />
                                     </td>
                                 </tr>
                                
