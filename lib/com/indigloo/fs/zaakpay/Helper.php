@@ -16,7 +16,7 @@ namespace com\indigloo\fs\zaakpay  {
             foreach($data as $key => $value){
                 if($key != 'checksum') {
                     $all .= "'";
-                    if ($key == 'returnUrl') {
+                    if($key == 'redirecturl' || $key == 'returnUrl') {
                         $all .= self::sanitizedURL($value);
                     } else {
                         $all .= self::sanitizedParam($value);
@@ -25,7 +25,7 @@ namespace com\indigloo\fs\zaakpay  {
                 }
             }
 
-            $hash = hash_hmac('sha256', $all , secretKey);
+            $hash = hash_hmac('sha256', $all,$secretKey);
             $checksum = $hash;
             return $checksum;
         }
@@ -33,7 +33,7 @@ namespace com\indigloo\fs\zaakpay  {
         static function outputForm($data,$checksum) {
 
             foreach($data as $key => $value) {
-                if ($key == 'returnUrl') {
+                if ($key == 'redirecturl' || $key == 'returnUrl') {
                     echo '<input type="hidden" name="'.$key.'" value="'.self::sanitizedURL($value).'" />'."\n";
                 } else {
                     echo '<input type="hidden" name="'.$key.'" value="'.self::sanitizedParam($value).'" />'."\n";
