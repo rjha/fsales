@@ -54,7 +54,7 @@
     // is_null check is needed for code zero.
     $code = Util::tryEmpty($code) ? 1001 : $code; 
 
-    if(ctype_digit($code) && ($code === 0)) {
+    if(ctype_digit($code) && ($code == 0)) {
         try{
             
             $orderDao = new \com\indigloo\fs\dao\Order();
