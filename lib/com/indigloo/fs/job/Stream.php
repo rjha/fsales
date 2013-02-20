@@ -41,27 +41,41 @@ namespace com\indigloo\fs\job {
             // 
             // token is page token and should not expire
 
+            if(Config::getInstance()->is_debug()) {
+                $message = "stream_job: source= %s, last_stream_ts= %s" ;
+                $message = sprintf($message,$source["name"],$last_ts);
+                Logger::getInstance()->debug($message);
+                Logger::getInstance()->debug("--------------------------");
+            }
+
             $token = $source["token"];
             $fbResponse = GraphAPI::getStreamViaFQL($sourceId,$last_ts,$token);
             $fbCode = $fbResponse["code"];
             settype($fbCode, "integer") ;
 
             if($fbCode == AppConstants::SERVER_ERROR_CODE) {
+                $message = "stream_job:: error processing source= %s" ;
+                $message = sprintf($message,$source["name"]);
+                Logger::getInstance()->error($message);
+                //fix the error first?
                 return ;
             }
 
             $fbPosts = $fbResponse["data"];
-
-            if(Config::getInstance()->is_debug()) {
-                $message = "\n poke stream :: source = %s, ts = %s, new posts = %d" ;
-                $message = sprintf($message,$source["name"],$last_ts,sizeof($fbPosts));
-                Logger::getInstance()->debug($message);
-            }
-
-            if(empty($fbPosts)) { return ; }
+            
+            /* __DO_NOT_RETURN_ from here
+                mysql layer may need to do the cleaning 
+                if(empty($fbPosts)) { return ; } */
 
             $streamDao = new Dao\Stream();
             $streamDao->add($sourceId,$last_ts,$fbPosts);
+
+            if(Config::getInstance()->is_debug()) {
+                $message = "stream_job: source= %s, last_stream_ts= %s, num_new_posts= %d" ;
+                $message = sprintf($message,$source["name"],$last_ts,sizeof($fbPosts));
+                Logger::getInstance()->debug($message);
+                Logger::getInstance()->debug("--------------------------");
+            }
 
         }
 

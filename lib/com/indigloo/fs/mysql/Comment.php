@@ -149,6 +149,12 @@ namespace com\indigloo\fs\mysql {
                 $sql2 = sprintf($sql2,$max_ts,$postId,$sourceId);
                 $dbh->exec($sql2);
 
+                if(Config::getInstance()->is_debug()) {
+                    $message = "fs_stream::update: source_id= %s,post_id = %s, last_stream_ts = %s" ;
+                    $message = sprintf($message,$source_id,$postId,$max_ts);
+                    Logger::getInstance()->debug($message);
+                }
+
                 //Tx1 end
                 $dbh->commit();
 
@@ -171,7 +177,7 @@ namespace com\indigloo\fs\mysql {
                     $dbh->commit();
 
                     if(Config::getInstance()->is_debug()) {
-                        $message = "fs_stream :: try deleting : post_id = %s , version = %d " ;
+                        $message = "fs_stream::delete row:: post_id = %s , version = %d " ;
                         $message = sprintf($message,$postId, $version);
                         Logger::getInstance()->debug($message);
                     }
@@ -191,8 +197,6 @@ namespace com\indigloo\fs\mysql {
                 throw new DBException($message);
             }
         }
-
-      
     }
 }
 

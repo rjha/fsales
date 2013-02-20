@@ -168,6 +168,12 @@ namespace com\indigloo\fs\api {
             $apiResponse = @file_get_contents($graphUrl);
             $fbObject = json_decode($apiResponse);
             
+            if(Config::getInstance()->is_debug()) {
+                Logger::getInstance()->debug("graph URL => ".$graphUrl);
+                Logger::getInstance()->debug("graph URL response => ");
+                Logger::getInstance()->debug($apiResponse);
+            }
+
             $attributes = array("data");
             if(!self::isValidResponse($graphUrl,$fbObject,$attributes)) {
                 return $response ;
@@ -182,21 +188,26 @@ namespace com\indigloo\fs\api {
                     if(property_exists($post, "post_id")
                         && property_exists($post, "updated_time")) {
 
-                        $photo_ts =  (int) $post->updated_time; 
-                        if($photo_ts <= $last_stream_ts) {
-                            break ;
-                        }
+                        $photo_ts =  (int) $post->updated_time;
+                        
+                        // we have already processed till last_stream_ts
+                        if($photo_ts > $last_stream_ts) {
+                            $photo = array();
+                            $photo["post_id"] = $post->post_id ;
+                            $photo["updated_time"] = $post->updated_time;
+                            $photos[] = $photo ;
 
-                        $photo = array();
-                        $photo["post_id"] = $post->post_id ;
-                        $photo["updated_time"] = $post->updated_time;
-                        $photos[] = $photo ;
+                            if(Config::getInstance()->is_debug()) {
+                                $message = "stream::add: post_id= %s , updated_time= %s";
+                                $message = sprintf($message,$photo["post_id"],$photo["updated_time"]);
+                                Logger::getInstance()->debug($message);
+                            }
+                        }
                     }
                 }
 
                 $response["code"] = AppConstants::SERVER_OK_CODE ;
                 $response["data"] = $photos ;
-
 
             } catch(\Exception $ex) {
                 Logger::getInstance()->error($ex->getMessage());
@@ -221,8 +232,13 @@ namespace com\indigloo\fs\api {
             $graphUrl = Url::createUrl($graphAPI,$params);
             $apiResponse = @file_get_contents($graphUrl);
             $fbObject = json_decode($apiResponse);
-           
-             
+            
+            if(Config::getInstance()->is_debug()) {
+                Logger::getInstance()->debug("graph URL => ".$graphUrl);
+                Logger::getInstance()->debug("graph URL response => ");
+                Logger::getInstance()->debug($apiResponse);
+            }
+
             if(!self::isValidResponse($graphUrl,$fbObject)) {
                 return $response ;
             }
@@ -246,6 +262,12 @@ namespace com\indigloo\fs\api {
 
                 $response["code"] = AppConstants::SERVER_OK_CODE ;
                 $response["data"] = $post ;
+
+                if(Config::getInstance()->is_debug()) {
+                    $message = "post :: object_id= %s, link= %s, from_id= %s" ;
+                    $message = sprintf($message,$post["object_id"],$post["link"],$post["from_id"]);
+                    Logger::getInstance()->debug($message);
+                }
             }
 
             return $response ;
@@ -325,11 +347,16 @@ namespace com\indigloo\fs\api {
             $apiResponse = @file_get_contents($graphUrl);
             $fbObject = json_decode($apiResponse);
             
+            if(Config::getInstance()->is_debug()) {
+                Logger::getInstance()->debug("graph URL => ".$graphUrl);
+                Logger::getInstance()->debug("graph URL response => ");
+                Logger::getInstance()->debug($apiResponse);
+            }
+
             $attributes = array("data");
             if(!self::isValidResponse($graphUrl,$fbObject,$attributes)) {
                 return $response ;
             }
-
 
             try {
                 $fbComments = $fbObject->data ;
@@ -354,6 +381,15 @@ namespace com\indigloo\fs\api {
                         }
                            
                         $comments[] = $comment ;
+
+                        if(Config::getInstance()->is_debug()) {
+                            $message = "comment::add: comment_id = %s,from_id= %s,created_time= %s";
+                            $message = sprintf($message,
+                                $comment["comment_id"],
+                                $comment["from_id"],
+                                $comment["created_time"]);
+                            Logger::getInstance()->debug($message);
+                        }
                     }
                 }
 

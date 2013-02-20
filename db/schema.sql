@@ -69,6 +69,7 @@ CREATE TABLE  fs_stream  (
    last_stream_ts int, 
    next_stream_ts int,
    version int default 1,
+   op_bit int default 1 ,
    created_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
    updated_on  timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (id),
@@ -196,7 +197,9 @@ CREATE TABLE  fs_hash_table (
 
 
 --
--- Patch 23 Jan 2013
--- drop table fs_mail_queue ;
+-- Patch 20 Feb. 2013
+-- 
 -- 
 
+alter table fs_stream add column op_bit int default 1 ;
+alter table fs_stream  add index idx_op_bit (op_bit) ;

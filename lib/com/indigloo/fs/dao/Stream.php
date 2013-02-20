@@ -26,6 +26,10 @@ namespace com\indigloo\fs\dao {
             return $rows ;
         }
 
+        function  setState($sourceId,$postId,$bit) {
+            mysql\Stream::setState($sourceId,$postId,$bit);
+        }
+
     }
 }
 

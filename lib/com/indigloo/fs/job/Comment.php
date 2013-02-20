@@ -33,26 +33,43 @@ namespace com\indigloo\fs\job {
             $last_ts = $stream["last_stream_ts"];
             $version = $stream["version"] ;
 
+            if(Config::getInstance()->is_debug()) {
+                $message = "comment_job::fs_stream: source_id= %s,post_id= %s, last_stream_ts= %s";
+                $message = sprintf($message,$sourceId,$postId,$last_ts);
+                Logger::getInstance()->debug($message);
+                Logger::getInstance()->debug("--------------------------");
+            }
+
             $sourceDao = new Dao\Source();
             // source access token
             $token = $sourceDao->getToken($sourceId);
             $postDao = new Dao\Post();
 
             if(!$postDao->exists($postId)) {
+
+                if(Config::getInstance()->is_debug()) {
+                    $message = sprintf("comment_job::create post:: post_id= %s ",$postId);
+                    Logger::getInstance()->debug($message);
+                }
+
                 $fbResponse = GraphAPI::getPost($postId,$token);
                 $fbCode = $fbResponse["code"];
                 settype($fbCode, "integer");
+
                 if($fbCode == AppConstants::SERVER_ERROR_CODE) {
+                    // we can get *bad* posts and these bad posts 
+                    // will never be deleted from fs_stream.
+                    // As a result we will never go to comment loading 
+                    // and cleaning stage. it is better to mark such posts 
+                    // and not load them into stream the next time.
+                    $streamDao = new Dao\Stream();
+                    $streamDao->setState($sourceId,$postId,2);
                     return ;
                 }
 
                 $fbPost = $fbResponse["data"];
                 $postDao->add($sourceId,$postId,$fbPost);
 
-                if(Config::getInstance()->is_debug()) {
-                    $message = sprintf("fs_post :: fetch post_id :: %s ",$postId);
-                    Logger::getInstance()->debug($message);
-                }
             }
             
             self::pull_comments($sourceId,$postId,$last_ts,$version,$token);
@@ -60,28 +77,46 @@ namespace com\indigloo\fs\job {
         }
         
         static function pull_comments($sourceId,$postId,$last_ts,$version,$token) {
+            if(Config::getInstance()->is_debug()) {
+                $message = "comment_job:: pull comments : post_id= %s, last_stream_ts= %s";
+                $message = sprintf($message,$postId,$last_ts);
+                Logger::getInstance()->debug($message);
+            }
+
             // pull N comments using FQL sorted by created_time
             $limit = 20 ;
             $fbResponse =  GraphAPI::getComments($postId,$last_ts,$limit,$token);
             $fbCode = $fbResponse["code"];
             settype($fbCode, "integer");
+
             if($fbCode == AppConstants::SERVER_ERROR_CODE) {
+                $message = "comment_job:: error fetching comments for source =%s, post= %s" ;
+                $message = sprintf($message,$sourceId,$postId);
+                Logger::getInstance()->error($message);
+                //first fix the error.?
                 return ;
             }
 
             $fbComments = $fbResponse["data"];
-            if(empty($fbComments)) {
-                return ;
-            }
 
-            if(Config::getInstance()->is_debug()) {
-                $message = " fs_stream :: post %s , last_ts = %s , version = %d, no_comments =  %d ";
-                $message = sprintf($message,$postId,$last_ts,$version,sizeof($fbComments));
-                Logger::getInstance()->debug($message);
-            }
+            /*
+             * __DO_NOT_RETURN_ from here
+             * we need to delete stream rows when we do not find any comments 
+             * for a given post_id and between(last_stream_ts,next_stream_ts)
+
+              if(empty($fbComments)) { return ; } */
+
 
             $commentDao = new Dao\Comment();
             $commentDao->add($sourceId,$postId,$last_ts,$version,$limit,$fbComments);
+
+            if(Config::getInstance()->is_debug()) {
+                $message = "comment_job:: post_id =%s, last_stream_ts= %s, version = %d, num_comments= %d ";
+                $message = sprintf($message,$postId,$last_ts,$version,sizeof($fbComments));
+                Logger::getInstance()->debug($message);
+                Logger::getInstance()->debug("--------------------------");
+
+            }
 
         }
     }

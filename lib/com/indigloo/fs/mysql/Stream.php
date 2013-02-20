@@ -22,8 +22,8 @@ namespace com\indigloo\fs\mysql {
 
             $mysqli = MySQL\Connection::getInstance()->getHandle();
             
-            // bring old posts first
-            $sql = " select * from fs_stream order by created_on ASC LIMIT %d" ;
+            // process old posts first
+            $sql = " select * from fs_stream where op_bit = 1 order by id ASC LIMIT %d " ;
             $sql = sprintf($sql,$limit);
 
             $rows = MySQL\Helper::fetchRows($mysqli, $sql);
@@ -180,7 +180,34 @@ namespace com\indigloo\fs\mysql {
                 $message = $ex->getMessage();
                 throw new DBException($message);
             }
+        }
 
+        static function setState($sourceId,$postId,$bit) {
+            $dbh = NULL ;
+            
+            try {
+                
+                settype($bit, "integer");
+
+                $dbh =  PDOWrapper::getHandle();
+                
+                //Tx start
+                $dbh->beginTransaction();
+                
+                $sql = " update fs_stream set op_bit = %d where post_id = '%s' and source_id = '%s' " ;
+                $sql = sprintf($sql,$bit,$postId,$sourceId);
+                $dbh->exec($sql);
+
+                //Tx end
+                $dbh->commit();
+                $dbh = null;
+
+            } catch(\Exception $ex) {
+                $dbh->rollBack();
+                $dbh = null;
+                $message = $ex->getMessage();
+                throw new DBException($message);
+            }
 
         }
 
